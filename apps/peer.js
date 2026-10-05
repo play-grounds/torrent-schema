@@ -23,29 +23,35 @@ $('go').onclick = async () => {
   $('go').disabled = true; $('stop').disabled = false; stopped = false; $('log').textContent = ''; t0 = Date.now(); for (const id of ['t-reply', 't-answer', 't-dc', 't-hs', 't-ext', 't-bits', 't-blocks', 't-piece']) set(id, '—', 'mut'); $('bar').value = 0;
   const index = Math.max(0, Math.min(torrent.pieceCount - 1, Number($('piece').value) || 0)); const pieceLen = index === torrent.pieceCount - 1 ? torrent.lastPieceLength : PIECE_LENGTH; const nBlocks = Math.ceil(pieceLen / BLOCK);
   const trackers = $('trackers').value.split(',').map((s) => s.trim()).filter(Boolean);
-  // ---- the offer: a data channel we create, the SDP once ICE gathering is complete (the tracker protocol carries whole offers, no trickle)
-  $('state').textContent = 'making a WebRTC offer…';
-  pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] });
-  dc = pc.createDataChannel('webrtc-datachannel'); dc.binaryType = 'arraybuffer';
-  await pc.setLocalDescription(await pc.createOffer());
-  await new Promise((r) => { if (pc.iceGatheringState === 'complete') return r(); pc.addEventListener('icegatheringstatechange', () => pc.iceGatheringState === 'complete' && r()); setTimeout(r, 3000); });
-  const offer = { type: 'offer', sdp: pc.localDescription.sdp }; const offerId = rand(20); log(`offer ready: ${offer.sdp.split('\n').length} SDP lines, offer_id ${offerId.slice(0, 12)}…`);
-  // ---- announce on every tracker with the same offer; whichever peer answers first wins
-  const announce = X.announce({ info_hash: torrent.infohash, peer_id: PEER_ID, numwant: 3, left: torrent.totalLength, event: 'started', offers: [{ offer_id: offerId, offer }] });
+  // ---- one offer per tracker: each tracker forwards what it is given, so the same offer on two trackers reaches the same
+  // seeder twice and it answers twice — two connections with one set of ICE credentials, and the race breaks both.
+  // WebTorrent clients make a fresh offer per tracker for this reason; so does this page. The first answer wins.
+  const makeOffer = async () => {
+    const c = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }); const d = c.createDataChannel('webrtc-datachannel'); d.binaryType = 'arraybuffer';
+    await c.setLocalDescription(await c.createOffer());
+    await new Promise((r) => { if (c.iceGatheringState === 'complete') return r(); c.addEventListener('icegatheringstatechange', () => c.iceGatheringState === 'complete' && r()); setTimeout(r, 3000); });
+    return { pc: c, dc: d, offer: { type: 'offer', sdp: c.localDescription.sdp }, offerId: rand(20) };
+  };
+  $('state').textContent = `making ${trackers.length} WebRTC offer(s), one per tracker…`;
+  const attempts = new Map(); for (const url of trackers) attempts.set(url, await makeOffer()); log(`${attempts.size} offer(s) ready, one per tracker`);
   $('state').textContent = 'announcing…'; let answered = false;
-  for (const url of trackers) {
+  for (const [url, a] of attempts) {
+    const announce = X.announce({ info_hash: torrent.infohash, peer_id: PEER_ID, numwant: 3, left: torrent.totalLength, event: 'started', offers: [{ offer_id: a.offerId, offer: a.offer }] });
     let ws; try { ws = new WebSocket(url); } catch (e) { log(`${url}: ${e.message}`); continue; } sockets.push(ws);
-    ws.onopen = () => { ws.send(JSON.stringify(announce)); log(`${url}: announced with one offer`); };
-    ws.onmessage = async (m) => { let msg; try { msg = JSON.parse(m.data); } catch { return; } const r = X.read(msg, { announced: [torrent.infohash], outstanding: [offerId] });
+    ws.onopen = () => { ws.send(JSON.stringify(announce)); log(`${url}: announced with its own offer ${a.offerId.slice(0, 8)}…`); };
+    ws.onmessage = async (m) => { let msg; try { msg = JSON.parse(m.data); } catch { return; } const r = X.read(msg, { announced: [torrent.infohash], outstanding: [a.offerId] });
       if (r.kind === 'reply' && !r.error) { set('t-reply', `${esc(url.replace('wss://', ''))}: ${fmt(r.complete)} seeder(s), ${fmt(r.incomplete)} leecher(s), interval ${r.interval} s`); log(`${url}: reply · complete ${r.complete} incomplete ${r.incomplete}`); }
-      else if (r.kind === 'answer' && !r.error && !answered) { answered = true; set('t-answer', `${esc(url.replace('wss://', ''))} relayed an answer from peer ${r.peer_id} (${esc(new TextDecoder().decode(hexToBytes(r.peer_id)).slice(0, 8))})`); log(`${url}: answer from ${r.peer_id.slice(0, 16)}… for our offer`); try { await pc.setRemoteDescription(r.answer); } catch (e) { log('setRemoteDescription: ' + e.message); } }
+      else if (r.kind === 'answer' && !r.error) { if (answered) { log(`${url}: a second answer, for this tracker's offer; not needed`); return; } answered = true; pc = a.pc; dc = a.dc; wire(); for (const [u2, b] of attempts) if (b !== a) { try { b.pc.close(); } catch {} }
+        set('t-answer', `${esc(url.replace('wss://', ''))} relayed an answer from peer ${r.peer_id} (${esc(new TextDecoder().decode(hexToBytes(r.peer_id)).slice(0, 8))})`); log(`${url}: answer from ${r.peer_id.slice(0, 16)}… for its offer`); try { await pc.setRemoteDescription(r.answer); } catch (e) { log('setRemoteDescription: ' + e.message); } }
       else if (r.kind === 'offer') log(`${url}: a peer offered to us (not taken: this page only offers)`);
+      else if (r.error && r.kind === 'answer' && r.error === 'ws-unknown-offer') log(`${url}: an answer for an offer that is not this tracker's: ignored (the rule)`);
       else if (r.error) log(`${url}: ${r.kind} refused: ${r.error}`); };
     ws.onerror = () => log(`${url}: socket error`);
   }
+  function wire() {
+  let buf = new Uint8Array(0), handshaken = false, names = {}, unchoked = false; const blocks = new Map(); let next = 0, inflight = 0, received = 0;
   pc.onconnectionstatechange = () => { log('connection: ' + pc.connectionState); set('t-dc', esc(pc.connectionState)); if (pc.connectionState === 'failed') stop('the WebRTC connection failed'); };
   // ---- the data channel: the wire protocol, byte for byte as over TCP
-  let buf = new Uint8Array(0), handshaken = false, names = {}, unchoked = false; const blocks = new Map(); let next = 0, inflight = 0, received = 0;
   const send = (b) => dc.send(b);
   const ask = () => { while (unchoked && inflight < 8 && next < nBlocks && !stopped) { const begin = next * BLOCK; send(W.frame('Request', { index, begin, length: Math.min(BLOCK, pieceLen - begin) })); next++; inflight++; } };
   dc.onopen = () => { set('t-dc', 'open', 'ok'); log('data channel open: sending our handshake and extended handshake'); send(W.handshake({ info_hash: torrent.infohash, peer_id: PEER_ID })); send(W.extendedHandshake({ m: { ut_metadata: 1, ut_pex: 2 }, v: 'torrent-schema/0.0.3' })); $('state').textContent = 'handshaking…'; };
@@ -69,5 +75,6 @@ $('go').onclick = async () => {
     }
   };
   dc.onclose = () => { if (!stopped) stop('the data channel closed'); };
+  }
   setTimeout(() => { if (!answered && !stopped) stop('no answer within 20 s: no seeder reachable through these trackers'); }, 20000);
 };
