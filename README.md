@@ -2,7 +2,7 @@
 
 **v0.0.3** · A machine-readable model of BitTorrent, written in JSON-LD, in the manner of [bitcoin-desktop/schema](https://github.com/bitcoin-desktop/schema): the schema is the source of truth and the code is a projection of it.
 
-**Live:** https://play-grounds.github.io/torrent-schema/ — the schema rendered from its own documents · [torrent decoder](https://play-grounds.github.io/torrent-schema/apps/decode.html): drop a `.torrent` and the schema decodes it.
+**Live:** https://play-grounds.github.io/torrent-schema/ — the schema rendered from its own documents · [a peer from the schema](https://play-grounds.github.io/torrent-schema/apps/peer.html): a BitTorrent peer in the browser with no library — tracker, WebRTC, handshake, bitfield, a verified piece of the UTXO snapshot · [torrent decoder](https://play-grounds.github.io/torrent-schema/apps/decode.html): drop a `.torrent` and the schema decodes it.
 
 A playground, started for [utxo-swarm](https://github.com/play-grounds/utxo-swarm). Nothing depends on it yet.
 
@@ -303,6 +303,7 @@ classDiagram
 - [`codec/wire.js`](codec/wire.js): `WireCodec` — the handshake (reserved bits as `supports`), `frame`/`feed` (whole frames out of a stream, partial ones kept, over-long ones refused), bitfields both ways with the spare-bit rule, the extension protocol (`extendedHandshake`, `readExtended` with the receiver's id table, `utMetadata` with trailing bytes).
 - [`codec/webtorrent.js`](codec/webtorrent.js): `WebTorrentCodec` — the announce with offers (ids as binary strings), answers addressed by peer id, `read` telling a reply, a forwarded offer and an answer apart with the rules applied (unknown offer, wrong torrent, bad id, bad SDP type); the web seed request for a block (BEP 19) and the check of its answer.
 - [`codec/hash.js`](codec/hash.js): SHA-1 and SHA-256 on WebCrypto, so the same files run in Node and the browser.
+- [`apps/peer.html`](apps/peer.html) + [`apps/peer.js`](apps/peer.js): the peer — announces over the WebSocket trackers with a WebRTC offer, takes a seeder's answer, runs the wire protocol over the data channel, fetches a piece block by block and checks its SHA-1; two implementations sharing no code, exchanging a verified piece. First run: piece 0 of the snapshot from the utxo-swarm seeder in 0.6 s.
 - [`apps/decode.html`](apps/decode.html): the decoder page; [`apps/browse.js`](apps/browse.js): the front page, which renders whatever is in `schema/`.
 
 ```js
