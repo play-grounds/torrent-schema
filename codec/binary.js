@@ -20,6 +20,7 @@ export class BinaryCodec {
       const t = f.wireType;
       if (t === 'struct') { const r = this.read(f.structType, bytes, pos, end, check); pos = r.pos; return r.value; }
       if (t === 'rest' || t === 'utf8rest') { const b = bytes.subarray(pos, end); pos = end; return t === 'rest' ? bytesToHex(b) : utf8.decode(b); }
+      if (t === 'bytes') { need(f.size, f); const b = bytes.subarray(pos, pos + f.size); pos += f.size; return f.constValue !== undefined && typeof f.constValue === 'string' && !/^0x/.test(f.constValue) ? utf8.decode(b) : bytesToHex(b); }
       const n = SIZES[t]; if (!n) throw new Error(`unknown wireType ${t} on '${f.label}'`); need(n, f); const at = pos; pos += n;
       if (t === 'u8') return bytes[at]; if (t === 'u16be') return dv.getUint16(at); if (t === 'u32be') return dv.getUint32(at); if (t === 'i32be') return dv.getInt32(at);
       if (t === 'u64be') { const v = dv.getBigUint64(at); return v <= BigInt(Number.MAX_SAFE_INTEGER) ? Number(v) : v; } if (t === 'i64be') { const v = dv.getBigInt64(at); return v <= BigInt(Number.MAX_SAFE_INTEGER) && v >= -BigInt(Number.MAX_SAFE_INTEGER) ? Number(v) : v; }
@@ -28,7 +29,7 @@ export class BinaryCodec {
     for (const f of s.fields) {
       if (f.repeat === 'toEnd') { const items = []; while (pos < end) items.push(one(f)); out[f.label] = items; continue; }
       const v = one(f); out[f.label] = v;
-      if (check && f.constValue !== undefined) { const c = typeof f.constValue === 'string' ? BigInt(f.constValue) : BigInt(f.constValue); if (BigInt(v) !== c) throw Object.assign(new Error(`${s.label}: '${f.label}' is ${v}, not ${f.constValue}`), { code: 'binary-const' }); }
+      if (check && f.constValue !== undefined) { const text = typeof f.constValue === 'string' && !/^0x/.test(f.constValue); const ok = text ? v === f.constValue : BigInt(v) === BigInt(f.constValue); if (!ok) throw Object.assign(new Error(`${s.label}: '${f.label}' is ${v}, not ${f.constValue}`), { code: 'binary-const' }); }
     }
     return { value: out, pos };
   }
@@ -36,10 +37,11 @@ export class BinaryCodec {
   write(name, inst, parts) {
     const s = this.struct(name);
     const one = (f, v) => {
-      const t = f.wireType; if (v === undefined && f.constValue !== undefined) v = typeof f.constValue === 'string' ? BigInt(f.constValue) : f.constValue;
+      const t = f.wireType; if (v === undefined && f.constValue !== undefined) v = typeof f.constValue === 'string' && /^0x/.test(f.constValue) ? BigInt(f.constValue) : f.constValue;
       if (t === 'struct') return this.write(f.structType, v, parts);
       if (t === 'rest') return parts.push(hexToBytes(v)); if (t === 'utf8rest') return parts.push(utf8.encode(v));
       if (t === 'bytes20') { const b = hexToBytes(v); if (b.length !== 20) throw new Error(`'${f.label}': 20 bytes needed`); return parts.push(b); }
+      if (t === 'bytes') { const b = typeof v === 'string' && f.constValue !== undefined && !/^0x/.test(String(f.constValue)) && !/^[0-9a-f]*$/.test(v) ? utf8.encode(v) : (typeof v === 'string' && v.length === f.size * 2 ? hexToBytes(v) : utf8.encode(v)); if (b.length !== f.size) throw new Error(`'${f.label}': ${f.size} bytes needed`); return parts.push(b); }
       if (t === 'ip4') return parts.push(ip4.write(v)); if (t === 'ip6') return parts.push(ip6.write(v));
       const n = SIZES[t]; const b = new Uint8Array(n); const dv = new DataView(b.buffer);
       if (t === 'u8') b[0] = Number(v); else if (t === 'u16be') dv.setUint16(0, Number(v)); else if (t === 'u32be') dv.setUint32(0, Number(v) >>> 0); else if (t === 'i32be') dv.setInt32(0, Number(v)); else if (t === 'u64be') dv.setBigUint64(0, BigInt(v)); else if (t === 'i64be') dv.setBigInt64(0, BigInt(v)); else throw new Error(`unknown wireType ${t}`);

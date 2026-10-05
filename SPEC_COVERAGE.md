@@ -6,11 +6,13 @@ What the schema models, by BEP. "modelled" means a document exists and the codec
 |---|---|---|
 | 3 | The BitTorrent Protocol — bencode, metainfo | modelled, tested (three real torrents) |
 | 3 | — tracker HTTP protocol | modelled, tested (opentrackr) |
-| 3 | — peer wire protocol | planned |
-| 5 | DHT | planned |
-| 9 | Extension for peers to send metadata files; magnet links | magnet derivation modelled; metadata exchange planned |
-| 10 | Extension protocol | planned |
-| 11 | Peer exchange | planned |
+| 3 | — peer wire protocol | modelled, tested (a real session with a seeder) |
+| 5 | DHT | the PORT message and reserved bit modelled; the DHT itself planned |
+| 9 | Extension for peers to send metadata files; magnet links | modelled, tested (`ut_metadata`, magnet derivation) |
+| 10 | Extension protocol | modelled, tested (extended handshakes from a real peer) |
+| 11 | Peer exchange | modelled, tested (`ut_pex`) |
+| 6 | Fast extension | the reserved bit modelled; messages 13–17 planned |
+| 20 | Peer id conventions | noted |
 | 12 | Multitracker metadata extension (`announce-list`) | modelled |
 | 15 | UDP tracker protocol | modelled, tested (opentrackr, byte-exact) |
 | 19 | WebSeed — HTTP/FTP seeding (`url-list`) | field modelled; the peer behaviour planned |

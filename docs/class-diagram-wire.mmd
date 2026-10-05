@@ -1,0 +1,64 @@
+classDiagram
+  direction TB
+  class Handshake {
+    +u8 pstrlen
+    +bytes pstr
+    +bytes reserved
+    +bytes20 info_hash
+    +bytes20 peer_id
+  }
+  class Frame {
+    +u32be length
+    +rest body
+  }
+  class Have {
+    +u32be index
+  }
+  class Bitfield {
+    +rest bits
+  }
+  class Request {
+    +u32be index
+    +u32be begin
+    +u32be length
+  }
+  class Piece {
+    +u32be index
+    +u32be begin
+    +rest block
+  }
+  class Cancel {
+    +u32be index
+    +u32be begin
+    +u32be length
+  }
+  class Port {
+    +u16be port
+  }
+  class Extended {
+    +u8 ext_id
+    +rest payload
+  }
+  class ExtendedHandshake {
+    +dictInt m
+    +utf8? v
+    +int? p
+    +int? reqq
+    +int? metadata_size
+    +bytes? yourip
+    +bytes? ipv6
+    +bytes? ipv4
+  }
+  class UtMetadata {
+    +int msg_type
+    +int piece
+    +int? total_size
+  }
+  class UtPex {
+    +peers? added
+    +bytes? added.f
+    +peers? dropped
+    +peers6? added6
+    +bytes? added6.f
+    +peers6? dropped6
+  }

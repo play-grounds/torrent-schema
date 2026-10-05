@@ -1,7 +1,7 @@
 // The schema browser: every document in schema/ rendered from the JSON-LD itself — modules, structs (fields with their
 // bencode key, value type, BEP and description; derived values with their derivation), enumerations, rulesets with
 // error codes. Nothing on this page is written by hand; add a document to MODULES and it appears.
-const MODULES = ['bencode', 'metainfo', 'tracker'];
+const MODULES = ['bencode', 'metainfo', 'tracker', 'wire'];
 const short = (id) => String(id).replace(/^bt:/, '');
 const esc = (s) => String(s ?? '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c]);
 const typeOf = (f) => f.valueType === 'list' ? `list&lt;${String(f.itemType).startsWith('list:') ? `list&lt;${esc(String(f.itemType).slice(5))}&gt;` : f.itemType === 'struct' ? short(f.structType) : esc(f.itemType)}&gt;` : f.valueType === 'struct' ? short(f.structType) : esc(f.valueType);

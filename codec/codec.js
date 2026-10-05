@@ -39,6 +39,7 @@ export class TorrentCodec {
       if (raw instanceof Uint8Array) { const n = t === 'peers' ? 6 : 18; if (raw.length % n) throw Object.assign(new Error(`'${f.key}': ${raw.length} bytes is not a whole number of ${n}-byte peers`), { code: 'tracker-bad-peers' });
         const bin = this.binary ?? (this.binary = new BinaryCodec(...this.docs)); const out = []; for (let i = 0; i < raw.length; i += n) out.push(bin.decode(t === 'peers' ? 'CompactPeer' : 'CompactPeer6', raw.subarray(i, i + n))); return out; }
       if (Array.isArray(raw)) return raw.map((x) => this.fromValue('Peer', x, dec)); throw new Error(`'${f.key}': neither compact bytes nor a list`); }
+    if (t === 'dictInt') { if (!(raw instanceof Map)) throw new Error(`'${f.key}': not a dictionary`); return Object.fromEntries([...raw].map(([k, v]) => [k, v])); }
     if (t === 'dict') { if (!(raw instanceof Map)) throw new Error(`'${f.key}': not a dictionary`); const out = {}; for (const [k, v] of raw) out[bytesToHex(Uint8Array.from(k, (c) => c.charCodeAt(0)))] = f.itemType === 'struct' ? this.fromValue(f.structType, v, dec) : v; return out; }
     if (t === 'list') { const items = Array.isArray(raw) ? raw : raw instanceof Uint8Array && f.itemType === 'utf8' ? [raw] : null; if (!items) throw new Error(`'${f.key}': not a list`);
       const item = String(f.itemType); const inner = item.startsWith('list:') ? { valueType: 'list', itemType: item.slice(5), key: f.key } : item === 'struct' ? { valueType: 'struct', structType: f.structType, key: f.key } : { valueType: item, key: f.key };
@@ -58,6 +59,7 @@ export class TorrentCodec {
     if (t === 'hashes') { const out = new Uint8Array(v.length * 20); v.forEach((h, i) => out.set(hexToBytes(h), i * 20)); return out; }
     if (t === 'struct') return this.toValue(f.structType, v);
     if (t === 'peers' || t === 'peers6') { const bin = this.binary ?? (this.binary = new BinaryCodec(...this.docs)); const n = t === 'peers' ? 6 : 18; const out = new Uint8Array(v.length * n); v.forEach((p, i) => out.set(bin.encode(t === 'peers' ? 'CompactPeer' : 'CompactPeer6', p), i * n)); return out; }
+    if (t === 'dictInt') return new Map(Object.entries(v));
     if (t === 'dict') { const m = new Map(); for (const [k, x] of Object.entries(v)) m.set(String.fromCharCode(...hexToBytes(k)), f.itemType === 'struct' ? this.toValue(f.structType, x) : x); return m; }
     if (t === 'list') { const item = String(f.itemType); const inner = item.startsWith('list:') ? { valueType: 'list', itemType: item.slice(5) } : item === 'struct' ? { valueType: 'struct', structType: f.structType } : { valueType: item }; return v.map((x) => this.unconvert(inner, x)); }
     throw new Error(`unknown valueType ${t}`);

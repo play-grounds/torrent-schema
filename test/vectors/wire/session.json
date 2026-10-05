@@ -1,0 +1,31 @@
+{
+  "infohash": "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0",
+  "ourPeerId": "2d5453303030312d373362616538636365393163",
+  "piece": 0,
+  "pieceLength": 4194304,
+  "blocks": 256,
+  "theirPeerId": "2d5757303330302d687a516d4864504976376d5a",
+  "theirSupports": {
+    "extensions": true,
+    "dht": true,
+    "fast": true
+  },
+  "theirExtended": {
+    "m": {
+      "lt_donthave": 3,
+      "ut_metadata": 1,
+      "ut_pex": 2
+    },
+    "metadata_size": 4248
+  },
+  "bitfield": {
+    "bytes": 26,
+    "have": 208,
+    "error": null
+  },
+  "unchoked": true,
+  "firstBlockHead": "7574786fff02001c163f28ccb157caa7",
+  "pieceSha1": "26b0fb2642b221755e95a52352cbad975cf40250",
+  "expectedSha1": "26b0fb2642b221755e95a52352cbad975cf40250",
+  "pieceOk": true
+}

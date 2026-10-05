@@ -50,4 +50,4 @@ const mmd = mermaid(models); await mkdir(new URL('docs/', root), { recursive: tr
 await writeFile(new URL('docs/class-diagram.mmd', root), mmd + '\n'); await writeFile(new URL('class-diagram.svg', root), svg() + '\n');
 console.log('```mermaid\n' + mmd + '\n```');
 // every other module: Mermaid only (no hand layout), one file each, printed after the first
-for (const m of ['tracker']) { const d = await docOf(m); const st = structsOf(d); const mm = mermaid([...st.values()].map((n) => model(n, st))); await writeFile(new URL(`docs/class-diagram-${m}.mmd`, root), mm + '\n'); console.log(`\n<!-- ${m} -->\n\`\`\`mermaid\n${mm}\n\`\`\``); }
+for (const m of ['tracker', 'wire']) { const d = await docOf(m); const st = structsOf(d); const mm = mermaid([...st.values()].map((n) => model(n, st))); await writeFile(new URL(`docs/class-diagram-${m}.mmd`, root), mm + '\n'); console.log(`\n<!-- ${m} -->\n\`\`\`mermaid\n${mm}\n\`\`\``); }

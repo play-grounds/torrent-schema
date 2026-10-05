@@ -1,0 +1,105 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    { "@id": "bt:wire", "@type": "Module", "label": "wire", "version": "0.0.1", "layer": "transport", "bep": [3, 10, 9, 11, 6, 5],
+      "comment": "What two peers say to each other once connected: a 68-byte handshake naming the torrent, then length-prefixed messages — which pieces each has, who may ask whom, requests for 16 KiB blocks and the blocks themselves. Over TCP, uTP, or (WebTorrent) an RTCDataChannel, byte for byte the same. The extension protocol (BEP 10) adds a negotiated message id space on top, carrying metadata exchange (BEP 9, how a magnet link becomes a torrent) and peer exchange (BEP 11)." },
+
+    { "@id": "bt:Handshake", "@type": "Struct", "module": "bt:wire", "label": "Handshake", "encoding": "bt:binary", "bep": 3, "wireSize": 68,
+      "comment": "The first 68 bytes each way. A peer that does not recognise the infohash closes the connection; the reserved bytes advertise extensions by bit.",
+      "fields": [
+        { "property": "bt:pstrlen", "label": "pstrlen", "wireType": "u8", "constValue": 19 },
+        { "property": "bt:pstr", "label": "pstr", "wireType": "bytes", "size": 19, "constValue": "BitTorrent protocol", "comment": "The protocol name, exactly." },
+        { "property": "bt:reserved", "label": "reserved", "wireType": "bytes", "size": 8, "enumType": "bt:ReservedBit", "comment": "Eight bytes of flags; see ReservedBit. Zero means plain BEP 3." },
+        { "property": "bt:infoHash", "label": "info_hash", "wireType": "bytes20" },
+        { "property": "bt:peerId", "label": "peer_id", "wireType": "bytes20", "comment": "The sender's id; by convention names the client (BEP 20)." }
+      ] },
+    { "@id": "bt:ReservedBit", "@type": "Enumeration", "module": "bt:wire", "label": "ReservedBit",
+      "comment": "Flags in the handshake's reserved bytes: byte index from 0, bit value within the byte. A peer may use an extension only if both handshakes set its bit.",
+      "members": [
+        { "@id": "bt:reserved-dht", "label": "DHT", "code": "byte 7 bit 0x01", "comment": "The peer runs a DHT node; a PORT message follows (BEP 5)." },
+        { "@id": "bt:reserved-fast", "label": "fast extension", "code": "byte 7 bit 0x04", "comment": "Message ids 13–17: suggest, have all, have none, reject, allowed fast (BEP 6)." },
+        { "@id": "bt:reserved-extension", "label": "extension protocol", "code": "byte 5 bit 0x10", "comment": "Message id 20 carries negotiated extension messages (BEP 10)." }
+      ] },
+
+    { "@id": "bt:MessageId", "@type": "Enumeration", "module": "bt:wire", "label": "MessageId",
+      "comment": "The byte after the length prefix. A frame of length 0 has no id: it is a keep-alive, sent every two minutes of silence.",
+      "members": [
+        { "@id": "bt:msg-choke", "label": "choke", "code": 0, "comment": "I will not answer your requests (and have discarded the pending ones)." },
+        { "@id": "bt:msg-unchoke", "label": "unchoke", "code": 1, "comment": "You may request." },
+        { "@id": "bt:msg-interested", "label": "interested", "code": 2, "comment": "You have pieces I want." },
+        { "@id": "bt:msg-not-interested", "label": "not interested", "code": 3 },
+        { "@id": "bt:msg-have", "label": "have", "code": 4, "comment": "I now have piece <index>." },
+        { "@id": "bt:msg-bitfield", "label": "bitfield", "code": 5, "comment": "Which pieces I have, one bit each, high bit first; only ever the first message after the handshake." },
+        { "@id": "bt:msg-request", "label": "request", "code": 6, "comment": "Send me <length> bytes of piece <index> from offset <begin>; 16 KiB is the block size every client uses and the most most will serve." },
+        { "@id": "bt:msg-piece", "label": "piece", "code": 7, "comment": "Here are the bytes." },
+        { "@id": "bt:msg-cancel", "label": "cancel", "code": 8, "comment": "Never mind that request (endgame)." },
+        { "@id": "bt:msg-port", "label": "port", "code": 9, "comment": "My DHT node listens here (BEP 5)." },
+        { "@id": "bt:msg-extended", "label": "extended", "code": 20, "comment": "An extension-protocol message: one more id byte, then the extension's payload (BEP 10)." }
+      ] },
+
+    { "@id": "bt:Frame", "@type": "Struct", "module": "bt:wire", "label": "Frame", "encoding": "bt:binary", "bep": 3,
+      "comment": "Every message after the handshake: a big-endian length, then that many bytes — the id and its payload. Length 0 is a keep-alive. A stream is frames back to back; a reader buffers until a whole one has arrived.",
+      "fields": [
+        { "property": "bt:frameLength", "label": "length", "wireType": "u32be", "comment": "Bytes that follow, id included." },
+        { "property": "bt:frameBody", "label": "body", "wireType": "rest", "comment": "id (one byte, MessageId) and payload, decoded as the message struct the id names." }
+      ] },
+    { "@id": "bt:Have", "@type": "Struct", "module": "bt:wire", "label": "Have", "encoding": "bt:binary", "bep": 3, "wireSize": 4, "fields": [ { "property": "bt:pieceIndex", "label": "index", "wireType": "u32be" } ] },
+    { "@id": "bt:Bitfield", "@type": "Struct", "module": "bt:wire", "label": "Bitfield", "encoding": "bt:binary", "bep": 3, "fields": [ { "property": "bt:bits", "label": "bits", "wireType": "rest", "comment": "ceil(pieceCount / 8) bytes; piece i is bit 7 - (i % 8) of byte i / 8; spare bits are zero." } ] },
+    { "@id": "bt:Request", "@type": "Struct", "module": "bt:wire", "label": "Request", "encoding": "bt:binary", "bep": 3, "wireSize": 12,
+      "fields": [ { "property": "bt:pieceIndex", "label": "index", "wireType": "u32be" }, { "property": "bt:begin", "label": "begin", "wireType": "u32be", "comment": "Byte offset within the piece." }, { "property": "bt:blockLength", "label": "length", "wireType": "u32be", "comment": "Normally 16384; a request above 128 KiB is refused by convention." } ] },
+    { "@id": "bt:Piece", "@type": "Struct", "module": "bt:wire", "label": "Piece", "encoding": "bt:binary", "bep": 3,
+      "fields": [ { "property": "bt:pieceIndex", "label": "index", "wireType": "u32be" }, { "property": "bt:begin", "label": "begin", "wireType": "u32be" }, { "property": "bt:block", "label": "block", "wireType": "rest", "comment": "The bytes; a piece is complete, and checked against its SHA-1, when every block has arrived." } ] },
+    { "@id": "bt:Cancel", "@type": "Struct", "module": "bt:wire", "label": "Cancel", "encoding": "bt:binary", "bep": 3, "wireSize": 12,
+      "fields": [ { "property": "bt:pieceIndex", "label": "index", "wireType": "u32be" }, { "property": "bt:begin", "label": "begin", "wireType": "u32be" }, { "property": "bt:blockLength", "label": "length", "wireType": "u32be" } ] },
+    { "@id": "bt:Port", "@type": "Struct", "module": "bt:wire", "label": "Port", "encoding": "bt:binary", "bep": 5, "wireSize": 2, "fields": [ { "property": "bt:dhtPort", "label": "port", "wireType": "u16be" } ] },
+
+    { "@id": "bt:Extended", "@type": "Struct", "module": "bt:wire", "label": "Extended", "encoding": "bt:binary", "bep": 10,
+      "comment": "Message id 20: one more id byte, then the payload. Id 0 is the extended handshake; other ids are whatever the receiving peer's handshake said they mean (its 'm' dictionary), so each side uses the other's numbering.",
+      "fields": [ { "property": "bt:extId", "label": "ext_id", "wireType": "u8", "comment": "0 = extended handshake; else the id the receiver assigned to a named extension." }, { "property": "bt:extPayload", "label": "payload", "wireType": "rest", "comment": "Bencoded (ExtendedHandshake, UtPex, UtMetadata), in the last case followed by raw bytes." } ] },
+    { "@id": "bt:ExtendedHandshake", "@type": "Struct", "module": "bt:wire", "label": "ExtendedHandshake", "encoding": "bt:bencode", "bep": 10,
+      "comment": "Sent right after the handshake by both sides when both set the extension bit. 'm' is the sender's table of extension name → message id it will understand; everything else is advisory.",
+      "fields": [
+        { "property": "bt:extMap", "label": "m", "key": "m", "valueType": "dictInt", "required": true, "comment": "Extension name → the id this peer wants to receive it under; 0 disables an extension." },
+        { "property": "bt:clientVersion", "label": "v", "key": "v", "valueType": "utf8", "required": false, "comment": "The client's name and version, e.g. 'qBittorrent/5.1.2'." },
+        { "property": "bt:listenPort", "label": "p", "key": "p", "valueType": "int", "required": false, "comment": "The sender's listening port." },
+        { "property": "bt:reqq", "label": "reqq", "key": "reqq", "valueType": "int", "required": false, "comment": "How many requests the sender will queue." },
+        { "property": "bt:metadataSize", "label": "metadata_size", "key": "metadata_size", "valueType": "int", "required": false, "bep": 9, "comment": "Byte length of the info dictionary, so a magnet-link peer knows how many 16 KiB pieces of metadata to ask for." },
+        { "property": "bt:yourip", "label": "yourip", "key": "yourip", "valueType": "bytes", "required": false, "comment": "The receiver's address as the sender sees it, 4 or 16 bytes." },
+        { "property": "bt:ipv6", "label": "ipv6", "key": "ipv6", "valueType": "bytes", "required": false },
+        { "property": "bt:ipv4", "label": "ipv4", "key": "ipv4", "valueType": "bytes", "required": false }
+      ] },
+    { "@id": "bt:UtMetadata", "@type": "Struct", "module": "bt:wire", "label": "UtMetadata", "encoding": "bt:bencode", "bep": 9,
+      "comment": "Extension 'ut_metadata': the info dictionary fetched in 16 KiB pieces from a peer, so a magnet link suffices. A data message is this dictionary followed immediately by the piece's bytes; the whole metadata, once assembled, must hash to the infohash.",
+      "fields": [
+        { "property": "bt:msgType", "label": "msg_type", "key": "msg_type", "valueType": "int", "required": true, "comment": "0 request, 1 data, 2 reject." },
+        { "property": "bt:metadataPiece", "label": "piece", "key": "piece", "valueType": "int", "required": true, "comment": "Which 16 KiB piece of the metadata." },
+        { "property": "bt:totalSize", "label": "total_size", "key": "total_size", "valueType": "int", "required": false, "comment": "In a data message: the metadata's full length." }
+      ] },
+    { "@id": "bt:UtPex", "@type": "Struct", "module": "bt:wire", "label": "UtPex", "encoding": "bt:bencode", "bep": 11,
+      "comment": "Extension 'ut_pex': peers tell each other about peers, as compact lists of those added and dropped since the last message, with a flag byte per added peer.",
+      "fields": [
+        { "property": "bt:pexAdded", "label": "added", "key": "added", "valueType": "peers", "required": false },
+        { "property": "bt:pexAddedF", "label": "added.f", "key": "added.f", "valueType": "bytes", "required": false, "comment": "One byte per added peer: 0x01 prefers encryption, 0x02 is a seed, 0x04 supports uTP, 0x08 holepunch, 0x10 reachable." },
+        { "property": "bt:pexDropped", "label": "dropped", "key": "dropped", "valueType": "peers", "required": false },
+        { "property": "bt:pexAdded6", "label": "added6", "key": "added6", "valueType": "peers6", "required": false },
+        { "property": "bt:pexAdded6F", "label": "added6.f", "key": "added6.f", "valueType": "bytes", "required": false },
+        { "property": "bt:pexDropped6", "label": "dropped6", "key": "dropped6", "valueType": "peers6", "required": false }
+      ] },
+
+    { "@id": "bt:wireRules", "@type": "RuleSet", "module": "bt:wire", "label": "peer wire", "scope": "wire",
+      "comment": "What a peer checks on what the other sends. A failure closes the connection; nothing here is negotiable.",
+      "rules": [
+        { "@id": "bt:rule-handshake-pstr", "@type": "ValidationRule", "label": "the handshake begins 19 'BitTorrent protocol'", "errorCode": "wire-bad-handshake", "check": "pstrlen == 19 and pstr == 'BitTorrent protocol'" },
+        { "@id": "bt:rule-handshake-infohash", "@type": "ValidationRule", "label": "the infohash is one we serve", "errorCode": "wire-unknown-infohash", "check": "info_hash in our torrents" },
+        { "@id": "bt:rule-handshake-self", "@type": "ValidationRule", "label": "the peer is not ourselves", "errorCode": "wire-self-connection", "check": "peer_id != our peer_id" },
+        { "@id": "bt:rule-frame-length", "@type": "ValidationRule", "label": "a frame's length is sane", "errorCode": "wire-frame-too-long", "check": "length <= 13 + 16384 for a piece (the one large message); a few bytes for the rest; a client refuses larger" },
+        { "@id": "bt:rule-bitfield-first", "@type": "ValidationRule", "label": "a bitfield comes first and fits the torrent", "errorCode": "wire-bad-bitfield", "check": "bitfield is the first message after the handshake, byteLength(bits) == ceil(pieceCount / 8), spare bits zero" },
+        { "@id": "bt:rule-index-range", "@type": "ValidationRule", "label": "have, request, piece and cancel name a piece that exists", "errorCode": "wire-bad-index", "check": "index < pieceCount" },
+        { "@id": "bt:rule-request-bounds", "@type": "ValidationRule", "label": "a request stays inside its piece and is not too large", "errorCode": "wire-bad-request", "check": "begin + length <= pieceLength(index) and length <= 131072" },
+        { "@id": "bt:rule-request-choked", "@type": "ValidationRule", "label": "requests are only served while the requester is unchoked", "errorCode": "wire-request-while-choked", "check": "we sent unchoke since our last choke" },
+        { "@id": "bt:rule-piece-hash", "@type": "ValidationRule", "label": "a completed piece hashes to its entry in 'pieces'", "errorCode": "wire-bad-piece", "check": "sha1(piece bytes) == pieces[index]; else discard the piece and distrust its sources" },
+        { "@id": "bt:rule-extension-bit", "@type": "ValidationRule", "label": "extended messages only after both handshakes set the extension bit", "errorCode": "wire-extension-unsupported", "check": "reserved[5] & 0x10 on both sides" },
+        { "@id": "bt:rule-metadata-hash", "@type": "ValidationRule", "label": "metadata fetched by ut_metadata hashes to the infohash", "errorCode": "wire-bad-metadata", "check": "sha1(all pieces concatenated) == info_hash" }
+      ] }
+  ]
+}
