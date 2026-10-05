@@ -1,0 +1,46 @@
+{
+  "infohash": "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0",
+  "peer_id": "2d5453303030312d386630313864393238316561",
+  "offer_id": "e0d76e6c575bfc47ed219b58823d27f8aca89037",
+  "url": "wss://tracker.openwebtorrent.com",
+  "sent": [
+    {
+      "action": "announce",
+      "info_hash": "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À",
+      "peer_id": "-TS0001-8f018d9281ea",
+      "numwant": 5,
+      "uploaded": 0,
+      "downloaded": 0,
+      "left": 869836053,
+      "event": "started",
+      "offers": [
+        {
+          "offer": {
+            "type": "offer",
+            "sdp": "v=0\r\no=rtc 3413278232 0 IN IP4 203.0.113.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic:WMS *\r\na=ice-options:ice2,trickle\r\na=fingerprint:sha-256 2001:db8::1:2001:db8::1:2001:db8::1:2001:db8::1\r\nm=application 51242 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 203.0.113.1\r\na=mid:0\r\na=sendrecv\r\na=sctp-port:5000\r\na=max-message-size:262144\r\na=setup:actpass\r\na=ice-ufrag:qs0S\r\na=ice-pwd:n4yhgSTE+8awaOdG4YtDlL\r\na=candidate:3 1 UDP 2116025855 2001:db8::1 51242 typ host\r\na=candidate:1 1 UDP 2114977791 203.0.113.1 51242 typ host\r\na=candidate:2 1 UDP 2114977535 203.0.113.1 51242 typ host\r\na=candidate:4 1 UDP 1678769407 203.0.113.1 51242 typ srflx raddr 203.0.113.1 rport 0\r\na=end-of-candidates\r\n"
+          },
+          "offer_id": "à×nlW[üGí!X='ø¬¨7"
+        }
+      ]
+    }
+  ],
+  "received": [
+    {
+      "action": "announce",
+      "interval": 120,
+      "info_hash": "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À",
+      "complete": 3,
+      "incomplete": 1
+    },
+    {
+      "action": "announce",
+      "info_hash": "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À",
+      "peer_id": "-WW0300-Q0zMSubnrnaH",
+      "answer": {
+        "type": "answer",
+        "sdp": "v=0\r\no=- 3785049968225132596 2 IN IP4 203.0.113.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic: WMS\r\nm=application 9 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 203.0.113.1\r\na=candidate:3303770896 1 udp 2113937151 63b5c2eb-d5e0-4ec4-96a5-cb96485cec27.local 38882 typ host generation 0 network-cost 999\r\na=ice-ufrag:pVjQ\r\na=ice-pwd:Mjj4xMcw+sm/wwxx5+03v6yA\r\na=fingerprint:sha-256 2001:db8::1:2001:db8::1:2001:db8::1:2001:db8::1\r\na=setup:active\r\na=mid:0\r\na=sctp-port:5000\r\na=max-message-size:262144\r\n"
+      },
+      "offer_id": "à×nlW[üGí!X='ø¬¨7"
+    }
+  ]
+}

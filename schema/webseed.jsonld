@@ -1,0 +1,21 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    { "@id": "bt:webseed", "@type": "Module", "label": "webseed", "version": "0.0.1", "layer": "transport", "bep": 19,
+      "comment": "A plain HTTP server as a peer: a client that knows a URL of the content (from 'url-list' or a magnet's 'ws=') fetches blocks with Range requests and verifies the pieces exactly as if a peer had sent them. A web seed never lies in a way that matters — a wrong byte fails the piece hash — so any mirror with Range support is a trustworthy peer, and a swarm of zero still works." },
+    { "@id": "bt:WebSeedRequest", "@type": "Struct", "module": "bt:webseed", "label": "WebSeedRequest", "encoding": "bt:urlquery", "bep": 19,
+      "comment": "What a block request becomes over HTTP: a GET of the right URL with a Range header. Single-file torrents: the URL is the file (a URL ending in '/' has the name appended). Multi-file: the URL is a directory root; name/path components appended; a block that spans two files is two requests.",
+      "fields": [
+        { "property": "bt:wsUrl", "label": "url", "key": "url", "valueType": "utf8", "required": true },
+        { "property": "bt:range", "label": "Range", "key": "Range", "valueType": "utf8", "required": true, "comment": "'bytes=<first>-<last>', inclusive; first = index * pieceLength + begin (minus the file's start offset in a multi-file torrent)." }
+      ],
+      "derived": [ { "property": "bt:expectedStatus", "label": "expectedStatus", "derivation": "206 Partial Content, with Content-Range 'bytes <first>-<last>/<total>'; a 200 with the whole file means the server ignored the Range and must not be used as a web seed", "comment": "" } ] },
+    { "@id": "bt:webseedRules", "@type": "RuleSet", "module": "bt:webseed", "label": "web seed", "scope": "webseed",
+      "rules": [
+        { "@id": "bt:rule-ws-range-honoured", "@type": "ValidationRule", "label": "the server honours Range", "errorCode": "webseed-no-range", "check": "status == 206 and Content-Range matches the request; a 200 disqualifies the seed" },
+        { "@id": "bt:rule-ws-length", "@type": "ValidationRule", "label": "the body is exactly the bytes asked for", "errorCode": "webseed-bad-length", "check": "byteLength(body) == last - first + 1" },
+        { "@id": "bt:rule-ws-piece", "@type": "ValidationRule", "label": "a piece completed from a web seed hashes like any other", "errorCode": "wire-bad-piece", "check": "sha1(piece) == pieces[index]; else stop using that seed" },
+        { "@id": "bt:rule-ws-cors", "@type": "ValidationRule", "label": "from a browser, the server allows the origin and exposes the range headers", "errorCode": "webseed-cors", "check": "Access-Control-Allow-Origin covers the page; Range allowed; Content-Range and Accept-Ranges exposed" }
+      ] }
+  ]
+}

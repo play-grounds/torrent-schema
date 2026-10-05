@@ -1,0 +1,49 @@
+classDiagram
+  direction TB
+  class SessionDescription {
+    +utf8 type
+    +utf8 sdp
+  }
+  class WsOffer {
+    +bytes offer_id
+  }
+  class WsAnnounce {
+    +utf8 action
+    +bytes info_hash
+    +bytes peer_id
+    +int? numwant
+    +int? uploaded
+    +int? downloaded
+    +int? left
+    +utf8? event
+  }
+  class WsAnnounceReply {
+    +utf8 action
+    +bytes? info_hash
+    +int interval
+    +int? complete
+    +int? incomplete
+    +utf8? failure_reason
+    +utf8? warning_message
+  }
+  class WsOfferForwarded {
+    +utf8 action
+    +bytes info_hash
+    +bytes peer_id
+    +bytes offer_id
+  }
+  class WsAnswer {
+    +utf8 action
+    +bytes info_hash
+    +bytes peer_id
+    +bytes? to_peer_id
+    +bytes offer_id
+  }
+  class WsScrape {
+    +utf8 action
+    +bytes? info_hash
+  }
+  WsOffer "1" *-- "1" SessionDescription : offer
+  WsAnnounce "1" *-- "1..*" WsOffer : offers
+  WsOfferForwarded "1" *-- "1" SessionDescription : offer
+  WsAnswer "1" *-- "1" SessionDescription : answer

@@ -1,0 +1,70 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    { "@id": "bt:webtorrent", "@type": "Module", "label": "webtorrent", "version": "0.0.1", "layer": "overlay",
+      "comment": "BitTorrent in a browser. A browser cannot open a TCP or UDP socket, so it cannot reach a tracker, the DHT, or a peer the usual way; WebTorrent changes exactly two things and nothing else: peers are found and introduced through a tracker spoken over WebSockets in JSON (this module), and the connection between two peers is a WebRTC data channel — over which the peer wire protocol of the wire module runs byte for byte unchanged. This protocol has no BEP; it is what the WebTorrent implementation does, written down here from a captured exchange with tracker.openwebtorrent.com." },
+    { "@id": "bt:json", "@type": "Encoding", "module": "bt:webtorrent", "label": "JSON", "comment": "One JSON object per WebSocket text message. Twenty-byte values (info_hash, peer_id, offer_id) travel as binary strings: each byte one character of code 0–255 (latin1), not hex, not base64." },
+
+    { "@id": "bt:SessionDescription", "@type": "Struct", "module": "bt:webtorrent", "label": "SessionDescription", "encoding": "bt:json",
+      "comment": "A WebRTC session description as the browser's RTCPeerConnection gives it: an offer or an answer with its SDP text, which carries the ICE candidates (addresses) once gathering is complete. The tracker relays it without reading it.",
+      "fields": [ { "property": "bt:sdpType", "label": "type", "key": "type", "valueType": "utf8", "required": true, "comment": "'offer' or 'answer'." }, { "property": "bt:sdp", "label": "sdp", "key": "sdp", "valueType": "utf8", "required": true, "comment": "The SDP, newline-separated lines." } ] },
+    { "@id": "bt:WsOffer", "@type": "Struct", "module": "bt:webtorrent", "label": "WsOffer", "encoding": "bt:json",
+      "comment": "One offer in an announce: a fresh WebRTC offer and a random 20-byte id for it, so the answer can be matched. A browser makes several per announce (one per peer it is willing to accept).",
+      "fields": [ { "property": "bt:offer", "label": "offer", "key": "offer", "valueType": "struct", "structType": "bt:SessionDescription", "required": true }, { "property": "bt:offerId", "label": "offer_id", "key": "offer_id", "valueType": "bytes", "size": 20, "required": true, "comment": "Random, binary string." } ] },
+    { "@id": "bt:WsAnnounce", "@type": "Struct", "module": "bt:webtorrent", "label": "WsAnnounce", "encoding": "bt:json",
+      "comment": "The announce a browser sends, with offers for the peers it hopes to meet. The same fields as the HTTP announce, plus the offers; 'numwant' is how many offers the tracker should forward.",
+      "fields": [
+        { "property": "bt:wsAction", "label": "action", "key": "action", "valueType": "utf8", "required": true, "constValue": "announce" },
+        { "property": "bt:infoHash", "label": "info_hash", "key": "info_hash", "valueType": "bytes", "size": 20, "required": true, "comment": "Binary string." },
+        { "property": "bt:peerId", "label": "peer_id", "key": "peer_id", "valueType": "bytes", "size": 20, "required": true, "comment": "Binary string." },
+        { "property": "bt:numwant", "label": "numwant", "key": "numwant", "valueType": "int", "required": false },
+        { "property": "bt:uploaded", "label": "uploaded", "key": "uploaded", "valueType": "int", "required": false },
+        { "property": "bt:downloaded", "label": "downloaded", "key": "downloaded", "valueType": "int", "required": false },
+        { "property": "bt:left", "label": "left", "key": "left", "valueType": "int", "required": false, "comment": "0 for a seeder; a seeder announces with no offers and only answers." },
+        { "property": "bt:event", "label": "event", "key": "event", "valueType": "utf8", "enumType": "bt:AnnounceEvent", "required": false },
+        { "property": "bt:offers", "label": "offers", "key": "offers", "valueType": "list", "itemType": "struct", "structType": "bt:WsOffer", "required": false, "comment": "Empty or absent from a seeder; the tracker forwards each to one other peer." }
+      ] },
+    { "@id": "bt:WsAnnounceReply", "@type": "Struct", "module": "bt:webtorrent", "label": "WsAnnounceReply", "encoding": "bt:json",
+      "comment": "The tracker's own reply to an announce: the counts and the interval. No peer list — peers arrive as offers and answers, separately.",
+      "fields": [
+        { "property": "bt:wsAction", "label": "action", "key": "action", "valueType": "utf8", "required": true, "constValue": "announce" },
+        { "property": "bt:infoHash", "label": "info_hash", "key": "info_hash", "valueType": "bytes", "size": 20, "required": false },
+        { "property": "bt:interval", "label": "interval", "key": "interval", "valueType": "int", "required": true, "comment": "Seconds; 120 on the public trackers." },
+        { "property": "bt:complete", "label": "complete", "key": "complete", "valueType": "int", "required": false, "comment": "Seeders." },
+        { "property": "bt:incomplete", "label": "incomplete", "key": "incomplete", "valueType": "int", "required": false, "comment": "Leechers, the announcing peer included." },
+        { "property": "bt:failureReason", "label": "failure reason", "key": "failure reason", "valueType": "utf8", "required": false },
+        { "property": "bt:warningMessage", "label": "warning message", "key": "warning message", "valueType": "utf8", "required": false }
+      ] },
+    { "@id": "bt:WsOfferForwarded", "@type": "Struct", "module": "bt:webtorrent", "label": "WsOfferForwarded", "encoding": "bt:json",
+      "comment": "What a peer receives when the tracker forwards another peer's offer to it: the offer, its id, and the offerer's peer id. The receiver answers by sending a WsAnswer addressed to that peer id.",
+      "fields": [
+        { "property": "bt:wsAction", "label": "action", "key": "action", "valueType": "utf8", "required": true, "constValue": "announce" },
+        { "property": "bt:infoHash", "label": "info_hash", "key": "info_hash", "valueType": "bytes", "size": 20, "required": true },
+        { "property": "bt:peerId", "label": "peer_id", "key": "peer_id", "valueType": "bytes", "size": 20, "required": true, "comment": "The offerer." },
+        { "property": "bt:offer", "label": "offer", "key": "offer", "valueType": "struct", "structType": "bt:SessionDescription", "required": true },
+        { "property": "bt:offerId", "label": "offer_id", "key": "offer_id", "valueType": "bytes", "size": 20, "required": true }
+      ] },
+    { "@id": "bt:WsAnswer", "@type": "Struct", "module": "bt:webtorrent", "label": "WsAnswer", "encoding": "bt:json",
+      "comment": "An answer to a forwarded offer. Sent by the answering peer with 'to_peer_id' naming the offerer; the tracker strips that and delivers it to the offerer as shown here, who matches 'offer_id' to the offer it made and completes the WebRTC connection. From then on the two peers speak the wire protocol over the data channel and the tracker is out of the picture.",
+      "fields": [
+        { "property": "bt:wsAction", "label": "action", "key": "action", "valueType": "utf8", "required": true, "constValue": "announce" },
+        { "property": "bt:infoHash", "label": "info_hash", "key": "info_hash", "valueType": "bytes", "size": 20, "required": true },
+        { "property": "bt:peerId", "label": "peer_id", "key": "peer_id", "valueType": "bytes", "size": 20, "required": true, "comment": "The answering peer." },
+        { "property": "bt:toPeerId", "label": "to_peer_id", "key": "to_peer_id", "valueType": "bytes", "size": 20, "required": false, "comment": "The offerer, when the answerer sends it; absent when the offerer receives it." },
+        { "property": "bt:answer", "label": "answer", "key": "answer", "valueType": "struct", "structType": "bt:SessionDescription", "required": true },
+        { "property": "bt:offerId", "label": "offer_id", "key": "offer_id", "valueType": "bytes", "size": 20, "required": true }
+      ] },
+    { "@id": "bt:WsScrape", "@type": "Struct", "module": "bt:webtorrent", "label": "WsScrape", "encoding": "bt:json",
+      "fields": [ { "property": "bt:wsAction", "label": "action", "key": "action", "valueType": "utf8", "required": true, "constValue": "scrape" }, { "property": "bt:infoHash", "label": "info_hash", "key": "info_hash", "valueType": "bytes", "size": 20, "required": false, "comment": "One, a list, or absent for all." } ] },
+
+    { "@id": "bt:webtorrentRules", "@type": "RuleSet", "module": "bt:webtorrent", "label": "WebSocket tracker exchange", "scope": "webtorrent",
+      "rules": [
+        { "@id": "bt:rule-ws-binary", "@type": "ValidationRule", "label": "info_hash, peer_id and offer_id are binary strings of exactly 20 characters", "errorCode": "ws-bad-id", "check": "length == 20 and every char code < 256" },
+        { "@id": "bt:rule-ws-reply-interval", "@type": "ValidationRule", "label": "an announce reply carries an interval", "errorCode": "ws-no-interval", "check": "interval > 0 unless 'failure reason'" },
+        { "@id": "bt:rule-ws-answer-matches", "@type": "ValidationRule", "label": "an answer names an offer this peer made and has not yet used", "errorCode": "ws-unknown-offer", "check": "offer_id in outstanding offers; else ignore the answer" },
+        { "@id": "bt:rule-ws-infohash-ours", "@type": "ValidationRule", "label": "a forwarded offer or an answer is for a torrent this peer announced", "errorCode": "ws-wrong-torrent", "check": "info_hash in announced" },
+        { "@id": "bt:rule-ws-sdp-type", "@type": "ValidationRule", "label": "an offer's description is of type 'offer' and an answer's of type 'answer'", "errorCode": "ws-bad-sdp", "check": "offer.type == 'offer'; answer.type == 'answer'" },
+        { "@id": "bt:rule-ws-wire-unchanged", "@type": "ValidationRule", "label": "once connected, the data channel carries the wire protocol exactly as over TCP", "errorCode": "wire-bad-handshake", "check": "the first 68 bytes on the channel are a Handshake for the same info_hash" }
+      ] }
+  ]
+}

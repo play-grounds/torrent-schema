@@ -15,10 +15,10 @@ What the schema models, by BEP. "modelled" means a document exists and the codec
 | 20 | Peer id conventions | noted |
 | 12 | Multitracker metadata extension (`announce-list`) | modelled |
 | 15 | UDP tracker protocol | modelled, tested (opentrackr, byte-exact) |
-| 19 | WebSeed — HTTP/FTP seeding (`url-list`) | field modelled; the peer behaviour planned |
+| 19 | WebSeed — HTTP/FTP seeding (`url-list`) | modelled, tested (the Range request and its checks) |
 | 23 | Tracker returns compact peer lists | modelled, tested |
 | 7 | IPv6 tracker extension (`peers6`) | modelled, tested |
 | 48 | Tracker scrape | modelled, tested (HTTP and UDP) |
 | 27 | Private torrents | field modelled |
 | 52 | v2 (SHA-256, merkle trees, hybrid) | planned |
-| — | WebTorrent: WebSocket tracker protocol, wire protocol over RTCDataChannel | planned, as an overlay |
+| — | WebTorrent: WebSocket tracker protocol, wire protocol over RTCDataChannel | modelled, tested (a real exchange with tracker.openwebtorrent.com; the connection reached 'connected') |
