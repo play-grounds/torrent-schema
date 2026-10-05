@@ -798,6 +798,63 @@
           "check": "now - connectedAt < 60 s, else connect again"
         }
       ]
+    },
+    {
+      "@id": "bt:Tracker",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "Tracker",
+      "encoding": "bt:json",
+      "comment": "A tracker as an entry in a list of known trackers (data/trackers.jsonld): where it is, which protocol it speaks, who runs it as far as is known, and where the entry came from. What is alive is not recorded here but measured: the trackers page asks each one.",
+      "fields": [
+        {
+          "property": "bt:trackerUrl",
+          "label": "url",
+          "key": "url",
+          "valueType": "utf8",
+          "required": true,
+          "comment": "wss://, ws://, udp:// or http(s)://, as it goes into a magnet's tr= parameter."
+        },
+        {
+          "property": "bt:transport",
+          "label": "transport",
+          "key": "transport",
+          "valueType": "utf8",
+          "required": true,
+          "comment": "'websocket' (the WebTorrent protocol, browsers), 'udp' (BEP 15) or 'http' (BEP 3)."
+        },
+        {
+          "property": "bt:operator",
+          "label": "operator",
+          "key": "operator",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "Who runs it, as far as public."
+        },
+        {
+          "property": "bt:since",
+          "label": "since",
+          "key": "since",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "When it is first known to have run, roughly."
+        },
+        {
+          "property": "bt:source",
+          "label": "source",
+          "key": "source",
+          "valueType": "utf8",
+          "required": true,
+          "comment": "Where this entry comes from: a client's default list, a public list, a project's documentation."
+        },
+        {
+          "property": "bt:notes",
+          "label": "notes",
+          "key": "notes",
+          "valueType": "utf8",
+          "required": false
+        }
+      ]
     }
   ]
 }

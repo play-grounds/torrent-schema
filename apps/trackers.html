@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Known trackers — Torrent Schema</title>
+<meta name="description" content="The public WebTorrent (WebSocket) trackers we know of, as JSON-LD, each asked live from this page: alive or not, latency, and how many seeders it knows for the txbt4 UTXO snapshot. Plus the UDP ones a browser cannot reach.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Known trackers — Torrent Schema">
+<meta property="og:description" content="Every public WebSocket tracker we know of, as JSON-LD, measured live: the whole infrastructure for browser swarms on one page.">
+<meta property="og:url" content="https://play-grounds.github.io/torrent-schema/apps/trackers.html">
+<meta property="og:image" content="https://play-grounds.github.io/torrent-schema/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Torrent Schema: MetaInfo, Info and Handshake structures with their fields, as the schema models them">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Known trackers — Torrent Schema">
+<meta name="twitter:description" content="Every public WebSocket tracker we know of, as JSON-LD, measured live.">
+<meta name="twitter:image" content="https://play-grounds.github.io/torrent-schema/og.png">
+<link rel="canonical" href="https://play-grounds.github.io/torrent-schema/apps/trackers.html">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss: ws:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --ok: #1c7a3c; --bad: #b3261e; --link: #1f5fa3; --accent: #c2410c; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --ok: #5fcf7f; --bad: #ff7a70; --accent: #f08c4b; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.5rem; margin: 1.2rem 0 .2rem; } h2 { font-size: 1.05rem; margin: 1.2rem 0 .4rem; } .sub { color: var(--mut); margin: 0 0 1rem; } a { color: var(--link); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; } td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mono { font-family: var(--mono); font-size: .9em; } .wrap { overflow-wrap: anywhere; } .mut { color: var(--mut); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); } .tiny { font-size: .85em; }
+  button { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; }
+</style>
+</head>
+<body>
+<h1>Known trackers <span class="mut tiny">· <a href="../">Torrent Schema</a></span></h1>
+<p class="sub">Every public tracker we know of, WebSocket ones first, as <a href="../data/trackers.jsonld">JSON-LD</a> (each an entry of the schema's <a href="../schema/tracker.jsonld">Tracker</a> struct). Alive or not is measured, not claimed: this page announces to each WebSocket tracker as a leecher wanting no peers, for the <a href="https://play-grounds.github.io/utxo-swarm/">txbt4 UTXO snapshot</a>'s infohash, and shows what came back. The UDP ones are listed for the record; a browser cannot reach them. <span id="summary"></span></p>
+
+<div class="card">
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><button id="again" type="button">Ask again</button><span id="when" class="tiny mut"></span></div>
+  <table><thead><tr><th>tracker</th><th>operator · source</th><th>status</th><th class="n">seeders</th><th class="n">leechers</th><th class="n">ms</th></tr></thead><tbody id="ws"></tbody></table>
+</div>
+<div class="card">
+  <h2 style="margin-top:0">Not for browsers: UDP and HTTP</h2>
+  <table><thead><tr><th>tracker</th><th>operator · source</th><th>notes</th></tr></thead><tbody id="udp"></tbody></table>
+  <p class="tiny mut">Hundreds of these exist (<a href="https://github.com/ngosang/trackerslist">ngosang/trackerslist</a> keeps the public ones), and desktop clients also have the DHT. Browsers have only the handful above.</p>
+</div>
+<p class="tiny mut">An entry is a claim with a source; a status is a measurement from this browser just now. To add a tracker, send a pull request with its entry and where you learned of it. AGPL-3.0-or-later.</p>
+<script type="module" src="trackers.js"></script>
+</body>
+</html>

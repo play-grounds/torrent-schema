@@ -1,0 +1,114 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    {
+      "@id": "bt:knownTrackers",
+      "@type": "Module",
+      "label": "known trackers",
+      "version": "0.0.1",
+      "layer": "data",
+      "comment": "Public trackers the author knows of, as Tracker entries, WebSocket ones first: the whole public infrastructure for browser swarms is a handful of volunteer servers, so the list is short and some entries are dead. Which are alive is measured on the trackers page, not claimed here. Additions welcome with a source."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.openwebtorrent.com",
+      "transport": "websocket",
+      "operator": "OpenWebTorrent (community, long associated with the WebTorrent project)",
+      "since": "2016",
+      "source": "webtorrent default tracker list",
+      "notes": "The default in every WebTorrent client; the busiest public one."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.webtorrent.dev",
+      "transport": "websocket",
+      "operator": "WebTorrent maintainers",
+      "since": "2022",
+      "source": "webtorrent default tracker list"
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.btorrent.xyz",
+      "transport": "websocket",
+      "operator": "βTorrent (a browser client)",
+      "since": "2016",
+      "source": "webtorrent default tracker list (historic)",
+      "notes": "Dead when checked in October 2026."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.fastcast.nz",
+      "transport": "websocket",
+      "operator": "FastCast",
+      "since": "2017",
+      "source": "webtorrent default tracker list (historic)",
+      "notes": "Dead for years."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.files.fm:7073/announce",
+      "transport": "websocket",
+      "operator": "files.fm",
+      "since": "2018",
+      "source": "community lists",
+      "notes": "Refused connections when checked in October 2026."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.sloppyta.co:443/announce",
+      "transport": "websocket",
+      "operator": "unknown",
+      "source": "community lists"
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.novage.com.ua",
+      "transport": "websocket",
+      "operator": "Novage (P2P media loader)",
+      "since": "2019",
+      "source": "Novage wt-tracker documentation",
+      "notes": "Run for Novage's own P2P video streaming; public."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.magnetoo.io",
+      "transport": "websocket",
+      "operator": "unknown",
+      "source": "community lists"
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://tracker.webtorrent.io",
+      "transport": "websocket",
+      "operator": "WebTorrent project (historic)",
+      "since": "2015",
+      "source": "early webtorrent default list",
+      "notes": "The original; retired."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "wss://open.tube:443/tracker/socket",
+      "transport": "websocket",
+      "operator": "a PeerTube instance",
+      "source": "PeerTube instances run a WebSocket tracker each for their own videos",
+      "notes": "PeerTube instances are the largest population of WebSocket trackers, one per instance, usually restricted to that instance's infohashes."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "udp://tracker.opentrackr.org:1337/announce",
+      "transport": "udp",
+      "operator": "opentrackr",
+      "since": "2015",
+      "source": "ngosang/trackerslist",
+      "notes": "The largest public UDP tracker; also answers HTTP (compact announces only). Not reachable from a browser."
+    },
+    {
+      "@type": "bt:Tracker",
+      "url": "udp://open.tracker.cl:1337/announce",
+      "transport": "udp",
+      "operator": "unknown",
+      "source": "ngosang/trackerslist",
+      "notes": "Not reachable from a browser."
+    }
+  ]
+}
