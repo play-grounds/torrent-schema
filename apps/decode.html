@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torrent decoder — Torrent Schema</title>
+<meta name="description" content="A machine-readable model of BitTorrent in JSON-LD, with a codec that reads it. Drop a .torrent file and the schema decodes it: every field, the infohash, the magnet link, the pieces.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --ok: #1c7a3c; --bad: #b3261e; --link: #1f5fa3; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --ok: #5fcf7f; --bad: #ff7a70; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 900px; margin-inline: auto; }
+  h1 { font-size: 1.5rem; margin: 1.2rem 0 .2rem; } h2 { font-size: 1.05rem; margin: 1.2rem 0 .4rem; } .sub { color: var(--mut); margin: 0 0 1rem; } a { color: var(--link); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
+  .drop { border: 2px dashed var(--line); border-radius: 10px; padding: 24px; text-align: center; color: var(--mut); } .drop.over { border-color: var(--link); color: var(--fg); }
+  .mono { font-family: var(--mono); font-size: .9em; } .wrap { overflow-wrap: anywhere; } .mut { color: var(--mut); } .ok { color: var(--ok); } .bad { color: var(--bad); } .tiny { font-size: .85em; }
+  table { border-collapse: collapse; width: 100%; } th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line); vertical-align: top; } td.n { text-align: right; font-variant-numeric: tabular-nums; }
+  button { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; }
+  details > summary { cursor: pointer; } #pieces { max-height: 14rem; overflow: auto; }
+</style>
+</head>
+<body>
+<h1>Torrent decoder <span class="mut tiny">· <a href="../">Torrent Schema</a></span></h1>
+<p class="sub">BitTorrent written down as data — <a href="../schema/bencode.jsonld">bencode</a>, <a href="../schema/metainfo.jsonld">metainfo</a> — and a codec with no per-field code that reads it. This page is that codec running in your browser: nothing is uploaded. <a href="https://github.com/play-grounds/torrent-schema">source</a></p>
+
+<div class="card">
+  <div id="drop" class="drop">Drop a <span class="mono">.torrent</span> file here, or <label><input id="file" type="file" accept=".torrent,application/x-bittorrent" hidden><a href="#" id="pick">choose one</a></label> · or try <a href="#" id="sample">the UTXO snapshot's</a></div>
+</div>
+
+<div id="out" hidden>
+  <div class="card">
+    <h2 style="margin-top:0">Identity (derived, as the schema says)</h2>
+    <table><tbody>
+      <tr><th>infohash</th><td class="mono wrap" id="infohash"></td></tr>
+      <tr><th>magnet</th><td class="mono wrap tiny" id="magnet"></td></tr>
+      <tr><th>valid</th><td id="valid"></td></tr>
+    </tbody></table>
+  </div>
+  <div class="card">
+    <h2 style="margin-top:0">MetaInfo</h2>
+    <table><tbody id="meta"></tbody></table>
+  </div>
+  <div class="card">
+    <h2 style="margin-top:0">Info <span class="mut tiny">(what the infohash covers)</span></h2>
+    <table><tbody id="info"></tbody></table>
+    <details><summary>pieces</summary><div id="pieces" class="mono tiny"></div></details>
+  </div>
+  <div class="card tiny mut">Round trip: <span id="rt"></span></div>
+</div>
+<script type="module" src="decode.js"></script>
+</body>
+</html>

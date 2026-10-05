@@ -3,50 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Torrent Schema</title>
-<meta name="description" content="A machine-readable model of BitTorrent in JSON-LD, with a codec that reads it. Drop a .torrent file and the schema decodes it: every field, the infohash, the magnet link, the pieces.">
+<title>Torrent Schema — a machine-readable model of BitTorrent</title>
+<meta name="description" content="BitTorrent written down as data: JSON-LD documents for bencode and metainfo (more to come), rendered here from the schema itself — structures, fields, derivations, rules — with a codec that reads the same documents.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
 <style>
-  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --ok: #1c7a3c; --bad: #b3261e; --link: #1f5fa3; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
-  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --ok: #5fcf7f; --bad: #ff7a70; } }
-  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 900px; margin-inline: auto; }
-  h1 { font-size: 1.5rem; margin: 1.2rem 0 .2rem; } h2 { font-size: 1.05rem; margin: 1.2rem 0 .4rem; } .sub { color: var(--mut); margin: 0 0 1rem; } a { color: var(--link); }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
-  .drop { border: 2px dashed var(--line); border-radius: 10px; padding: 24px; text-align: center; color: var(--mut); } .drop.over { border-color: var(--link); color: var(--fg); }
-  .mono { font-family: var(--mono); font-size: .9em; } .wrap { overflow-wrap: anywhere; } .mut { color: var(--mut); } .ok { color: var(--ok); } .bad { color: var(--bad); } .tiny { font-size: .85em; }
-  table { border-collapse: collapse; width: 100%; } th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--line); vertical-align: top; } td.n { text-align: right; font-variant-numeric: tabular-nums; }
-  button { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; }
-  details > summary { cursor: pointer; } #pieces { max-height: 14rem; overflow: auto; }
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.6rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } .pill { font: 600 .7rem var(--mono); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; vertical-align: middle; color: var(--mut); }
+  .tag { color: var(--mut); margin: 0 0 .8rem; } nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .92rem; } a { color: var(--link); }
+  h2.module { margin: 2.2rem 0 0; font-size: 1rem; color: var(--mut); font-family: var(--mono); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 10px 0; } .card h2 { margin: 0 0 .2rem; font-size: 1.15rem; }
+  .meta { color: var(--mut); font-size: .85rem; margin-bottom: .4rem; } .comment { margin: .3rem 0 .6rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.desc { color: var(--fg); } code { font-family: var(--mono); font-size: .9em; }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
 </style>
 </head>
 <body>
-<h1>Torrent Schema</h1>
-<p class="sub">BitTorrent written down as data — <a href="schema/bencode.jsonld">bencode</a>, <a href="schema/metainfo.jsonld">metainfo</a> — and a codec with no per-field code that reads it. This page is that codec running in your browser: nothing is uploaded. <a href="https://github.com/play-grounds/torrent-schema">source</a></p>
+<header>
+  <h1>Torrent <span>Schema</span> <span class="pill" id="version">v</span></h1>
+  <p class="tag">A machine-readable model of BitTorrent in JSON-LD, in the manner of <a href="https://bitcoin-desktop.github.io/schema/">Bitcoin Schema</a>: structures, their bencode keys and value types, derivations, and validity rules. One schema; many projections: a codec with no per-field code, this page, the diagram, the tests.</p>
+  <nav>
+    <a href="apps/decode.html">🧲 torrent decoder</a>
+    <a href="schema/bencode.jsonld">schema/bencode.jsonld</a>
+    <a href="schema/metainfo.jsonld">schema/metainfo.jsonld</a>
+    <a href="context.jsonld">context.jsonld</a>
+    <a href="SPEC_COVERAGE.md">spec coverage</a>
+    <a href="https://github.com/play-grounds/torrent-schema">github</a>
+  </nav>
+</header>
 
-<div class="card">
-  <div id="drop" class="drop">Drop a <span class="mono">.torrent</span> file here, or <label><input id="file" type="file" accept=".torrent,application/x-bittorrent" hidden><a href="#" id="pick">choose one</a></label> · or try <a href="#" id="sample">the UTXO snapshot's</a></div>
-</div>
+<section style="margin:1.6rem 0">
+  <h2 style="font-size:1.1rem;margin:0 0 .2rem">Data model</h2>
+  <p style="color:var(--mut);margin:0 0 .8rem;font-size:.92rem">The metainfo structures as a UML class diagram — <a href="https://github.com/play-grounds/torrent-schema/blob/gh-pages/tools/gen-class-diagram.js">generated</a> from the schema, so it never drifts. Filled diamonds are composition; <code>/name</code> entries are derived (computed, not stored); <code>?</code> marks optional fields.</p>
+  <a href="class-diagram.svg"><img src="class-diagram.svg" alt="UML class diagram: MetaInfo composed of Info, Info composed of FileEntry; fields and derived values from the schema" style="width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff"></a>
+</section>
 
-<div id="out" hidden>
-  <div class="card">
-    <h2 style="margin-top:0">Identity (derived, as the schema says)</h2>
-    <table><tbody>
-      <tr><th>infohash</th><td class="mono wrap" id="infohash"></td></tr>
-      <tr><th>magnet</th><td class="mono wrap tiny" id="magnet"></td></tr>
-      <tr><th>valid</th><td id="valid"></td></tr>
-    </tbody></table>
-  </div>
-  <div class="card">
-    <h2 style="margin-top:0">MetaInfo</h2>
-    <table><tbody id="meta"></tbody></table>
-  </div>
-  <div class="card">
-    <h2 style="margin-top:0">Info <span class="mut tiny">(what the infohash covers)</span></h2>
-    <table><tbody id="info"></tbody></table>
-    <details><summary>pieces</summary><div id="pieces" class="mono tiny"></div></details>
-  </div>
-  <div class="card tiny mut">Round trip: <span id="rt"></span></div>
-</div>
-<script type="module" src="apps/decode.js"></script>
+<main id="classes"><p style="color:var(--mut)">Loading schema…</p></main>
+
+<footer>Every field below names its bencode <code>key</code> and <code>valueType</code>; <em>derived</em> values are computed from the bytes and never stored; rules carry the error code the codec reports. The <a href="codec/codec.js">reference codec</a> is driven entirely by these documents and re-encodes real torrent files byte-exactly. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</footer>
+<script type="module" src="apps/browse.js"></script>
 </body>
 </html>

@@ -1,0 +1,29 @@
+classDiagram
+  direction TB
+  class MetaInfo {
+    +utf8? announce
+    +utf8[][]? announce-list
+    +utf8[]? url-list
+    +int? creation_date
+    +utf8? comment
+    +utf8? created_by
+    +utf8? encoding
+    +infohash() derived
+    +magnet() derived
+  }
+  class Info {
+    +utf8 name
+    +int piece_length
+    +hashes pieces
+    +int? length
+    +int? private
+    +pieceCount() derived
+    +totalLength() derived
+    +lastPieceLength() derived
+  }
+  class FileEntry {
+    +int length
+    +utf8[] path
+  }
+  MetaInfo "1" *-- "1" Info : info
+  Info "1" *-- "0..*" FileEntry : files
