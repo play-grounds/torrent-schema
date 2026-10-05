@@ -1,0 +1,107 @@
+classDiagram
+  direction TB
+  class AnnounceRequest {
+    +bytes info_hash
+    +bytes peer_id
+    +int port
+    +int uploaded
+    +int downloaded
+    +int left
+    +int? compact
+    +int? no_peer_id
+    +utf8? event
+    +utf8? ip
+    +int? numwant
+    +utf8? key
+    +utf8? trackerid
+    +url() derived
+  }
+  class AnnounceResponse {
+    +utf8? failure_reason
+    +utf8? warning_message
+    +int? interval
+    +int? min_interval
+    +utf8? tracker_id
+    +int? complete
+    +int? incomplete
+    +int? downloaded
+    +peers? peers
+    +peers6? peers6
+  }
+  class Peer {
+    +bytes? peer_id
+    +utf8 ip
+    +int port
+  }
+  class ScrapeResponse {
+    +utf8? failure_reason
+  }
+  class ScrapeEntry {
+    +int complete
+    +int downloaded
+    +int incomplete
+    +utf8? name
+  }
+  class CompactPeer {
+    +ip4 ip
+    +u16be port
+  }
+  class CompactPeer6 {
+    +ip6 ip
+    +u16be port
+  }
+  class UdpConnectRequest {
+    +u64be protocol_id
+    +u32be action
+    +u32be transaction_id
+  }
+  class UdpConnectResponse {
+    +u32be action
+    +u32be transaction_id
+    +u64be connection_id
+  }
+  class UdpAnnounceRequest {
+    +u64be connection_id
+    +u32be action
+    +u32be transaction_id
+    +bytes20 info_hash
+    +bytes20 peer_id
+    +u64be downloaded
+    +u64be left
+    +u64be uploaded
+    +u32be event
+    +u32be ip
+    +u32be key
+    +i32be num_want
+    +u16be port
+  }
+  class UdpAnnounceResponse {
+    +u32be action
+    +u32be transaction_id
+    +u32be interval
+    +u32be leechers
+    +u32be seeders
+  }
+  class UdpScrapeRequest {
+    +u64be connection_id
+    +u32be action
+    +u32be transaction_id
+    +bytes20[] info_hashes
+  }
+  class UdpScrapeResponse {
+    +u32be action
+    +u32be transaction_id
+  }
+  class UdpScrapeCounts {
+    +u32be seeders
+    +u32be completed
+    +u32be leechers
+  }
+  class UdpError {
+    +u32be action
+    +u32be transaction_id
+    +utf8rest message
+  }
+  ScrapeResponse "1" *-- "1..*" ScrapeEntry : files
+  UdpAnnounceResponse "1" *-- "0..*" CompactPeer : peers
+  UdpScrapeResponse "1" *-- "0..*" UdpScrapeCounts : counts

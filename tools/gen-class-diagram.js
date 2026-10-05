@@ -5,21 +5,23 @@
 //   node tools/gen-class-diagram.js   -> docs/class-diagram.mmd, class-diagram.svg; prints the Mermaid block
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 const root = new URL('..', import.meta.url);
-const doc = JSON.parse(await readFile(new URL('schema/metainfo.jsonld', root), 'utf8'));
-const structs = new Map(doc['@graph'].filter((n) => n['@type'] === 'Struct').map((n) => [n['@id'], n]));
+const docOf = async (m) => JSON.parse(await readFile(new URL(`schema/${m}.jsonld`, root), 'utf8'));
+const doc = await docOf('metainfo');
+const structsOf = (d) => new Map(d['@graph'].filter((n) => n['@type'] === 'Struct').map((n) => [n['@id'], n]));
+const structs = structsOf(doc);
 const short = (id) => String(id).replace('bt:', '');
-const typeOf = (f) => f.valueType === 'list' ? `${String(f.itemType).replace('list:', '')}[]${String(f.itemType).startsWith('list:') ? '[]' : ''}` : f.valueType;
-function model(node) {
+const typeOf = (f) => f.wireType ? (f.wireType === 'struct' ? short(f.structType) : f.wireType) + (f.repeat === 'toEnd' ? '[]' : '') : f.valueType === 'list' ? `${String(f.itemType).replace('list:', '')}[]${String(f.itemType).startsWith('list:') ? '[]' : ''}` : f.valueType;
+function model(node, structs) {
   const attrs = [], refs = [];
   for (const f of node.fields ?? []) {
-    if (f.valueType === 'struct' && structs.has(f.structType)) refs.push({ to: f.structType, mult: '1', label: f.label });
-    else if (f.valueType === 'list' && f.itemType === 'struct' && structs.has(f.structType)) refs.push({ to: f.structType, mult: f.presentIf ? '0..*' : '1..*', label: f.label });
-    else attrs.push({ name: f.label, type: typeOf(f), opt: !f.required });
+    if ((f.valueType === 'struct' || f.wireType === 'struct') && structs.has(f.structType)) refs.push({ to: f.structType, mult: f.repeat === 'toEnd' ? '0..*' : '1', label: f.label });
+    else if ((f.valueType === 'list' || f.valueType === 'dict') && f.itemType === 'struct' && structs.has(f.structType)) refs.push({ to: f.structType, mult: f.presentIf ? '0..*' : '1..*', label: f.label });
+    else attrs.push({ name: f.label, type: typeOf(f), opt: f.wireType ? false : !f.required });
   }
   return { id: node['@id'], label: node.label, attrs, derived: (node.derived ?? []).map((d) => d.label), refs };
 }
-const models = [...structs.values()].map(model);
-function mermaid() {
+const models = [...structs.values()].map((n) => model(n, structs));
+function mermaid(models) {
   const L = ['classDiagram', '  direction TB'];
   for (const m of models) { L.push(`  class ${m.label} {`); for (const a of m.attrs) L.push(`    +${a.type}${a.opt ? '?' : ''} ${a.name.replace(/ /g, '_')}`); for (const d of m.derived) L.push(`    +${d}() derived`); L.push('  }'); }
   for (const m of models) for (const r of m.refs) L.push(`  ${m.label} "1" *-- "${r.mult}" ${short(r.to)} : ${r.label}`);
@@ -44,6 +46,8 @@ function svg() {
   const H = Math.max(...[...box.values()].map((b) => b.y + b.h)) + 56;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1360" height="${H}" viewBox="0 0 1360 ${H}"><rect width="1360" height="${H}" fill="${C.bg}"/><rect width="1360" height="8" fill="${C.accent}"/>${edges.join('')}${boxes.join('')}<text x="1344" y="${H - 16}" text-anchor="end" font-family="${MONO}" font-size="12.5" fill="${C.muted}">generated from schema/metainfo.jsonld  ·  ◆ composition  ·  /name = derived (computed, not stored)  ·  ? = optional</text></svg>`;
 }
-const mmd = mermaid(); await mkdir(new URL('docs/', root), { recursive: true });
+const mmd = mermaid(models); await mkdir(new URL('docs/', root), { recursive: true });
 await writeFile(new URL('docs/class-diagram.mmd', root), mmd + '\n'); await writeFile(new URL('class-diagram.svg', root), svg() + '\n');
 console.log('```mermaid\n' + mmd + '\n```');
+// every other module: Mermaid only (no hand layout), one file each, printed after the first
+for (const m of ['tracker']) { const d = await docOf(m); const st = structsOf(d); const mm = mermaid([...st.values()].map((n) => model(n, st))); await writeFile(new URL(`docs/class-diagram-${m}.mmd`, root), mm + '\n'); console.log(`\n<!-- ${m} -->\n\`\`\`mermaid\n${mm}\n\`\`\``); }

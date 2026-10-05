@@ -4,12 +4,13 @@
 // computes the `derived` properties — the infohash over the info dictionary's own bytes from the file.
 import { decode, encode } from './bencode.js';
 import { sha1, bytesToHex, hexToBytes, utf8 } from './hash.js';
+import { BinaryCodec } from './binary.js';
 
 const shortId = (id) => String(id).replace(/^bt:/, '').replace(/^.*\//, '');
 
 export class TorrentCodec {
   constructor(...docs) {
-    this.structs = new Map(); this.rules = new Map();
+    this.structs = new Map(); this.rules = new Map(); this.docs = docs;
     for (const d of docs) for (const e of d['@graph'] ?? []) { if (e['@type'] === 'Struct') this.structs.set(shortId(e['@id']), e); if (e['@type'] === 'RuleSet') this.rules.set(shortId(e['@id']), e); }
   }
   struct(name) { const s = this.structs.get(shortId(name)); if (!s) throw new Error(`no struct ${name} in the schema`); return s; }
@@ -34,6 +35,11 @@ export class TorrentCodec {
     if (t === 'bytes') { if (!(raw instanceof Uint8Array)) throw new Error(`'${f.key}': not a string`); return bytesToHex(raw); }
     if (t === 'hashes') { if (!(raw instanceof Uint8Array)) throw new Error(`'${f.key}': not a string`); if (raw.length % 20) throw new Error(`'${f.key}': ${raw.length} bytes is not a whole number of 20-byte hashes`); const out = []; for (let i = 0; i < raw.length; i += 20) out.push(bytesToHex(raw.subarray(i, i + 20))); return out; }
     if (t === 'struct') return this.fromValue(f.structType, raw, dec);
+    if (t === 'peers' || t === 'peers6') { // compact bytes (6 or 18 a peer), or a list of Peer dictionaries
+      if (raw instanceof Uint8Array) { const n = t === 'peers' ? 6 : 18; if (raw.length % n) throw Object.assign(new Error(`'${f.key}': ${raw.length} bytes is not a whole number of ${n}-byte peers`), { code: 'tracker-bad-peers' });
+        const bin = this.binary ?? (this.binary = new BinaryCodec(...this.docs)); const out = []; for (let i = 0; i < raw.length; i += n) out.push(bin.decode(t === 'peers' ? 'CompactPeer' : 'CompactPeer6', raw.subarray(i, i + n))); return out; }
+      if (Array.isArray(raw)) return raw.map((x) => this.fromValue('Peer', x, dec)); throw new Error(`'${f.key}': neither compact bytes nor a list`); }
+    if (t === 'dict') { if (!(raw instanceof Map)) throw new Error(`'${f.key}': not a dictionary`); const out = {}; for (const [k, v] of raw) out[bytesToHex(Uint8Array.from(k, (c) => c.charCodeAt(0)))] = f.itemType === 'struct' ? this.fromValue(f.structType, v, dec) : v; return out; }
     if (t === 'list') { const items = Array.isArray(raw) ? raw : raw instanceof Uint8Array && f.itemType === 'utf8' ? [raw] : null; if (!items) throw new Error(`'${f.key}': not a list`);
       const item = String(f.itemType); const inner = item.startsWith('list:') ? { valueType: 'list', itemType: item.slice(5), key: f.key } : item === 'struct' ? { valueType: 'struct', structType: f.structType, key: f.key } : { valueType: item, key: f.key };
       return items.map((x) => this.convert(inner, x, dec)); }
@@ -51,6 +57,8 @@ export class TorrentCodec {
     if (t === 'int') return v; if (t === 'utf8') return utf8.encode(v); if (t === 'bytes') return hexToBytes(v);
     if (t === 'hashes') { const out = new Uint8Array(v.length * 20); v.forEach((h, i) => out.set(hexToBytes(h), i * 20)); return out; }
     if (t === 'struct') return this.toValue(f.structType, v);
+    if (t === 'peers' || t === 'peers6') { const bin = this.binary ?? (this.binary = new BinaryCodec(...this.docs)); const n = t === 'peers' ? 6 : 18; const out = new Uint8Array(v.length * n); v.forEach((p, i) => out.set(bin.encode(t === 'peers' ? 'CompactPeer' : 'CompactPeer6', p), i * n)); return out; }
+    if (t === 'dict') { const m = new Map(); for (const [k, x] of Object.entries(v)) m.set(String.fromCharCode(...hexToBytes(k)), f.itemType === 'struct' ? this.toValue(f.structType, x) : x); return m; }
     if (t === 'list') { const item = String(f.itemType); const inner = item.startsWith('list:') ? { valueType: 'list', itemType: item.slice(5) } : item === 'struct' ? { valueType: 'struct', structType: f.structType } : { valueType: item }; return v.map((x) => this.unconvert(inner, x)); }
     throw new Error(`unknown valueType ${t}`);
   }

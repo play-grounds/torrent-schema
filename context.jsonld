@@ -8,7 +8,10 @@
     "schema": "https://schema.org/",
     "label": "rdfs:label",
     "comment": "rdfs:comment",
-    "seeAlso": { "@id": "rdfs:seeAlso", "@type": "@id" },
+    "seeAlso": {
+      "@id": "rdfs:seeAlso",
+      "@type": "@id"
+    },
     "version": "schema:version",
     "Module": "bts:Module",
     "Encoding": "bts:Encoding",
@@ -17,24 +20,58 @@
     "Enumeration": "bts:Enumeration",
     "RuleSet": "bts:RuleSet",
     "ValidationRule": "bts:ValidationRule",
-    "module": { "@id": "bts:module", "@type": "@id" },
+    "module": {
+      "@id": "bts:module",
+      "@type": "@id"
+    },
     "layer": "bts:layer",
     "bep": "bts:bep",
-    "encoding": { "@id": "bts:encoding", "@type": "@id" },
-    "members": { "@id": "bts:members", "@container": "@list" },
-    "fields": { "@id": "bts:fields", "@container": "@list" },
-    "derived": { "@id": "bts:derived", "@container": "@list" },
-    "rules": { "@id": "bts:rules", "@container": "@list" },
-    "property": { "@id": "bts:property", "@type": "@id" },
+    "encoding": {
+      "@id": "bts:encoding",
+      "@type": "@id"
+    },
+    "members": {
+      "@id": "bts:members",
+      "@container": "@list"
+    },
+    "fields": {
+      "@id": "bts:fields",
+      "@container": "@list"
+    },
+    "derived": {
+      "@id": "bts:derived",
+      "@container": "@list"
+    },
+    "rules": {
+      "@id": "bts:rules",
+      "@container": "@list"
+    },
+    "property": {
+      "@id": "bts:property",
+      "@type": "@id"
+    },
     "key": "bts:key",
     "valueType": "bts:valueType",
     "itemType": "bts:itemType",
-    "structType": { "@id": "bts:structType", "@type": "@id" },
+    "structType": {
+      "@id": "bts:structType",
+      "@type": "@id"
+    },
     "required": "bts:required",
     "presentIf": "bts:presentIf",
     "derivation": "bts:derivation",
     "errorCode": "bts:errorCode",
     "check": "bts:check",
-    "scope": "bts:scope"
+    "scope": "bts:scope",
+    "wireType": "bts:wireType",
+    "wireSize": "bts:wireSize",
+    "constValue": "bts:constValue",
+    "repeat": "bts:repeat",
+    "size": "bts:size",
+    "enumType": {
+      "@id": "bts:enumType",
+      "@type": "@id"
+    },
+    "code": "bts:code"
   }
 }

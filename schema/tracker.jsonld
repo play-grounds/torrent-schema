@@ -1,0 +1,803 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    {
+      "@id": "bt:tracker",
+      "@type": "Module",
+      "label": "tracker",
+      "version": "0.0.1",
+      "layer": "discovery",
+      "bep": [
+        3,
+        15,
+        23,
+        7,
+        48
+      ],
+      "comment": "How a peer finds other peers for an infohash. A tracker holds no content: it remembers who announced which infohash and answers with some of them. Two transports: HTTP (BEP 3), a GET whose answer is bencoded, and UDP (BEP 15), a fixed binary layout for speed. Both carry the same ideas — announce (here I am, send me peers), scrape (how many are there) — and the same peer list, compact (BEP 23: six bytes a peer) or as dictionaries. Browsers can use neither; WebTorrent's WebSocket tracker is a third transport, modelled later as an overlay."
+    },
+    {
+      "@id": "bt:urlquery",
+      "@type": "Encoding",
+      "module": "bt:tracker",
+      "label": "URL query",
+      "comment": "Fields as key=value pairs in a URL's query string, each value percent-encoded; raw bytes (the infohash, the peer id) are percent-encoded byte by byte."
+    },
+    {
+      "@id": "bt:binary",
+      "@type": "Encoding",
+      "module": "bt:tracker",
+      "label": "binary",
+      "comment": "A fixed layout: the fields in order, each with a wireType (big-endian integers of a given width, fixed-size byte strings, or the rest of the message), nothing self-describing. The UDP tracker protocol and the peer wire protocol use it."
+    },
+    {
+      "@id": "bt:AnnounceEvent",
+      "@type": "Enumeration",
+      "module": "bt:tracker",
+      "label": "AnnounceEvent",
+      "comment": "What an announce says about the peer's state. On the wire as a string over HTTP and a u32 over UDP.",
+      "members": [
+        {
+          "@id": "bt:event-none",
+          "label": "none",
+          "code": 0,
+          "comment": "A regular announce, repeated every 'interval' seconds. Over HTTP the 'event' parameter is absent or 'empty'."
+        },
+        {
+          "@id": "bt:event-completed",
+          "label": "completed",
+          "code": 1,
+          "comment": "The peer has just finished downloading. Sent once; counts in the tracker's 'downloaded' total."
+        },
+        {
+          "@id": "bt:event-started",
+          "label": "started",
+          "code": 2,
+          "comment": "The peer's first announce for this torrent."
+        },
+        {
+          "@id": "bt:event-stopped",
+          "label": "stopped",
+          "code": 3,
+          "comment": "The peer is leaving; the tracker drops it."
+        }
+      ]
+    },
+    {
+      "@id": "bt:AnnounceRequest",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "AnnounceRequest",
+      "encoding": "bt:urlquery",
+      "bep": [
+        3,
+        23
+      ],
+      "comment": "What a peer tells an HTTP tracker, as the query string of a GET to the announce URL.",
+      "fields": [
+        {
+          "property": "bt:infoHash",
+          "label": "info_hash",
+          "key": "info_hash",
+          "valueType": "bytes",
+          "size": 20,
+          "required": true,
+          "comment": "The torrent's 20-byte infohash, percent-encoded byte by byte."
+        },
+        {
+          "property": "bt:peerId",
+          "label": "peer_id",
+          "key": "peer_id",
+          "valueType": "bytes",
+          "size": 20,
+          "required": true,
+          "comment": "The peer's 20-byte id, chosen at startup; by convention '-XX0000-' names the client and version, then random bytes (BEP 20)."
+        },
+        {
+          "property": "bt:port",
+          "label": "port",
+          "key": "port",
+          "valueType": "int",
+          "required": true,
+          "comment": "The port the peer listens on."
+        },
+        {
+          "property": "bt:uploaded",
+          "label": "uploaded",
+          "key": "uploaded",
+          "valueType": "int",
+          "required": true,
+          "comment": "Bytes uploaded so far, in base ten."
+        },
+        {
+          "property": "bt:downloaded",
+          "label": "downloaded",
+          "key": "downloaded",
+          "valueType": "int",
+          "required": true
+        },
+        {
+          "property": "bt:left",
+          "label": "left",
+          "key": "left",
+          "valueType": "int",
+          "required": true,
+          "comment": "Bytes still to download; 0 means the peer is a seeder."
+        },
+        {
+          "property": "bt:compact",
+          "label": "compact",
+          "key": "compact",
+          "valueType": "int",
+          "required": false,
+          "bep": 23,
+          "comment": "1 asks for the compact peer list (six bytes a peer). Most trackers answer compact regardless; opentrackr refuses a request without it."
+        },
+        {
+          "property": "bt:noPeerId",
+          "label": "no_peer_id",
+          "key": "no_peer_id",
+          "valueType": "int",
+          "required": false,
+          "comment": "1 asks the tracker to omit peer ids from a dictionary-form peer list."
+        },
+        {
+          "property": "bt:event",
+          "label": "event",
+          "key": "event",
+          "valueType": "utf8",
+          "enumType": "bt:AnnounceEvent",
+          "required": false,
+          "comment": "'started', 'completed', 'stopped', or absent for a regular announce."
+        },
+        {
+          "property": "bt:ip",
+          "label": "ip",
+          "key": "ip",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "The address to record instead of the request's source; rarely honoured."
+        },
+        {
+          "property": "bt:numwant",
+          "label": "numwant",
+          "key": "numwant",
+          "valueType": "int",
+          "required": false,
+          "comment": "How many peers the client would like; trackers cap it (50 is usual)."
+        },
+        {
+          "property": "bt:key",
+          "label": "key",
+          "key": "key",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "A random value the client keeps across announces so a tracker can recognise it when its IP changes."
+        },
+        {
+          "property": "bt:trackerId",
+          "label": "trackerid",
+          "key": "trackerid",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "Echoed back if the tracker sent one in an earlier response."
+        }
+      ],
+      "derived": [
+        {
+          "property": "bt:announceUrl",
+          "label": "url",
+          "derivation": "announce + '?' + fields as key=percentEncoded(value), joined by '&'",
+          "comment": "The GET the client sends. Bytes fields are encoded byte by byte (%xx), never as UTF-8 of a hex string."
+        }
+      ]
+    },
+    {
+      "@id": "bt:AnnounceResponse",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "AnnounceResponse",
+      "encoding": "bt:bencode",
+      "bep": [
+        3,
+        23,
+        7
+      ],
+      "comment": "An HTTP tracker's answer: how often to come back, how many peers it knows, and some of them.",
+      "fields": [
+        {
+          "property": "bt:failureReason",
+          "label": "failure reason",
+          "key": "failure reason",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "If present, nothing else is: the tracker refused the announce and says why."
+        },
+        {
+          "property": "bt:warningMessage",
+          "label": "warning message",
+          "key": "warning message",
+          "valueType": "utf8",
+          "required": false
+        },
+        {
+          "property": "bt:interval",
+          "label": "interval",
+          "key": "interval",
+          "valueType": "int",
+          "required": false,
+          "comment": "Seconds to wait before the next regular announce. Required in any accepted announce (the 'tracker-no-interval' rule); absent only beside a failure reason."
+        },
+        {
+          "property": "bt:minInterval",
+          "label": "min interval",
+          "key": "min interval",
+          "valueType": "int",
+          "required": false,
+          "comment": "The floor for any re-announce, including on events."
+        },
+        {
+          "property": "bt:trackerIdOut",
+          "label": "tracker id",
+          "key": "tracker id",
+          "valueType": "utf8",
+          "required": false
+        },
+        {
+          "property": "bt:complete",
+          "label": "complete",
+          "key": "complete",
+          "valueType": "int",
+          "required": false,
+          "comment": "Seeders the tracker knows."
+        },
+        {
+          "property": "bt:incomplete",
+          "label": "incomplete",
+          "key": "incomplete",
+          "valueType": "int",
+          "required": false,
+          "comment": "Leechers the tracker knows."
+        },
+        {
+          "property": "bt:downloadedCount",
+          "label": "downloaded",
+          "key": "downloaded",
+          "valueType": "int",
+          "required": false,
+          "comment": "Completed downloads the tracker has counted (from 'completed' events)."
+        },
+        {
+          "property": "bt:peers",
+          "label": "peers",
+          "key": "peers",
+          "valueType": "peers",
+          "required": false,
+          "comment": "Either a byte string of 6-byte compact peers (BEP 23: IPv4 then port, big-endian) or a list of Peer dictionaries. The codec presents both as a list of {ip, port, peer id?}."
+        },
+        {
+          "property": "bt:peers6",
+          "label": "peers6",
+          "key": "peers6",
+          "valueType": "peers6",
+          "required": false,
+          "bep": 7,
+          "comment": "Compact IPv6 peers: 18 bytes each (16 of address, 2 of port)."
+        }
+      ]
+    },
+    {
+      "@id": "bt:Peer",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "Peer",
+      "encoding": "bt:bencode",
+      "comment": "A peer in dictionary form, as a tracker lists them when not compact.",
+      "fields": [
+        {
+          "property": "bt:peerIdOut",
+          "label": "peer id",
+          "key": "peer id",
+          "valueType": "bytes",
+          "required": false
+        },
+        {
+          "property": "bt:peerIp",
+          "label": "ip",
+          "key": "ip",
+          "valueType": "utf8",
+          "required": true,
+          "comment": "IPv4 or IPv6 literal, or a DNS name."
+        },
+        {
+          "property": "bt:peerPort",
+          "label": "port",
+          "key": "port",
+          "valueType": "int",
+          "required": true
+        }
+      ]
+    },
+    {
+      "@id": "bt:ScrapeResponse",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "ScrapeResponse",
+      "encoding": "bt:bencode",
+      "bep": 48,
+      "comment": "The answer to GET <scrape URL>?info_hash=…: counts per infohash, without any peers. The scrape URL is the announce URL with 'announce' replaced by 'scrape' in its last path component; a tracker without one does not support scrape.",
+      "fields": [
+        {
+          "property": "bt:files",
+          "label": "files",
+          "key": "files",
+          "valueType": "dict",
+          "itemType": "struct",
+          "structType": "bt:ScrapeEntry",
+          "required": true,
+          "comment": "Keyed by the 20-byte infohash (raw bytes, presented as hex)."
+        },
+        {
+          "property": "bt:scrapeFailure",
+          "label": "failure reason",
+          "key": "failure reason",
+          "valueType": "utf8",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "bt:ScrapeEntry",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "ScrapeEntry",
+      "encoding": "bt:bencode",
+      "fields": [
+        {
+          "property": "bt:scrapeComplete",
+          "label": "complete",
+          "key": "complete",
+          "valueType": "int",
+          "required": true,
+          "comment": "Seeders."
+        },
+        {
+          "property": "bt:scrapeDownloaded",
+          "label": "downloaded",
+          "key": "downloaded",
+          "valueType": "int",
+          "required": true,
+          "comment": "Completed downloads counted."
+        },
+        {
+          "property": "bt:scrapeIncomplete",
+          "label": "incomplete",
+          "key": "incomplete",
+          "valueType": "int",
+          "required": true,
+          "comment": "Leechers."
+        },
+        {
+          "property": "bt:scrapeName",
+          "label": "name",
+          "key": "name",
+          "valueType": "utf8",
+          "required": false
+        }
+      ]
+    },
+    {
+      "@id": "bt:CompactPeer",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "CompactPeer",
+      "encoding": "bt:binary",
+      "bep": 23,
+      "wireSize": 6,
+      "comment": "Six bytes: an IPv4 address and a port, both big-endian. Lists of these are the usual peer list over HTTP and the only one over UDP.",
+      "fields": [
+        {
+          "property": "bt:ip4",
+          "label": "ip",
+          "wireType": "ip4"
+        },
+        {
+          "property": "bt:port16",
+          "label": "port",
+          "wireType": "u16be"
+        }
+      ]
+    },
+    {
+      "@id": "bt:CompactPeer6",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "CompactPeer6",
+      "encoding": "bt:binary",
+      "bep": 7,
+      "wireSize": 18,
+      "fields": [
+        {
+          "property": "bt:ip6",
+          "label": "ip",
+          "wireType": "ip6"
+        },
+        {
+          "property": "bt:port16",
+          "label": "port",
+          "wireType": "u16be"
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpConnectRequest",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpConnectRequest",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "wireSize": 16,
+      "comment": "The first message to a UDP tracker: a fixed magic number proves the sender speaks the protocol; the tracker answers with a connection id to use for 60 seconds. Guards against spoofed source addresses, which UDP otherwise allows.",
+      "fields": [
+        {
+          "property": "bt:protocolId",
+          "label": "protocol_id",
+          "wireType": "u64be",
+          "constValue": "0x41727101980",
+          "comment": "The magic constant 0x41727101980, always."
+        },
+        {
+          "property": "bt:action",
+          "label": "action",
+          "wireType": "u32be",
+          "constValue": 0,
+          "comment": "0 = connect."
+        },
+        {
+          "property": "bt:transactionId",
+          "label": "transaction_id",
+          "wireType": "u32be",
+          "comment": "Random; the response must echo it."
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpConnectResponse",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpConnectResponse",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "wireSize": 16,
+      "fields": [
+        {
+          "property": "bt:action",
+          "label": "action",
+          "wireType": "u32be",
+          "constValue": 0
+        },
+        {
+          "property": "bt:transactionId",
+          "label": "transaction_id",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:connectionId",
+          "label": "connection_id",
+          "wireType": "u64be",
+          "comment": "Opaque; valid for 60 seconds; sent in every announce and scrape."
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpAnnounceRequest",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpAnnounceRequest",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "wireSize": 98,
+      "comment": "The announce over UDP: the same facts as the HTTP query, in 98 fixed bytes.",
+      "fields": [
+        {
+          "property": "bt:connectionId",
+          "label": "connection_id",
+          "wireType": "u64be"
+        },
+        {
+          "property": "bt:action",
+          "label": "action",
+          "wireType": "u32be",
+          "constValue": 1,
+          "comment": "1 = announce."
+        },
+        {
+          "property": "bt:transactionId",
+          "label": "transaction_id",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:infoHash",
+          "label": "info_hash",
+          "wireType": "bytes20"
+        },
+        {
+          "property": "bt:peerId",
+          "label": "peer_id",
+          "wireType": "bytes20"
+        },
+        {
+          "property": "bt:downloaded",
+          "label": "downloaded",
+          "wireType": "u64be"
+        },
+        {
+          "property": "bt:left",
+          "label": "left",
+          "wireType": "u64be"
+        },
+        {
+          "property": "bt:uploaded",
+          "label": "uploaded",
+          "wireType": "u64be"
+        },
+        {
+          "property": "bt:event",
+          "label": "event",
+          "wireType": "u32be",
+          "enumType": "bt:AnnounceEvent",
+          "comment": "0 none, 1 completed, 2 started, 3 stopped."
+        },
+        {
+          "property": "bt:ipAddress",
+          "label": "ip",
+          "wireType": "u32be",
+          "comment": "0 = use the sender's address."
+        },
+        {
+          "property": "bt:key",
+          "label": "key",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:numWant",
+          "label": "num_want",
+          "wireType": "i32be",
+          "comment": "-1 = default."
+        },
+        {
+          "property": "bt:port",
+          "label": "port",
+          "wireType": "u16be"
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpAnnounceResponse",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpAnnounceResponse",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "comment": "20 bytes of header, then compact peers to the end of the datagram.",
+      "fields": [
+        {
+          "property": "bt:action",
+          "label": "action",
+          "wireType": "u32be",
+          "constValue": 1
+        },
+        {
+          "property": "bt:transactionId",
+          "label": "transaction_id",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:interval",
+          "label": "interval",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:leechers",
+          "label": "leechers",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:seeders",
+          "label": "seeders",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:peers",
+          "label": "peers",
+          "wireType": "struct",
+          "structType": "bt:CompactPeer",
+          "repeat": "toEnd"
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpScrapeRequest",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpScrapeRequest",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "fields": [
+        {
+          "property": "bt:connectionId",
+          "label": "connection_id",
+          "wireType": "u64be"
+        },
+        {
+          "property": "bt:action",
+          "label": "action",
+          "wireType": "u32be",
+          "constValue": 2,
+          "comment": "2 = scrape."
+        },
+        {
+          "property": "bt:transactionId",
+          "label": "transaction_id",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:infoHashes",
+          "label": "info_hashes",
+          "wireType": "bytes20",
+          "repeat": "toEnd",
+          "comment": "One or more infohashes, up to about 74 in one datagram."
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpScrapeResponse",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpScrapeResponse",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "fields": [
+        {
+          "property": "bt:action",
+          "label": "action",
+          "wireType": "u32be",
+          "constValue": 2
+        },
+        {
+          "property": "bt:transactionId",
+          "label": "transaction_id",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:scrapeCounts",
+          "label": "counts",
+          "wireType": "struct",
+          "structType": "bt:UdpScrapeCounts",
+          "repeat": "toEnd",
+          "comment": "One triple per infohash asked, in the same order."
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpScrapeCounts",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpScrapeCounts",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "wireSize": 12,
+      "fields": [
+        {
+          "property": "bt:seeders",
+          "label": "seeders",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:completed",
+          "label": "completed",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:leechers",
+          "label": "leechers",
+          "wireType": "u32be"
+        }
+      ]
+    },
+    {
+      "@id": "bt:UdpError",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "UdpError",
+      "encoding": "bt:binary",
+      "bep": 15,
+      "fields": [
+        {
+          "property": "bt:action",
+          "label": "action",
+          "wireType": "u32be",
+          "constValue": 3,
+          "comment": "3 = error."
+        },
+        {
+          "property": "bt:transactionId",
+          "label": "transaction_id",
+          "wireType": "u32be"
+        },
+        {
+          "property": "bt:message",
+          "label": "message",
+          "wireType": "utf8rest",
+          "comment": "The reason, to the end of the datagram."
+        }
+      ]
+    },
+    {
+      "@id": "bt:trackerRules",
+      "@type": "RuleSet",
+      "module": "bt:tracker",
+      "label": "tracker exchange",
+      "scope": "tracker",
+      "comment": "What a client checks on what a tracker sends back.",
+      "rules": [
+        {
+          "@id": "bt:rule-http-bencode",
+          "@type": "ValidationRule",
+          "label": "an HTTP answer is a bencoded dictionary",
+          "errorCode": "tracker-not-bencode",
+          "check": "decode(body) is a dictionary (opentrackr answers an HTML page to a non-compact announce: that is this error)"
+        },
+        {
+          "@id": "bt:rule-failure-reason",
+          "@type": "ValidationRule",
+          "label": "a 'failure reason' means the announce was refused",
+          "errorCode": "tracker-refused",
+          "check": "'failure reason' absent"
+        },
+        {
+          "@id": "bt:rule-interval",
+          "@type": "ValidationRule",
+          "label": "an accepted announce carries an interval",
+          "errorCode": "tracker-no-interval",
+          "check": "interval is a positive integer"
+        },
+        {
+          "@id": "bt:rule-compact-length",
+          "@type": "ValidationRule",
+          "label": "a compact peer list is a whole number of 6-byte (or 18-byte) peers",
+          "errorCode": "tracker-bad-peers",
+          "check": "byteLength(peers) % 6 == 0 and byteLength(peers6) % 18 == 0"
+        },
+        {
+          "@id": "bt:rule-udp-transaction",
+          "@type": "ValidationRule",
+          "label": "a UDP response echoes the request's transaction id",
+          "errorCode": "tracker-udp-transaction",
+          "check": "response.transaction_id == request.transaction_id, else the datagram is not ours and is dropped"
+        },
+        {
+          "@id": "bt:rule-udp-action",
+          "@type": "ValidationRule",
+          "label": "a UDP response's action matches the request's, or is 3 (error)",
+          "errorCode": "tracker-udp-action",
+          "check": "response.action == request.action or response.action == 3"
+        },
+        {
+          "@id": "bt:rule-udp-length",
+          "@type": "ValidationRule",
+          "label": "a UDP response is at least its header",
+          "errorCode": "tracker-udp-short",
+          "check": "connect: 16 bytes; announce: 20; scrape: 8; error: 8"
+        },
+        {
+          "@id": "bt:rule-udp-connection-age",
+          "@type": "ValidationRule",
+          "label": "a connection id is used within 60 seconds of the connect response",
+          "errorCode": "tracker-udp-connection-expired",
+          "check": "now - connectedAt < 60 s, else connect again"
+        }
+      ]
+    }
+  ]
+}
