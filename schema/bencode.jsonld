@@ -1,0 +1,23 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    { "@id": "bt:bencode", "@type": "Module", "label": "bencode", "version": "0.0.1", "layer": "encoding", "bep": 3,
+      "comment": "The one encoding under everything in BitTorrent: four value types, each self-delimiting, with a canonical form so that the same value has exactly one byte representation. The infohash is the SHA-1 of a bencoded dictionary, which is why canonical form is not a nicety: two encodings of the same info dictionary would be two torrents." },
+    { "@id": "bt:BencodeType", "@type": "Enumeration", "module": "bt:bencode", "label": "BencodeType",
+      "comment": "The four value types of bencode. Keys of a dictionary are byte strings; the schema says which are UTF-8 text.",
+      "members": [
+        { "@id": "bt:Integer", "label": "integer", "comment": "'i' <decimal digits, optional leading '-'> 'e'. No leading zeros (i03e is invalid), no negative zero (i-0e is invalid), no size limit: 64-bit is the practical floor for lengths." },
+        { "@id": "bt:ByteString", "label": "byte string", "comment": "<decimal length> ':' <that many bytes>. Any bytes; the schema's valueType says whether a given string is UTF-8 text, raw bytes, or a concatenation of hashes." },
+        { "@id": "bt:List", "label": "list", "comment": "'l' <values> 'e'. Ordered; may be empty." },
+        { "@id": "bt:Dictionary", "label": "dictionary", "comment": "'d' <key value>* 'e'. Keys are byte strings and must appear in ascending order by raw bytes, each once. A decoder may accept unsorted keys for leniency, but an encoder never produces them." }
+      ] },
+    { "@id": "bt:bencodeCanonical", "@type": "RuleSet", "module": "bt:bencode", "label": "canonical form", "scope": "encoding",
+      "comment": "What makes a bencoding canonical. A strict decoder enforces these on input; every encoder satisfies them on output. encode(decode(x)) == x for any canonical x, which is what lets a torrent file be re-emitted byte-exactly and its infohash recomputed from its parts.",
+      "rules": [
+        { "@id": "bt:rule-int-form", "@type": "ValidationRule", "label": "integers have no leading zeros and no negative zero", "errorCode": "bencode-bad-integer", "check": "digits match /^(0|-?[1-9][0-9]*)$/" },
+        { "@id": "bt:rule-string-length", "@type": "ValidationRule", "label": "a string's length prefix is a plain decimal with no leading zeros, and that many bytes follow", "errorCode": "bencode-bad-string", "check": "length matches /^(0|[1-9][0-9]*)$/ and pos + length <= input length" },
+        { "@id": "bt:rule-dict-keys-sorted", "@type": "ValidationRule", "label": "dictionary keys are in ascending byte order, each once", "errorCode": "bencode-keys-unsorted", "check": "for each adjacent pair of keys, compareBytes(previous, next) < 0" },
+        { "@id": "bt:rule-no-trailing", "@type": "ValidationRule", "label": "a document is one value with nothing after it", "errorCode": "bencode-trailing-bytes", "check": "decoder position == input length after the top value" }
+      ] }
+  ]
+}

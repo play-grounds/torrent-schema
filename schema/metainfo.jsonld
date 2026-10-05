@@ -1,0 +1,57 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    { "@id": "bt:metainfo", "@type": "Module", "label": "metainfo", "version": "0.0.1", "layer": "metadata", "bep": 3,
+      "comment": "The .torrent file: a bencoded dictionary describing one file or one directory tree as a sequence of fixed-size pieces, each named by its SHA-1. The 'info' dictionary is the identity of a torrent: its SHA-1 over its canonical bencoding is the infohash, and everything outside 'info' (trackers, web seeds, comments, dates) can change without changing which torrent it is." },
+
+    { "@id": "bt:MetaInfo", "@type": "Struct", "module": "bt:metainfo", "label": "MetaInfo", "encoding": "bt:bencode",
+      "comment": "The top-level dictionary of a .torrent file. Only 'info' is required; the rest are hints about where to find peers and who made the file. Keys not listed here are preserved by the codec as 'extra' so a file round-trips byte-exactly.",
+      "fields": [
+        { "property": "bt:announce", "label": "announce", "key": "announce", "valueType": "utf8", "required": false, "comment": "The tracker URL (BEP 3). Outside the infohash: replaceable without changing the torrent." },
+        { "property": "bt:announceList", "label": "announce-list", "key": "announce-list", "valueType": "list", "itemType": "list:utf8", "required": false, "bep": 12, "comment": "Tiers of tracker URLs: a list of lists; a client tries a tier's trackers in random order before moving to the next tier." },
+        { "property": "bt:urlList", "label": "url-list", "key": "url-list", "valueType": "list", "itemType": "utf8", "required": false, "bep": 19, "comment": "Web seeds: plain HTTP(S) URLs of the content (a file, or a directory root for multi-file torrents). A client fetches pieces from them with Range requests as if from a peer. Outside the infohash. A single string instead of a list is tolerated on input." },
+        { "property": "bt:creationDate", "label": "creation date", "key": "creation date", "valueType": "int", "required": false, "comment": "Unix time the file was made. Outside the infohash." },
+        { "property": "bt:comment", "label": "comment", "key": "comment", "valueType": "utf8", "required": false },
+        { "property": "bt:createdBy", "label": "created by", "key": "created by", "valueType": "utf8", "required": false, "comment": "The program that made the file, e.g. 'WebTorrent/0300'." },
+        { "property": "bt:encodingName", "label": "encoding", "key": "encoding", "valueType": "utf8", "required": false, "comment": "The character encoding of the strings in 'info' when not UTF-8; rare, historical." },
+        { "property": "bt:info", "label": "info", "key": "info", "valueType": "struct", "structType": "bt:Info", "required": true, "comment": "The torrent's identity. Its canonical bencoding, byte for byte as it appears in the file, is what the infohash covers." }
+      ],
+      "derived": [
+        { "property": "bt:infohash", "label": "infohash", "derivation": "hex(sha1(rawBytes(info)))", "comment": "The 20-byte identity of the torrent: SHA-1 of the bencoded 'info' dictionary. Computed over the bytes as they appear in the file (which, for a canonical file, equal bencode(info)). This is the key in trackers, the DHT and magnet links." },
+        { "property": "bt:magnet", "label": "magnet", "derivation": "'magnet:?xt=urn:btih:' + infohash + '&dn=' + enc(info.name) + ('&tr=' + enc(t) for t in announce-list flattened or announce) + ('&ws=' + enc(w) for w in url-list)", "bep": 9, "comment": "A magnet link carries the infohash and, as hints, the name, trackers and web seeds; a peer with the infohash can fetch the info dictionary from the swarm (BEP 9) and verify it against the hash." }
+      ] },
+
+    { "@id": "bt:Info", "@type": "Struct", "module": "bt:metainfo", "label": "Info", "encoding": "bt:bencode",
+      "comment": "The dictionary the infohash covers. Exactly one of 'length' (single file) or 'files' (a directory) is present. Pieces are the content concatenated in order and cut every 'piece length' bytes; the last piece is shorter.",
+      "fields": [
+        { "property": "bt:name", "label": "name", "key": "name", "valueType": "utf8", "required": true, "comment": "The file name, or the directory name for a multi-file torrent. Advisory: a client may rename." },
+        { "property": "bt:pieceLength", "label": "piece length", "key": "piece length", "valueType": "int", "required": true, "comment": "Bytes per piece. Conventionally a power of two between 16 KiB and 16 MiB; the protocol does not require it." },
+        { "property": "bt:pieces", "label": "pieces", "key": "pieces", "valueType": "hashes", "required": true, "comment": "The SHA-1 of every piece, concatenated: a byte string whose length is 20 × the number of pieces. The codec presents it as a list of 40-hex strings." },
+        { "property": "bt:length", "label": "length", "key": "length", "valueType": "int", "required": false, "presentIf": "single-file", "comment": "The file's size in bytes. Present if and only if 'files' is absent." },
+        { "property": "bt:files", "label": "files", "key": "files", "valueType": "list", "itemType": "struct", "structType": "bt:FileEntry", "required": false, "presentIf": "multi-file", "comment": "The files of a directory torrent, in the order their bytes are concatenated into the piece stream." },
+        { "property": "bt:private", "label": "private", "key": "private", "valueType": "int", "required": false, "bep": 27, "comment": "1 if the torrent is private: clients use only the listed trackers, never DHT or PEX. Inside the infohash, so flipping it makes a different torrent." }
+      ],
+      "derived": [
+        { "property": "bt:pieceCount", "label": "pieceCount", "derivation": "byteLength(pieces) / 20" },
+        { "property": "bt:totalLength", "label": "totalLength", "derivation": "length, or sum(f.length for f in files)" },
+        { "property": "bt:lastPieceLength", "label": "lastPieceLength", "derivation": "totalLength - (pieceCount - 1) * pieceLength" }
+      ] },
+
+    { "@id": "bt:FileEntry", "@type": "Struct", "module": "bt:metainfo", "label": "FileEntry", "encoding": "bt:bencode",
+      "comment": "One file of a multi-file torrent.",
+      "fields": [
+        { "property": "bt:fileLength", "label": "length", "key": "length", "valueType": "int", "required": true },
+        { "property": "bt:path", "label": "path", "key": "path", "valueType": "list", "itemType": "utf8", "required": true, "comment": "Path components below the torrent's name, each a UTF-8 string; the last is the file name." }
+      ] },
+
+    { "@id": "bt:metainfoRules", "@type": "RuleSet", "module": "bt:metainfo", "label": "metainfo validity", "scope": "metainfo",
+      "comment": "What a decoded MetaInfo must satisfy to describe a torrent at all. A file that fails these has no infohash worth computing.",
+      "rules": [
+        { "@id": "bt:rule-info-present", "@type": "ValidationRule", "label": "'info' is present and a dictionary", "errorCode": "metainfo-no-info", "check": "info != null" },
+        { "@id": "bt:rule-pieces-length", "@type": "ValidationRule", "label": "'pieces' is a whole number of 20-byte hashes, at least one", "errorCode": "metainfo-bad-pieces", "check": "byteLength(pieces) > 0 and byteLength(pieces) % 20 == 0" },
+        { "@id": "bt:rule-one-of-length-files", "@type": "ValidationRule", "label": "exactly one of 'length' and 'files' is present", "errorCode": "metainfo-length-xor-files", "check": "(length != null) != (files != null)" },
+        { "@id": "bt:rule-piece-count-matches", "@type": "ValidationRule", "label": "the number of pieces equals ceil(totalLength / pieceLength)", "errorCode": "metainfo-piece-count", "check": "pieceCount == ceil(totalLength / pieceLength)" },
+        { "@id": "bt:rule-piece-length-positive", "@type": "ValidationRule", "label": "'piece length' is a positive integer", "errorCode": "metainfo-bad-piece-length", "check": "pieceLength > 0" }
+      ] }
+  ]
+}
