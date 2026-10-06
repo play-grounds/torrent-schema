@@ -10,12 +10,14 @@ const peerId = '2d5453303030312d' + Array.from(crypto.getRandomValues(new Uint8A
 const who = (t) => `${esc(t.operator ?? 'unknown')}${t.since ? ` · since ${esc(t.since)}` : ''}<div class="tiny mut">${esc(t.source)}${t.notes ? ` — ${esc(t.notes)}` : ''}</div>`;
 $('udp').innerHTML = others.map((t) => `<tr><td class="mono wrap">${esc(t.url)}</td><td>${who(t)}</td><td class="tiny">${esc(t.notes ?? '')}</td></tr>`).join('');
 const ask = (url) => new Promise((resolve) => {
-  const t0 = Date.now(); let sock; const done = (r) => { try { sock.close(); } catch {} resolve({ ms: Date.now() - t0, ...r }); };
-  const timer = setTimeout(() => done({ error: 'no answer in 8 s' }), 8000);
+  const t0 = Date.now(); let sock, opened = false; const done = (r) => { try { sock.close(); } catch {} resolve({ ms: Date.now() - t0, ...r }); };
+  // the stage reached says where a failure is: a socket that never opened is the browser or the network; one that opened and heard nothing is the tracker
+  const timer = setTimeout(() => done({ error: opened ? 'connected, no reply in 8 s' : 'could not connect in 8 s (no open, no refusal: the browser or the network, not the tracker)' }), 8000);
   try { sock = new WebSocket(url); } catch (e) { clearTimeout(timer); return done({ error: 'bad URL' }); }
-  sock.onopen = () => sock.send(JSON.stringify(X.announce({ info_hash: INFOHASH, peer_id: peerId, numwant: 0, left: BYTES, event: 'started' })));
+  sock.onopen = () => { opened = true; sock.send(JSON.stringify(X.announce({ info_hash: INFOHASH, peer_id: peerId, numwant: 0, left: BYTES, event: 'started' }))); };
+  sock.onclose = (e) => { if (!opened) { clearTimeout(timer); done({ error: `refused (close ${e.code})` }); } };
   sock.onmessage = (m) => { let d; try { d = JSON.parse(m.data); } catch { return; } const r = X.read(d); if (r.kind === 'reply' && !r.error) { clearTimeout(timer); done({ seeders: r.complete, leechers: r.incomplete, interval: r.interval }); } else if (r.kind === 'failure') { clearTimeout(timer); done({ error: r.reason }); } else if (r.kind === 'reply') { clearTimeout(timer); done({ error: r.error }); } };
-  sock.onerror = () => { clearTimeout(timer); done({ error: 'refused' }); };
+  sock.onerror = () => { if (!opened) { clearTimeout(timer); done({ error: 'refused' }); } };
 });
 async function run() {
   $('again').disabled = true; $('when').textContent = 'asking…';

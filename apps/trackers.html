@@ -27,7 +27,7 @@
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
   table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; } td.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
   .mono { font-family: var(--mono); font-size: .9em; } .wrap { overflow-wrap: anywhere; } .mut { color: var(--mut); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); } .tiny { font-size: .85em; }
-  button { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; }
+  button { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; } button.p { background: var(--link); color: #fff; border-color: var(--link); } button:disabled { opacity: .55; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -35,7 +35,7 @@
 <p class="sub">Every public tracker we know of, WebSocket ones first, as <a href="../data/trackers.jsonld">JSON-LD</a> (each an entry of the schema's <a href="../schema/tracker.jsonld">Tracker</a> struct). Alive or not is measured, not claimed: this page announces to each WebSocket tracker as a leecher wanting no peers, for the <a href="https://play-grounds.github.io/utxo-swarm/">txbt4 UTXO snapshot</a>'s infohash, and shows what came back. The UDP ones are listed for the record; a browser cannot reach them. <span id="summary"></span></p>
 
 <div class="card">
-  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><button id="again" type="button">Ask again</button><span id="when" class="tiny mut"></span></div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><button id="again" class="p" type="button">Ask again</button><span id="when" class="tiny mut"></span></div>
   <table><thead><tr><th>tracker</th><th>operator · source</th><th>status</th><th class="n">seeders</th><th class="n">leechers</th><th class="n">ms</th></tr></thead><tbody id="ws"></tbody></table>
 </div>
 <div class="card">
