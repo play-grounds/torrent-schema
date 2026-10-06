@@ -59,7 +59,7 @@ $('go').onclick = async () => {
   for (const url of trackers) { const list = []; for (let i = 0; i < PER_TRACKER; i++) list.push(await makeOffer()); attempts.set(url, list); }
   log(`${trackers.length * PER_TRACKER} offer(s) ready, ${PER_TRACKER} per tracker`);
   $('state').textContent = 'announcing…'; let answered = false, answers = 0;
-  const answering = []; const closeOthers = (keep) => { for (const list of attempts.values()) for (const a of list) if (a !== keep) { try { a.pc.close(); } catch {} } for (const c of answering) if (c !== pc) { try { c.close(); } catch {} } };
+  const answering = []; const closeOthers = (keep) => { for (const list of attempts.values()) for (const a of list) if (a !== keep) { try { a.pc.close(); } catch {} } for (const a of answering) if (a !== keep) { try { a.pc.close(); } catch {} } };
   for (const [url, list] of attempts) {
     const announce = X.announce({ info_hash: torrent.infohash, peer_id: PEER_ID, numwant: PER_TRACKER, left: torrent.totalLength, event: 'started', offers: list.map((a) => ({ offer_id: a.offerId, offer: a.offer })) });
     let ws; try { ws = new WebSocket(url); } catch (e) { log(`${url}: ${e.message}`); continue; } sockets.push(ws);
@@ -70,10 +70,10 @@ $('go').onclick = async () => {
         // every answer is taken and its connection tried; the first data channel that opens wins (an answer is not a connection: NAT decides that)
         log(`${url}: answer from ${r.peer_id.slice(0, 16)}… (${esc(new TextDecoder().decode(hexToBytes(r.peer_id)).slice(0, 8))}) for offer ${r.offer_id.slice(0, 8)}…: connecting`); if (!answered) set('t-answer', `${answers} answer(s) so far: ${esc(url.replace('wss://', ''))} relayed one from ${r.peer_id} (${esc(new TextDecoder().decode(hexToBytes(r.peer_id)).slice(0, 8))}); connecting…`);
         a.peer = r.peer_id; a.via = url; a.pc.onconnectionstatechange = () => { log(`${a.via.replace('wss://', '')}/${a.peer.slice(0, 8)}: connection ${a.pc.connectionState}`); if (a.pc.connectionState === 'failed') { a.failed = true; if (!answered) set('t-dc', `${[...attempts.values()].flat().filter((x) => x.failed).length} connection(s) failed so far (NAT); still trying`, 'mut'); } };
-        a.dc.onopen = () => { if (answered) return; answered = true; pc = a.pc; dc = a.dc; closeOthers(a); set('t-answer', `${esc(a.via.replace('wss://', ''))} relayed an answer from peer ${a.peer} (${esc(new TextDecoder().decode(hexToBytes(a.peer)).slice(0, 8))}); its connection opened`); wire(); dc.onopen(); };
+        a.dc.onopen = () => { if (answered) return; log(`${a.via.replace('wss://', '')}/${a.peer.slice(0, 8)}: data channel open, handshaking to see what it has`); wire(a); a.dc.onopen(); };
         try { await a.pc.setRemoteDescription(r.answer); } catch (e) { log('setRemoteDescription: ' + e.message); } }
       else if (r.kind === 'offer' && !answered) { log(`${url}: peer ${r.peer_id.slice(0, 8)}… offered to us: answering`); try {
-          const c = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }); let channel = null; c.ondatachannel = (ev) => { channel = ev.channel; channel.binaryType = 'arraybuffer'; const take = () => { if (answered) return; answered = true; pc = c; dc = channel; closeOthers(null); set('t-answer', `we answered an offer from peer ${r.peer_id} (${esc(new TextDecoder().decode(hexToBytes(r.peer_id)).slice(0, 8))}) via ${esc(url.replace('wss://', ''))}`); log('their data channel opened: we are the answerer'); wire(); dc.onopen(); }; if (channel.readyState === 'open') take(); else channel.onopen = take; };
+          const c = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }); let channel = null; c.ondatachannel = (ev) => { channel = ev.channel; channel.binaryType = 'arraybuffer'; const a = { pc: c, dc: channel, peer: r.peer_id, via: url + ' (their offer)' }; answering.push(a); const take = () => { if (answered) return; log('their data channel opened: we are the answerer; handshaking'); wire(a); a.dc.onopen(); }; if (channel.readyState === 'open') take(); else channel.onopen = take; };
           await c.setRemoteDescription(r.offer); await c.setLocalDescription(await c.createAnswer());
           await new Promise((res) => { if (c.iceGatheringState === 'complete') return res(); c.addEventListener('icegatheringstatechange', () => c.iceGatheringState === 'complete' && res()); setTimeout(res, 3000); });
           ws.send(JSON.stringify(X.answer({ info_hash: torrent.infohash, peer_id: PEER_ID, to_peer_id: r.peer_id, offer_id: r.offer_id, answer: { type: 'answer', sdp: c.localDescription.sdp } }))); answering.push(c);
@@ -83,24 +83,29 @@ $('go').onclick = async () => {
       else if (r.error) log(`${url}: ${r.kind} refused: ${r.error}`); };
     ws.onerror = () => log(`${url}: socket error`);
   }
-  function wire() {
-  let buf = new Uint8Array(0), handshaken = false, names = {}, unchoked = false; let next = 0, inflight = 0, received = 0; const t1 = Date.now();
-  pc.onconnectionstatechange = () => { log('connection: ' + pc.connectionState); if (pc.connectionState === 'failed') stop('the WebRTC connection failed after opening'); };
+  let next = 0, inflight = 0, received = 0, t1 = Date.now(); let active = null; // the connection the job runs on, once one has what we need
+  function wire(a) {
+  let buf = new Uint8Array(0), handshaken = false, names = {}, unchoked = false; const dc = a.dc, pc = a.pc;
+  pc.onconnectionstatechange = () => { if (pc.connectionState === 'failed' && active === a) stop('the WebRTC connection failed after opening'); };
   // ---- the data channel: the wire protocol, byte for byte as over TCP
-  const send = (b) => dc.send(b);
-  const ask = () => { while (unchoked && inflight < 12 && next < queue.length && !stopped) { send(W.frame('Request', queue[next])); next++; inflight++; } };
-  dc.onopen = () => { set('t-dc', 'open', 'ok'); log('data channel open: sending our handshake and extended handshake'); send(W.handshake({ info_hash: torrent.infohash, peer_id: PEER_ID })); send(W.extendedHandshake({ m: { ut_metadata: 1, ut_pex: 2 }, v: 'torrent-schema/0.0.3' })); $('state').textContent = 'handshaking…'; };
+  const send = (b) => { try { dc.send(b); } catch {} };
+  const ask = () => { if (active !== a) return; while (unchoked && inflight < 12 && next < queue.length && !stopped) { send(W.frame('Request', queue[next])); next++; inflight++; } };
+  dc.onopen = () => { if (a.greeted) return; a.greeted = true; log(`${a.peer?.slice(0, 8) ?? 'peer'}: sending our handshake and extended handshake`); send(W.handshake({ info_hash: torrent.infohash, peer_id: PEER_ID })); send(W.extendedHandshake({ m: { ut_metadata: 1, ut_pex: 2 }, v: 'torrent-schema/0.0.3' })); $('state').textContent = 'handshaking…'; };
   dc.onmessage = async (ev) => {
     const chunk = new Uint8Array(ev.data); const joined = new Uint8Array(buf.length + chunk.length); joined.set(buf); joined.set(chunk, buf.length); buf = joined;
     if (!handshaken) { if (buf.length < 68) return; const h = W.readHandshake(buf); if (h.error || h.handshake.info_hash !== torrent.infohash) return stop('bad handshake: ' + (h.error ?? 'another infohash')); handshaken = true; buf = buf.subarray(68);
       set('t-hs', `peer ${h.handshake.peer_id} (${esc(new TextDecoder().decode(hexToBytes(h.handshake.peer_id)).slice(0, 8))}) · supports: ${Object.entries(h.supports).filter(([, v]) => v).map(([k]) => k).join(', ') || 'nothing beyond BEP 3'}`); log('their handshake: ok, same infohash'); }
     const { messages, rest, error } = W.feed(buf); buf = rest; if (error) return stop('wire: ' + error);
     for (const m of messages) {
-      if (m.name === 'Bitfield') { const p = W.pieces(m.bits, torrent.pieceCount); if (p.error) return stop('wire-bad-bitfield'); const has = job.pieces.every((i) => p.have.includes(i)); set('t-bits', `${m.bits.length / 2} bytes · has ${fmt(p.have.length)} of ${fmt(torrent.pieceCount)} pieces${has ? '' : ' · <span class="bad">not all the ones we want</span>'}`); log(`bitfield: ${p.have.length}/${torrent.pieceCount}`); if (has) { send(W.frame('interested')); log('sent: interested'); } else stop('this peer does not have every piece we need (a multi-peer fetch is not built yet)'); }
-      else if (m.name === 'Extended') { const x = W.readExtended(m, names); if (x.kind === 'handshake') { names = Object.fromEntries(Object.entries(x.value.m ?? {}).map(([n, id]) => [id, n])); set('t-ext', `${esc(x.value.v ?? 'no version given')} · m ${esc(JSON.stringify(x.value.m))} · metadata_size ${fmt(x.value.metadata_size ?? 0)}`); log('their extended handshake: ' + (x.value.v ?? '')); } else log('extended: ' + x.kind); }
-      else if (m.name === 'unchoke') { unchoked = true; log(`unchoked: requesting ${queue.length} blocks of ${job.pieces.length} piece(s), 12 in flight`); $('state').textContent = job.play ? `fetching ${job.play.path}…` : `fetching piece ${index}…`; ask(); }
+      if (m.name === 'Bitfield') { const p = W.pieces(m.bits, torrent.pieceCount); if (p.error) { log(`${a.peer.slice(0, 8)}: bad bitfield: dropped`); try { pc.close(); } catch {} return; } const hv = new Set(p.have); const has = job.pieces.every((i) => hv.has(i)); log(`${a.peer.slice(0, 8)}: bitfield ${p.have.length}/${torrent.pieceCount}${has ? ' — has everything we need' : ' — not enough, waiting for another peer'}`);
+        if (!has) { if (!active) set('t-bits', `${a.peer.slice(0, 8)}… has ${fmt(p.have.length)} of ${fmt(torrent.pieceCount)} pieces: not all we need; waiting for a peer that has them`, 'mut'); try { pc.close(); } catch {} return; }
+        if (active) return; active = a; answered = true; closeOthers(a); t1 = Date.now();
+        set('t-answer', `${esc(a.via.replace('wss://', ''))}: peer ${a.peer} (${esc(new TextDecoder().decode(hexToBytes(a.peer)).slice(0, 8))}) — connected, and it has what we need`); set('t-dc', 'open', 'ok');
+        set('t-hs', `peer ${a.peer} (${esc(new TextDecoder().decode(hexToBytes(a.peer)).slice(0, 8))})`); set('t-bits', `${m.bits.length / 2} bytes · has ${fmt(p.have.length)} of ${fmt(torrent.pieceCount)} pieces`); send(W.frame('interested')); log('sent: interested'); }
+      else if (m.name === 'Extended') { const x = W.readExtended(m, names); if (x.kind === 'handshake') { names = Object.fromEntries(Object.entries(x.value.m ?? {}).map(([n, id]) => [id, n])); if (active === a || !active) set('t-ext', `${esc(x.value.v ?? 'no version given')} · m ${esc(JSON.stringify(x.value.m))} · metadata_size ${fmt(x.value.metadata_size ?? 0)}`); log('their extended handshake: ' + (x.value.v ?? '')); } else log('extended: ' + x.kind); }
+      else if (m.name === 'unchoke') { unchoked = true; if (active !== a) continue; log(`unchoked: requesting ${queue.length} blocks of ${job.pieces.length} piece(s), 12 in flight`); $('state').textContent = job.play ? `fetching ${job.play.path}…` : `fetching piece ${index}…`; ask(); }
       else if (m.name === 'choke') { unchoked = false; log('choked'); }
-      else if (m.name === 'Piece') { if (!want.has(m.index)) continue; inflight--; const data = hexToBytes(m.block); if (!store.has(m.index)) store.set(m.index, new Map()); store.get(m.index).set(m.begin, data); received += data.length; $('bar').value = received / totalBytes;
+      else if (m.name === 'Piece') { if (active !== a || !want.has(m.index)) continue; inflight--; const data = hexToBytes(m.block); if (!store.has(m.index)) store.set(m.index, new Map()); store.get(m.index).set(m.begin, data); received += data.length; $('bar').value = received / totalBytes;
         set('t-blocks', `${fmt(received)} of ${fmt(totalBytes)} bytes · ${verified.size} of ${job.pieces.length} piece(s) verified · ${(received / 1048576 / ((Date.now() - t1) / 1000)).toFixed(2)} MB/s`);
         if (store.get(m.index).size === nBlocksOf(m.index)) { const piece = new Uint8Array(pieceLen(m.index)); for (const [b, d] of store.get(m.index)) piece.set(d, b); store.delete(m.index); const h = bytesToHex(await sha1(piece)); const ok = h === info.pieces[m.index];
           if (!ok) { log(`piece ${m.index}: sha1 ${h} DOES NOT MATCH pieces[${m.index}]`); return stop(`piece ${m.index} failed its hash: the peer sent bad data`); } verified.set(m.index, piece); log(`piece ${m.index}: verified`); set('t-blocks', `${fmt(received)} of ${fmt(totalBytes)} bytes · ${verified.size} of ${job.pieces.length} piece(s) verified · ${(received / 1048576 / ((Date.now() - t1) / 1000)).toFixed(2)} MB/s`);
@@ -117,7 +122,7 @@ $('go').onclick = async () => {
       else log('message: ' + m.name);
     }
   };
-  dc.onclose = () => { if (!stopped) stop('the data channel closed'); };
+  dc.onclose = () => { if (!stopped && active === a) stop('the data channel closed'); };
   }
-  setTimeout(() => { if (!answered && !stopped) stop(answers ? `${answers} answer(s) in 60 s but no connection opened: every pair failed to traverse NAT (no TURN server here)` : 'no answer within 60 s: no peer in this swarm took any of our offers, and none offered to us'); }, 60000);
+  setTimeout(() => { if (!active && !stopped) stop(answers ? `${answers} answer(s) in 60 s but none both connected and had every piece we need (NAT, or partial peers; a multi-peer fetch is not built yet)` : 'no answer within 60 s: no peer in this swarm took any of our offers, and none offered to us'); }, 60000);
 };
