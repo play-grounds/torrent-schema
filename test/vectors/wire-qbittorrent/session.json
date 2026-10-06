@@ -1,0 +1,41 @@
+{
+  "infohash": "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0",
+  "ourPeerId": "2d5453303030312d313139343732306435656639",
+  "piece": 0,
+  "pieceLength": 4194304,
+  "blocks": 256,
+  "theirPeerId": "2d7142353330302d65567a30517471753951482d",
+  "theirSupports": {
+    "extensions": true,
+    "dht": true,
+    "fast": true
+  },
+  "theirExtended": {
+    "m": {
+      "lt_donthave": 7,
+      "share_mode": 8,
+      "upload_only": 3,
+      "ut_holepunch": 4,
+      "ut_metadata": 2,
+      "ut_pex": 1
+    },
+    "v": "qBittorrent/5.3.0rc1",
+    "reqq": 2000,
+    "metadata_size": 4248,
+    "yourip": "7f000001",
+    "extra": {
+      "complete_ago": -1,
+      "upload_only": 1
+    }
+  },
+  "bitfield": {
+    "bytes": 26,
+    "have": 208,
+    "error": null
+  },
+  "unchoked": true,
+  "firstBlockHead": "7574786fff02001c163f28ccb157caa7",
+  "pieceSha1": "26b0fb2642b221755e95a52352cbad975cf40250",
+  "expectedSha1": "26b0fb2642b221755e95a52352cbad975cf40250",
+  "pieceOk": true
+}

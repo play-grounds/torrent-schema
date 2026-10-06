@@ -58,3 +58,21 @@ test('ut_metadata: a data message is a dictionary followed by raw bytes; ut_pex 
   assert.equal(pex.kind, 'ut_pex'); assert.deepEqual(pex.value.added, [{ ip: '10.0.0.1', port: 6881 }]); assert.equal(pex.value['added.f'], '02');
   assert.equal(W.readExtended({ ext_id: 9, payload: hex(encode({})) }, { 2: 'ut_pex' }).error, 'wire-extension-unsupported');
 });
+
+// a third implementation: qBittorrent 5.3.0rc1 (libtorrent 2.1) seeding the snapshot on this machine, the same session
+// captured through this codec over TCP (test/vectors/wire-qbittorrent/): its handshake, its extended handshake with
+// the extensions libtorrent registers, a full bitfield, and piece 0 again hashing to pieces[0]
+const qvec = async (f) => new Uint8Array(await readFile(new URL('test/vectors/wire-qbittorrent/' + f + '.bin', root)));
+const qsession = await load('test/vectors/wire-qbittorrent/session.json');
+test('qBittorrent 5.3: the handshake names the client (-qB5300-) and advertises DHT, fast and the extension protocol', async () => {
+  const h = W.readHandshake(await qvec('handshakeReceived')); assert.equal(h.error, null); assert.equal(h.handshake.info_hash, qsession.infohash);
+  assert.match(Buffer.from(h.handshake.peer_id, 'hex').toString('latin1'), /^-qB5300-/); assert.deepEqual(h.supports, { extensions: true, dht: true, fast: true });
+});
+test("qBittorrent 5.3: the extended handshake says qBittorrent/5.3.0rc1 and registers libtorrent's extensions, with the same metadata_size as webtorrent", async () => {
+  const x = W.readExtended(W.feed(await qvec('extendedHandshakeReceived')).messages[0]); assert.equal(x.kind, 'handshake'); assert.equal(x.value.v, 'qBittorrent/5.3.0rc1');
+  assert.deepEqual(Object.keys(x.value.m).sort(), ['lt_donthave', 'share_mode', 'upload_only', 'ut_holepunch', 'ut_metadata', 'ut_pex']); assert.equal(x.value.metadata_size, 4248); assert.equal(x.value.reqq, 2000);
+});
+test('qBittorrent 5.3: a full bitfield, and the first block of piece 0 is the snapshot header; the session verified the whole piece', async () => {
+  const bf = W.feed(await qvec('bitfieldReceived')).messages[0]; assert.equal(W.pieces(bf.bits, torrent.pieceCount).have.length, 208);
+  const m = W.feed(await qvec('pieceReceived')).messages[0]; assert.equal(m.name, 'Piece'); assert.ok(m.block.startsWith('7574786fff0200')); assert.equal(qsession.pieceOk, true); assert.equal(qsession.pieceSha1, torrent.meta.info.pieces[0]);
+});
