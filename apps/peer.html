@@ -35,11 +35,12 @@
 </head>
 <body>
 <h1>A peer from the schema <span class="mut tiny">· <a href="../">Torrent Schema</a></span></h1>
-<p class="sub">A BitTorrent peer in this tab written from the schema and its codec, with no torrent library: it announces to a WebSocket tracker with a WebRTC offer (<a href="../schema/webtorrent.jsonld">webtorrent</a>), takes a seeder's answer, opens the data channel, exchanges handshakes (<a href="../schema/wire.jsonld">wire</a>), reads the bitfield, requests one piece of the txbt4 UTXO snapshot block by block and checks its SHA-1 against the torrent (<a href="../schema/metainfo.jsonld">metainfo</a>). Two implementations that share no code, exchanging a verified piece.</p>
+<p class="sub">A BitTorrent peer in this tab written from the schema and its codec, with no torrent library: it announces to a WebSocket tracker with a WebRTC offer (<a href="../schema/webtorrent.jsonld">webtorrent</a>), takes a seeder's answer, opens the data channel, exchanges handshakes (<a href="../schema/wire.jsonld">wire</a>), reads the bitfield, requests one piece of a known torrent (the txbt4 UTXO snapshot by default) block by block and checks its SHA-1 against the torrent (<a href="../schema/metainfo.jsonld">metainfo</a>). Two implementations that share no code, exchanging a verified piece.</p>
 
 <div class="card">
+  <div class="row tiny" id="which" style="margin-bottom:8px"></div>
   <div class="row"><label for="trackers">Trackers:</label><input id="trackers" class="mono wide" value="wss://tracker.openwebtorrent.com,wss://tracker.webtorrent.dev" spellcheck="false"></div>
-  <div class="row"><label for="piece">Piece:</label><input id="piece" inputmode="numeric" value="0" style="width:5rem"><span class="tiny mut">of 208, 4 MiB each (the last is 1,615,125 bytes)</span></div>
+  <div class="row"><label for="piece">Piece:</label><input id="piece" inputmode="numeric" value="0" style="width:5rem"><span class="tiny mut" id="piece-note">…</span></div>
   <div class="row"><button id="go" class="p" type="button">Fetch the piece from the swarm</button><button id="stop" type="button" disabled>Stop</button><span id="state" class="mut">idle</span></div>
   <progress id="bar" value="0" max="1"></progress>
 </div>

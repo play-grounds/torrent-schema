@@ -15,7 +15,8 @@
       "name": "utxo-knots-150307.dat",
       "about": "the txbt4 UTXO snapshot at block 150,307 (869,836,053 bytes)",
       "source": "play-grounds/utxo-swarm",
-      "kind": "data"
+      "kind": "data",
+      "file": "torrents/utxo-knots-150307.torrent"
     },
     {
       "@type": "bt:KnownTorrent",
@@ -23,7 +24,8 @@
       "name": "Sintel",
       "about": "Blender Foundation film; the WebTorrent demo torrent",
       "source": "webtorrent.io examples",
-      "kind": "film"
+      "kind": "film",
+      "file": "torrents/sintel.torrent"
     },
     {
       "@type": "bt:KnownTorrent",
@@ -31,7 +33,8 @@
       "name": "Big Buck Bunny",
       "about": "Blender Foundation film; a WebTorrent demo torrent",
       "source": "webtorrent.io examples",
-      "kind": "film"
+      "kind": "film",
+      "file": "torrents/big-buck-bunny.torrent"
     },
     {
       "@type": "bt:KnownTorrent",
@@ -39,7 +42,8 @@
       "name": "Cosmos Laundromat",
       "about": "Blender Foundation film; a WebTorrent demo torrent",
       "source": "webtorrent.io examples",
-      "kind": "film"
+      "kind": "film",
+      "file": "torrents/cosmos-laundromat.torrent"
     },
     {
       "@type": "bt:KnownTorrent",
@@ -47,7 +51,8 @@
       "name": "Tears of Steel",
       "about": "Blender Foundation film; a WebTorrent demo torrent",
       "source": "webtorrent.io examples",
-      "kind": "film"
+      "kind": "film",
+      "file": "torrents/tears-of-steel.torrent"
     },
     {
       "@type": "bt:KnownTorrent",
@@ -55,7 +60,8 @@
       "name": "The WIRED CD",
       "about": "Creative Commons music; a WebTorrent demo torrent",
       "source": "webtorrent.io examples",
-      "kind": "music"
+      "kind": "music",
+      "file": "torrents/wired-cd.torrent"
     },
     {
       "@type": "bt:KnownTorrent",
@@ -63,7 +69,8 @@
       "name": "ubuntu-24.04.3-live-server-amd64.iso",
       "about": "Ubuntu Server 24.04.3; a desktop-client swarm, expected absent from WebSocket trackers",
       "source": "releases.ubuntu.com (test/vectors)",
-      "kind": "iso"
+      "kind": "iso",
+      "file": "torrents/ubuntu-24.04.3-live-server-amd64.iso.torrent"
     },
     {
       "@type": "bt:KnownTorrent",
@@ -71,7 +78,8 @@
       "name": "debian-13.7.0-amd64-netinst.iso",
       "about": "Debian 13.7 netinst; a desktop-client swarm, expected absent from WebSocket trackers",
       "source": "cdimage.debian.org (test/vectors)",
-      "kind": "iso"
+      "kind": "iso",
+      "file": "torrents/debian-13.7.0-amd64-netinst.iso.torrent"
     }
   ]
 }

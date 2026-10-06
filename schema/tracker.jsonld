@@ -901,6 +901,14 @@
           "key": "kind",
           "valueType": "utf8",
           "required": false
+        },
+        {
+          "property": "bt:torrentFile",
+          "label": "file",
+          "key": "file",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "Where the .torrent file is kept, relative to data/, so the metainfo can be shown and a piece fetched; the infohash the file yields must equal the entry's."
         }
       ]
     }

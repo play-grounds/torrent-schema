@@ -31,7 +31,7 @@ else {
   });
   async function run() {
     $('again').disabled = true; $('when').textContent = 'asking…'; for (const id of ['l-conn', 'l-ann', 'l-all', 'l-scr']) { $(id).textContent = '…'; $(id).className = 'mut'; }
-    $('known').innerHTML = known.map((k, i) => `<tr id="k${i}"><td>${esc(k.name)}<div class="tiny mut">${esc(k.about ?? '')}</div></td><td class="mono tiny">${k.infohash.slice(0, 16)}…</td><td class="n mut">…</td><td class="n"></td><td class="n"></td><td class="tiny mut"></td></tr>`).join('');
+    $('known').innerHTML = known.map((k, i) => `<tr id="k${i}"><td><a href="torrent.html?h=${k.infohash}">${esc(k.name)}</a><div class="tiny mut">${esc(k.about ?? '')}</div></td><td class="mono tiny">${k.infohash.slice(0, 16)}…</td><td class="n mut">…</td><td class="n"></td><td class="n"></td><td class="tiny mut"></td></tr>`).join('');
     let s = await session();
     if (s.error) { $('l-conn').innerHTML = `<span class="bad">${esc(s.error)}</span>`; for (const id of ['l-ann', 'l-all', 'l-scr']) $(id).textContent = '—'; $('again').disabled = false; $('when').textContent = 'asked at ' + new Date().toLocaleTimeString(); return; }
     $('l-conn').innerHTML = `<span class="ok">open</span> in ${s.ms} ms`;

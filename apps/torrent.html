@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A torrent — Torrent Schema</title>
+<meta name="description" content="One torrent from its JSON-LD entry and its .torrent file decoded by the schema — files, pieces, trackers, web seeds, magnet — and what every live WebSocket tracker knows of it right now.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A torrent — Torrent Schema">
+<meta property="og:description" content="One torrent: its entry, its metainfo decoded by the schema, and every live WebSocket tracker's counts for it right now.">
+<meta property="og:image" content="https://play-grounds.github.io/torrent-schema/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A torrent — Torrent Schema">
+<meta name="twitter:image" content="https://play-grounds.github.io/torrent-schema/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss: ws:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --ok: #1c7a3c; --bad: #b3261e; --link: #1f5fa3; --accent: #c2410c; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --ok: #5fcf7f; --bad: #ff7a70; --accent: #f08c4b; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.5rem; margin: 1.2rem 0 .2rem; } h2 { font-size: 1.05rem; margin: 1.2rem 0 .4rem; } .sub { color: var(--mut); margin: 0 0 1rem; } a { color: var(--link); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; } td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mono { font-family: var(--mono); font-size: .9em; } .wrap { overflow-wrap: anywhere; } .mut { color: var(--mut); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); } .tiny { font-size: .85em; }
+  button { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; } button.p { background: var(--link); color: #fff; border-color: var(--link); } button:disabled { opacity: .55; cursor: not-allowed; }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .92rem; margin-bottom: .6rem; } details > summary { cursor: pointer; } #pieces { max-height: 12rem; overflow: auto; }
+</style>
+</head>
+<body>
+<h1 id="title">Known torrents <span class="mut tiny">· <a href="../">Torrent Schema</a></span></h1>
+<p class="sub" id="sub">Loading…</p>
+<nav id="others"></nav>
+<div id="list" class="card" hidden><table><thead><tr><th>torrent</th><th>kind</th><th>about</th><th>infohash</th></tr></thead><tbody id="list-rows"></tbody></table></div>
+<div id="one" hidden>
+  <div class="card">
+    <h2 style="margin-top:0">The entry <span class="mut tiny">— <a href="../data/torrents.jsonld">data/torrents.jsonld</a>, a <a href="../schema/tracker.jsonld">KnownTorrent</a></span></h2>
+    <table><tbody id="entry"></tbody></table>
+  </div>
+  <div class="card">
+    <h2 style="margin-top:0">The metainfo, decoded by the schema <span class="mut tiny">— <a id="file-link" href="#">the .torrent</a> · <a href="../schema/metainfo.jsonld">MetaInfo</a></span></h2>
+    <table><tbody id="meta"></tbody></table>
+    <details><summary>files</summary><table><tbody id="files"></tbody></table></details>
+    <details><summary>pieces</summary><div id="pieces" class="mono tiny"></div></details>
+  </div>
+  <div class="card">
+    <h2 style="margin-top:0">What the live trackers know of it <span class="mut tiny">— asked just now, as a leecher wanting no peers</span></h2>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><button id="again" class="p" type="button">Ask again</button><a id="fetch" class="tiny" href="#">fetch a piece of it from the swarm, in this tab →</a><span id="when" class="tiny mut"></span></div>
+    <table><thead><tr><th>tracker</th><th>status</th><th class="n">seeders</th><th class="n">leechers (less this page)</th><th class="n">ms</th></tr></thead><tbody id="live"></tbody></table>
+  </div>
+</div>
+<p class="tiny mut">The entry is a claim with a source; the metainfo is the file's bytes read by the schema; the counts are measurements from this browser. AGPL-3.0-or-later.</p>
+<script type="module" src="torrent.js"></script>
+</body>
+</html>

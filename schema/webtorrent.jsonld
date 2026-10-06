@@ -408,6 +408,13 @@
           "label": "once connected, the data channel carries the wire protocol exactly as over TCP",
           "errorCode": "wire-bad-handshake",
           "check": "the first 68 bytes on the channel are a Handshake for the same info_hash"
+        },
+        {
+          "@id": "bt:rule-ws-no-trickle",
+          "@type": "ValidationRule",
+          "label": "a description sent through the tracker does not say trickle",
+          "errorCode": "ws-trickle",
+          "check": "the SDP has no a=ice-options:trickle line: the protocol carries one whole description each way and no candidates afterwards, so the line promises what cannot come; browsers put it in by default and WebTorrent clients strip it (found when no stranger answered offers that kept it)"
         }
       ]
     }

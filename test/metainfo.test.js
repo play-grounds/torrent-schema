@@ -14,6 +14,15 @@ const VECTORS = [
   ['ubuntu-24.04.3-live-server-amd64.iso.torrent', { infohash: 'a1dfefec1a9dd7fa8a041ebeeea271db55126d2f', name: 'ubuntu-24.04.3-live-server-amd64.iso', length: 3303444480, pieceLength: 262144, pieces: 12602 }],
   ['debian-13.7.0-amd64-netinst.iso.torrent', { infohash: '7acf8fb590b2060dd9c3146ef770169d593433b0', name: 'debian-13.7.0-amd64-netinst.iso', length: 792723456, pieceLength: 262144, pieces: 3024 }],
 ];
+const MULTI = [['sintel.torrent', '08ada5a7a6183aae1e09d831df6748d566095a10', 11, 129302391], ['big-buck-bunny.torrent', 'dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c', 3, 276445467], ['cosmos-laundromat.torrent', 'c9e15763f722f23e98a29decdfae341b98d53056', 6, 220864086], ['tears-of-steel.torrent', '209c8226b299b308beaf2b9cd3fb49212dbd13ec', 10, 571426507], ['wired-cd.torrent', 'a88fda5954e89178c372716a6a78b8180ed4dad3', 18, 56070710]];
+for (const [file, infohash, nFiles, total] of MULTI) {
+  test(`${file} (data/torrents, multi-file, from webtorrent.io): infohash, files, total, byte-exact`, async () => {
+    const bytes = new Uint8Array(await readFile(new URL('data/torrents/' + file, root))); const t = await codec.parse(bytes);
+    assert.equal(t.infohash, infohash); assert.equal(t.meta.info.files.length, nFiles); assert.equal(t.totalLength, total); assert.equal(t.error, null); assert.equal(t.meta.info.length, undefined);
+    assert.equal(t.meta['url-list'].length, 1); assert.equal(t.meta['announce-list'].flat().length, 8);
+    assert.deepEqual(codec.encode('MetaInfo', codec.decode('MetaInfo', bytes)), bytes);
+  });
+}
 for (const [file, x] of VECTORS) {
   test(`${file}: the schema derives the infohash every client agrees on, and the fields`, async () => {
     const bytes = await vector(file); const t = await codec.parse(bytes);
