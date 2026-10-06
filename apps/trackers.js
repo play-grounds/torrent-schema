@@ -25,6 +25,7 @@ async function run() {
   const results = await Promise.all(ws.map((t) => ask(t.url)));
   let alive = 0;
   results.forEach((r, i) => { const row = $('r' + i).children; if (r.error) { row[2].innerHTML = `<span class="bad">${esc(r.error)}</span>`; row[5].textContent = r.ms; } else { alive++; row[2].innerHTML = `<span class="ok">alive</span> <span class="tiny mut">· interval ${r.interval} s</span>`; row[3].textContent = r.seeders; row[4].textContent = r.leechers; row[5].textContent = r.ms; } });
-  $('summary').innerHTML = `<b>${alive} of ${ws.length}</b> answered just now.`; $('when').textContent = 'asked at ' + new Date().toLocaleTimeString(); $('again').disabled = false;
+  const silent = results.every((r) => r.error && r.error.startsWith('could not connect'));
+  $('summary').innerHTML = silent ? `<b class="bad">All ${ws.length} silent, none refused:</b> this browser is not letting the connections out. Seen with Brave Shields on this page (every host here is named <span class="mono">tracker.…</span>, which filter lists flag); the same page from Firefox or Chromium answers. Lower Shields for this site, or try another browser.` : `<b>${alive} of ${ws.length}</b> answered just now.`; $('when').textContent = 'asked at ' + new Date().toLocaleTimeString(); $('again').disabled = false;
 }
 $('again').onclick = run; run();
