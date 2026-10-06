@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A tracker — Torrent Schema</title>
+<meta name="description" content="One WebTorrent tracker, from its JSON-LD entry and what it answers live: an announce, a scrape, and what it knows of the torrents we can name.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="A tracker — Torrent Schema">
+<meta property="og:description" content="One WebTorrent tracker from its JSON-LD entry, asked live: announce, scrape, and what it knows of the torrents we can name.">
+<meta property="og:image" content="https://play-grounds.github.io/torrent-schema/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A tracker — Torrent Schema">
+<meta name="twitter:image" content="https://play-grounds.github.io/torrent-schema/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss: ws:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --ok: #1c7a3c; --bad: #b3261e; --link: #1f5fa3; --accent: #c2410c; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --ok: #5fcf7f; --bad: #ff7a70; --accent: #f08c4b; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.5rem; margin: 1.2rem 0 .2rem; } h2 { font-size: 1.05rem; margin: 1.2rem 0 .4rem; } .sub { color: var(--mut); margin: 0 0 1rem; } a { color: var(--link); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; } td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .mono { font-family: var(--mono); font-size: .9em; } .wrap { overflow-wrap: anywhere; } .mut { color: var(--mut); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); } .tiny { font-size: .85em; }
+  button { font: inherit; padding: 6px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--fg); cursor: pointer; } button.p { background: var(--link); color: #fff; border-color: var(--link); } button:disabled { opacity: .55; cursor: not-allowed; }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .92rem; margin-bottom: .6rem; }
+</style>
+</head>
+<body>
+<h1 id="title">A tracker <span class="mut tiny">· <a href="trackers.html">known trackers</a> · <a href="../">Torrent Schema</a></span></h1>
+<p class="sub" id="sub">Loading…</p>
+<nav id="others"></nav>
+
+<div class="card">
+  <h2 style="margin-top:0">The entry <span class="mut tiny">— <a id="entry-link" href="../data/trackers.jsonld">data/trackers.jsonld</a>, a <a href="../schema/tracker.jsonld">Tracker</a></span></h2>
+  <table><tbody id="entry"></tbody></table>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">Asked just now</h2>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px"><button id="again" class="p" type="button">Ask again</button><span id="when" class="tiny mut"></span></div>
+  <table><tbody id="live">
+    <tr><th>connection</th><td id="l-conn" class="mut">…</td></tr>
+    <tr><th>announce (our infohash)</th><td id="l-ann" class="mut">…</td></tr>
+    <tr><th>scrape, every torrent</th><td id="l-all" class="mut">…</td></tr>
+    <tr><th>scrape, named torrents</th><td id="l-scr" class="mut">…</td></tr>
+  </tbody></table>
+</div>
+
+<div class="card">
+  <h2 style="margin-top:0">What it knows of the torrents we can name <span class="mut tiny">— <a href="../data/torrents.jsonld">data/torrents.jsonld</a></span></h2>
+  <table><thead><tr><th>torrent</th><th>infohash</th><th class="n">seeders</th><th class="n">leechers</th><th class="n">completed</th><th>how</th></tr></thead><tbody id="known"></tbody></table>
+  <p class="tiny mut">A tracker knows hashes, not names; the names are ours. Counts come from an announce per torrent (as a leecher wanting no peers, which counts as one leecher) or from a scrape where the tracker allows it. A torrent absent from a scrape answer is one the tracker has never heard of.</p>
+</div>
+<p class="tiny mut">The entry is a claim with a source; everything under "asked just now" is a measurement from this browser. AGPL-3.0-or-later.</p>
+<script type="module" src="tracker.js"></script>
+</body>
+</html>

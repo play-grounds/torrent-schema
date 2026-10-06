@@ -21,7 +21,7 @@ const ask = (url) => new Promise((resolve) => {
 });
 async function run() {
   $('again').disabled = true; $('when').textContent = 'asking…';
-  $('ws').innerHTML = ws.map((t, i) => `<tr id="r${i}"><td class="mono wrap">${esc(t.url)}</td><td>${who(t)}</td><td class="mut">asking…</td><td class="n"></td><td class="n"></td><td class="n"></td></tr>`).join('');
+  $('ws').innerHTML = ws.map((t, i) => `<tr id="r${i}"><td class="mono wrap"><a href="tracker.html?t=${encodeURIComponent(t.url.replace(/^wss?:\/\//, '').split(/[/:]/)[0])}">${esc(t.url)}</a></td><td>${who(t)}</td><td class="mut">asking…</td><td class="n"></td><td class="n"></td><td class="n"></td></tr>`).join('');
   const results = await Promise.all(ws.map((t) => ask(t.url)));
   let alive = 0;
   results.forEach((r, i) => { const row = $('r' + i).children; if (r.error) { row[2].innerHTML = `<span class="bad">${esc(r.error)}</span>`; row[5].textContent = r.ms; } else { alive++; row[2].innerHTML = `<span class="ok">alive</span> <span class="tiny mut">· interval ${r.interval} s</span>`; row[3].textContent = r.seeders; row[4].textContent = r.leechers; row[5].textContent = r.ms; } });

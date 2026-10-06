@@ -855,6 +855,54 @@
           "required": false
         }
       ]
+    },
+    {
+      "@id": "bt:KnownTorrent",
+      "@type": "Struct",
+      "module": "bt:tracker",
+      "label": "KnownTorrent",
+      "encoding": "bt:json",
+      "comment": "A torrent whose infohash is known and named (data/torrents.jsonld), so that a tracker's counts for it can be shown under a name.",
+      "fields": [
+        {
+          "property": "bt:infoHash",
+          "label": "infohash",
+          "key": "infohash",
+          "valueType": "bytes",
+          "size": 20,
+          "required": true,
+          "comment": "Hex here, unlike on the wire."
+        },
+        {
+          "property": "bt:torrentName",
+          "label": "name",
+          "key": "name",
+          "valueType": "utf8",
+          "required": true
+        },
+        {
+          "property": "bt:about",
+          "label": "about",
+          "key": "about",
+          "valueType": "utf8",
+          "required": false
+        },
+        {
+          "property": "bt:source",
+          "label": "source",
+          "key": "source",
+          "valueType": "utf8",
+          "required": true,
+          "comment": "Where the infohash was learned."
+        },
+        {
+          "property": "bt:kind",
+          "label": "kind",
+          "key": "kind",
+          "valueType": "utf8",
+          "required": false
+        }
+      ]
     }
   ]
 }
