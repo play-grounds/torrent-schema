@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="A torrent — Torrent Schema">
 <meta name="twitter:image" content="https://play-grounds.github.io/torrent-schema/og.png">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss: ws:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss: ws:; media-src https: blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
 <style>
   :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --ok: #1c7a3c; --bad: #b3261e; --link: #1f5fa3; --accent: #c2410c; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
   @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --ok: #5fcf7f; --bad: #ff7a70; --accent: #f08c4b; } }
@@ -42,6 +42,11 @@
     <table><tbody id="meta"></tbody></table>
     <details><summary>files</summary><table><tbody id="files"></tbody></table></details>
     <details><summary>pieces</summary><div id="pieces" class="mono tiny"></div></details>
+  </div>
+  <div class="card" id="play-card" hidden>
+    <h2 style="margin-top:0">Play it <span class="mut tiny">— through the web seed the file names (BEP 19): plain HTTP Range requests by the browser's own player, not the swarm</span></h2>
+    <div id="play"></div>
+    <p class="tiny mut" id="play-note"></p>
   </div>
   <div class="card">
     <h2 style="margin-top:0">What the live trackers know of it <span class="mut tiny">— asked just now, as a leecher wanting no peers</span></h2>

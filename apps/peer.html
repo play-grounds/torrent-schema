@@ -18,7 +18,7 @@
 <meta name="twitter:description" content="A BitTorrent peer in the browser from the JSON-LD schema and its codec, no library: tracker, WebRTC, handshake, bitfield, a verified piece.">
 <meta name="twitter:image" content="https://play-grounds.github.io/torrent-schema/og.png">
 <link rel="canonical" href="https://play-grounds.github.io/torrent-schema/apps/peer.html">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; media-src blob:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
 <style>
   :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --ok: #1c7a3c; --bad: #b3261e; --link: #1f5fa3; --accent: #c2410c; --card: #fff; --mono: ui-monospace, Menlo, Consolas, monospace; }
   @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --ok: #5fcf7f; --bad: #ff7a70; --accent: #f08c4b; } }
@@ -35,13 +35,14 @@
 </head>
 <body>
 <h1>A peer from the schema <span class="mut tiny">· <a href="../">Torrent Schema</a></span></h1>
-<p class="sub">A BitTorrent peer in this tab written from the schema and its codec, with no torrent library: it announces to a WebSocket tracker with a WebRTC offer (<a href="../schema/webtorrent.jsonld">webtorrent</a>), takes a seeder's answer, opens the data channel, exchanges handshakes (<a href="../schema/wire.jsonld">wire</a>), reads the bitfield, requests one piece of a known torrent (the txbt4 UTXO snapshot by default) block by block and checks its SHA-1 against the torrent (<a href="../schema/metainfo.jsonld">metainfo</a>). Two implementations that share no code, exchanging a verified piece.</p>
+<p class="sub">A BitTorrent peer in this tab written from the schema and its codec, with no torrent library: it announces to a WebSocket tracker with a WebRTC offer (<a href="../schema/webtorrent.jsonld">webtorrent</a>), takes a seeder's answer, opens the data channel, exchanges handshakes (<a href="../schema/wire.jsonld">wire</a>), reads the bitfield, requests one piece — or a whole file, piece by piece — of a known torrent (the txbt4 UTXO snapshot by default) and checks every piece's SHA-1 against the torrent, then plays the file (<a href="../schema/metainfo.jsonld">metainfo</a>). Two implementations that share no code, exchanging a verified piece.</p>
 
 <div class="card">
   <div class="row tiny" id="which" style="margin-bottom:8px"></div>
   <div class="row"><label for="trackers">Trackers:</label><input id="trackers" class="mono wide" value="wss://tracker.openwebtorrent.com,wss://tracker.webtorrent.dev" spellcheck="false"></div>
-  <div class="row"><label for="piece">Piece:</label><input id="piece" inputmode="numeric" value="0" style="width:5rem"><span class="tiny mut" id="piece-note">…</span></div>
-  <div class="row"><button id="go" class="p" type="button">Fetch the piece from the swarm</button><button id="stop" type="button" disabled>Stop</button><span id="state" class="mut">idle</span></div>
+  <div class="row"><label for="piece">Piece:</label><input id="piece" inputmode="numeric" value="0" style="width:5rem"><span class="tiny mut" id="piece-note">…</span> <span class="tiny mut">(a range like 3-5 fetches several)</span></div>
+  <div class="row"><label for="file">File:</label><select id="file"></select><span class="tiny mut" id="file-note"></span></div>
+  <div class="row"><button id="go" class="p" type="button">Fetch the piece from the swarm</button><button id="gofile" class="p" type="button">Fetch the file from the swarm, verified, then play it</button><button id="stop" type="button" disabled>Stop</button><span id="state" class="mut">idle</span></div>
   <progress id="bar" value="0" max="1"></progress>
 </div>
 
@@ -60,6 +61,7 @@
     <tr><th>piece</th><td id="t-piece">—</td></tr>
   </tbody></table>
 </div>
+<div class="card" id="play-card" hidden><h2 style="margin-top:0">The file, from the swarm <span class="mut tiny">— every piece checked against the torrent before a byte of it reached the player</span></h2><div id="play"></div><p class="tiny mut" id="play-note"></p></div>
 <details class="card"><summary>Log</summary><div id="log"></div></details>
 <p class="tiny mut">Everything on this page comes from <a href="../codec/">codec/</a> reading <a href="../schema/">schema/</a>. The seeder it meets is whoever the tracker introduces; today that is the <a href="https://play-grounds.github.io/utxo-swarm/">utxo-swarm</a> seeder. AGPL-3.0-or-later.</p>
 <script type="module" src="peer.js"></script>

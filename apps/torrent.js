@@ -27,6 +27,11 @@ if (!entry) {
       $('meta').innerHTML = rows.map(([k, v]) => `<tr><th style="width:11rem">${k}</th><td class="wrap">${v}</td></tr>`).join('');
       $('files').innerHTML = (info.files ?? [{ path: [info.name], length: info.length }]).map((f) => `<tr><td class="mono tiny wrap">${esc(f.path.join('/'))}</td><td class="n tiny">${fmt(f.length)}</td></tr>`).join('');
       $('pieces').textContent = info.pieces.map((p, i) => `${String(i).padStart(5)} ${p}`).join('\n');
+      // a playable file behind a web seed: the URL the schema's web seed rules give, straight into a <video>
+      const files = info.files ?? [{ path: [info.name], length: info.length }]; const playable = files.filter((f) => /\.(mp4|webm|m4v|ogv|mp3|ogg|m4a|wav)$/i.test(f.path[f.path.length - 1])).sort((a, b) => b.length - a.length)[0];
+      if (ws.length && playable) { const base = ws[0]; const rel = (info.files ? [info.name, ...playable.path] : [info.name]).map(encodeURIComponent).join('/'); const url = base.endsWith('/') ? base + rel : base; const audio = /\.(mp3|ogg|m4a|wav)$/i.test(playable.path.join('/'));
+        $('play-card').hidden = false; $('play').innerHTML = audio ? `<audio controls preload="metadata" src="${esc(url)}" style="width:100%"></audio>` : `<video controls preload="metadata" src="${esc(url)}" style="width:100%;max-height:60vh;background:#000;border-radius:8px"></video>`;
+        $('play-note').innerHTML = `${esc(playable.path.join('/'))} · ${fmt(playable.length)} bytes · from <span class="mono">${esc(url)}</span>. The player asks for byte ranges as it goes, which is what a web seed is; a server that ignored Range would make it download everything first. For the same file from the swarm, verified piece by piece, use the <a href="peer.html?h=${entry.infohash}">peer</a>.`; }
     } catch (e) { $('meta').innerHTML = `<tr><td class="bad">could not read the file: ${esc(e.message)}</td></tr>`; }
   } else $('meta').innerHTML = '<tr><td class="mut">no .torrent file kept for this entry</td></tr>';
   // the trackers

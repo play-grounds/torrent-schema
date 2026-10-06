@@ -15,6 +15,11 @@ const wanted = (new URLSearchParams(location.search).get('h') ?? '').toLowerCase
 const torrent = await T.parse(new Uint8Array(await (await fetch('../data/' + entry.file)).arrayBuffer()));
 { const nav = document.getElementById('which'); if (nav) nav.innerHTML = known.map((k) => k === entry ? `<b>${k.name}</b>` : `<a href="peer.html?h=${k.infohash}">${k.name}</a>`).join(' · '); }
 const info = torrent.meta.info, PIECE_LENGTH = Number(info['piece length']), BLOCK = 16384;
+// the files in piece-stream order with their byte offsets: a file is the bytes [offset, offset + length) of the stream
+const FILES = []; { let off = 0; for (const f of info.files ?? [{ path: [info.name], length: info.length }]) { FILES.push({ path: f.path.join('/'), length: Number(f.length), offset: off }); off += Number(f.length); } }
+const pieceLen = (i) => (i === torrent.pieceCount - 1 ? torrent.lastPieceLength : PIECE_LENGTH);
+{ const sel = $('file'); FILES.forEach((f, i) => { const o = document.createElement('option'); o.value = i; o.textContent = `${f.path} (${fmt(f.length)} bytes)`; sel.appendChild(o); }); const best = FILES.map((f, i) => [f, i]).filter(([f]) => /\.(mp4|webm|m4v|mp3|ogg|m4a|wav)$/i.test(f.path)).sort((a, b) => b[0].length - a[0].length)[0]; sel.value = best ? best[1] : 0;
+  const note = () => { const f = FILES[sel.value]; const a = Math.floor(f.offset / PIECE_LENGTH), z = Math.floor((f.offset + f.length - 1) / PIECE_LENGTH); $('file-note').textContent = `pieces ${a}–${z} (${z - a + 1} of them)`; }; sel.onchange = note; note(); }
 set('t-torrent', `<a href="torrent.html?h=${torrent.infohash}">${esc(info.name)}</a> · infohash ${torrent.infohash} · ${fmt(torrent.pieceCount)} pieces of ${fmt(PIECE_LENGTH)} bytes${info.files ? ` · ${info.files.length} files` : ''}`);
 { const pn = document.getElementById('piece-note'); if (pn) pn.textContent = `of ${fmt(torrent.pieceCount)}, ${fmt(PIECE_LENGTH)} bytes each (the last is ${fmt(torrent.lastPieceLength)} bytes)`; }
 const rand = (n) => bytesToHex(crypto.getRandomValues(new Uint8Array(n)));
@@ -23,9 +28,17 @@ const PEER_ID = bytesToHex(new TextEncoder().encode('-TS0001-')) + rand(12); set
 let pc = null, dc = null, sockets = [], stopped = false, t0 = 0;
 function stop(why) { stopped = true; for (const s of sockets) { try { s.close(); } catch {} } sockets = []; try { dc?.close(); } catch {} try { pc?.close(); } catch {} $('go').disabled = false; $('stop').disabled = true; if (why) { $('state').textContent = why; log(why); } }
 $('stop').onclick = () => stop('stopped');
+let JOB = null; // { pieces: [index…], play: file | null }
+$('gofile').onclick = () => { const f = FILES[$('file').value]; const a = Math.floor(f.offset / PIECE_LENGTH), z = Math.floor((f.offset + f.length - 1) / PIECE_LENGTH); JOB = { pieces: Array.from({ length: z - a + 1 }, (_, i) => a + i), play: f }; $('go').click(); };
 $('go').onclick = async () => {
   $('go').disabled = true; $('stop').disabled = false; stopped = false; $('log').textContent = ''; t0 = Date.now(); for (const id of ['t-reply', 't-answer', 't-dc', 't-hs', 't-ext', 't-bits', 't-blocks', 't-piece']) set(id, '—', 'mut'); $('bar').value = 0;
-  const index = Math.max(0, Math.min(torrent.pieceCount - 1, Number($('piece').value) || 0)); const pieceLen = index === torrent.pieceCount - 1 ? torrent.lastPieceLength : PIECE_LENGTH; const nBlocks = Math.ceil(pieceLen / BLOCK);
+  const clamp = (n) => Math.max(0, Math.min(torrent.pieceCount - 1, Number(n) || 0)); const range = String($('piece').value).match(/^\s*(\d+)\s*-\s*(\d+)\s*$/); // "2-4" fetches several pieces, no file
+  const job = JOB ?? { pieces: range ? Array.from({ length: clamp(range[2]) - clamp(range[1]) + 1 }, (_, i) => clamp(range[1]) + i) : [clamp($('piece').value)], play: null }; JOB = null; $('play-card').hidden = true;
+  const index = job.pieces[0]; const totalBytes = job.pieces.reduce((n, i) => n + pieceLen(i), 0); const nBlocksOf = (i) => Math.ceil(pieceLen(i) / BLOCK);
+  const store = new Map(); // piece index → Map(begin → bytes)
+  const verified = new Map(); // piece index → Uint8Array once its SHA-1 matched
+  const queue = []; for (const i of job.pieces) for (let b = 0; b < nBlocksOf(i); b++) queue.push({ index: i, begin: b * BLOCK, length: Math.min(BLOCK, pieceLen(i) - b * BLOCK) });
+  const want = new Set(job.pieces);
   const trackers = $('trackers').value.split(',').map((s) => s.trim()).filter(Boolean);
   // ---- one offer per tracker: each tracker forwards what it is given, so the same offer on two trackers reaches the same
   // seeder twice and it answers twice — two connections with one set of ICE credentials, and the race breaks both.
@@ -71,11 +84,11 @@ $('go').onclick = async () => {
     ws.onerror = () => log(`${url}: socket error`);
   }
   function wire() {
-  let buf = new Uint8Array(0), handshaken = false, names = {}, unchoked = false; const blocks = new Map(); let next = 0, inflight = 0, received = 0;
+  let buf = new Uint8Array(0), handshaken = false, names = {}, unchoked = false; let next = 0, inflight = 0, received = 0; const t1 = Date.now();
   pc.onconnectionstatechange = () => { log('connection: ' + pc.connectionState); if (pc.connectionState === 'failed') stop('the WebRTC connection failed after opening'); };
   // ---- the data channel: the wire protocol, byte for byte as over TCP
   const send = (b) => dc.send(b);
-  const ask = () => { while (unchoked && inflight < 8 && next < nBlocks && !stopped) { const begin = next * BLOCK; send(W.frame('Request', { index, begin, length: Math.min(BLOCK, pieceLen - begin) })); next++; inflight++; } };
+  const ask = () => { while (unchoked && inflight < 12 && next < queue.length && !stopped) { send(W.frame('Request', queue[next])); next++; inflight++; } };
   dc.onopen = () => { set('t-dc', 'open', 'ok'); log('data channel open: sending our handshake and extended handshake'); send(W.handshake({ info_hash: torrent.infohash, peer_id: PEER_ID })); send(W.extendedHandshake({ m: { ut_metadata: 1, ut_pex: 2 }, v: 'torrent-schema/0.0.3' })); $('state').textContent = 'handshaking…'; };
   dc.onmessage = async (ev) => {
     const chunk = new Uint8Array(ev.data); const joined = new Uint8Array(buf.length + chunk.length); joined.set(buf); joined.set(chunk, buf.length); buf = joined;
@@ -83,14 +96,22 @@ $('go').onclick = async () => {
       set('t-hs', `peer ${h.handshake.peer_id} (${esc(new TextDecoder().decode(hexToBytes(h.handshake.peer_id)).slice(0, 8))}) · supports: ${Object.entries(h.supports).filter(([, v]) => v).map(([k]) => k).join(', ') || 'nothing beyond BEP 3'}`); log('their handshake: ok, same infohash'); }
     const { messages, rest, error } = W.feed(buf); buf = rest; if (error) return stop('wire: ' + error);
     for (const m of messages) {
-      if (m.name === 'Bitfield') { const p = W.pieces(m.bits, torrent.pieceCount); if (p.error) return stop('wire-bad-bitfield'); set('t-bits', `${m.bits.length / 2} bytes · has ${fmt(p.have.length)} of ${fmt(torrent.pieceCount)} pieces${p.have.includes(index) ? '' : ' · <span class="bad">not the one we want</span>'}`); log(`bitfield: ${p.have.length}/${torrent.pieceCount}`); if (p.have.includes(index)) { send(W.frame('interested')); log('sent: interested'); } }
+      if (m.name === 'Bitfield') { const p = W.pieces(m.bits, torrent.pieceCount); if (p.error) return stop('wire-bad-bitfield'); const has = job.pieces.every((i) => p.have.includes(i)); set('t-bits', `${m.bits.length / 2} bytes · has ${fmt(p.have.length)} of ${fmt(torrent.pieceCount)} pieces${has ? '' : ' · <span class="bad">not all the ones we want</span>'}`); log(`bitfield: ${p.have.length}/${torrent.pieceCount}`); if (has) { send(W.frame('interested')); log('sent: interested'); } else stop('this peer does not have every piece we need (a multi-peer fetch is not built yet)'); }
       else if (m.name === 'Extended') { const x = W.readExtended(m, names); if (x.kind === 'handshake') { names = Object.fromEntries(Object.entries(x.value.m ?? {}).map(([n, id]) => [id, n])); set('t-ext', `${esc(x.value.v ?? 'no version given')} · m ${esc(JSON.stringify(x.value.m))} · metadata_size ${fmt(x.value.metadata_size ?? 0)}`); log('their extended handshake: ' + (x.value.v ?? '')); } else log('extended: ' + x.kind); }
-      else if (m.name === 'unchoke') { unchoked = true; log('unchoked: requesting ' + nBlocks + ' blocks, 8 in flight'); $('state').textContent = `fetching piece ${index}…`; ask(); }
+      else if (m.name === 'unchoke') { unchoked = true; log(`unchoked: requesting ${queue.length} blocks of ${job.pieces.length} piece(s), 12 in flight`); $('state').textContent = job.play ? `fetching ${job.play.path}…` : `fetching piece ${index}…`; ask(); }
       else if (m.name === 'choke') { unchoked = false; log('choked'); }
-      else if (m.name === 'Piece') { if (m.index !== index) continue; inflight--; const data = hexToBytes(m.block); blocks.set(m.begin, data); received += data.length; $('bar').value = received / pieceLen; set('t-blocks', `${blocks.size} of ${nBlocks} · ${mb(received)} · ${(received / 1048576 / ((Date.now() - t0) / 1000)).toFixed(2)} MB/s since start`);
-        if (blocks.size === nBlocks) { const piece = new Uint8Array(pieceLen); for (const [b, d] of blocks) piece.set(d, b); const h = bytesToHex(await sha1(piece)); const ok = h === info.pieces[index];
-          set('t-piece', ok ? `<span class="ok">sha1 ${h} = pieces[${index}] ✓</span>${index === 0 ? ` · the first bytes are <span class="mono">${bytesToHex(piece.subarray(0, 7))}</span>: 'utxo' 0xff, format 2 — the UTXO snapshot's own header` : ''}` : `<span class="bad">sha1 ${h} ≠ pieces[${index}] ${info.pieces[index]}</span>`, '');
-          log(`piece ${index}: ${piece.length} bytes, sha1 ${ok ? 'matches' : 'DOES NOT MATCH'} pieces[${index}]`); stop(`done: piece ${index} ${ok ? 'verified' : 'FAILED'} in ${((Date.now() - t0) / 1000).toFixed(1)} s`); return; }
+      else if (m.name === 'Piece') { if (!want.has(m.index)) continue; inflight--; const data = hexToBytes(m.block); if (!store.has(m.index)) store.set(m.index, new Map()); store.get(m.index).set(m.begin, data); received += data.length; $('bar').value = received / totalBytes;
+        set('t-blocks', `${fmt(received)} of ${fmt(totalBytes)} bytes · ${verified.size} of ${job.pieces.length} piece(s) verified · ${(received / 1048576 / ((Date.now() - t1) / 1000)).toFixed(2)} MB/s`);
+        if (store.get(m.index).size === nBlocksOf(m.index)) { const piece = new Uint8Array(pieceLen(m.index)); for (const [b, d] of store.get(m.index)) piece.set(d, b); store.delete(m.index); const h = bytesToHex(await sha1(piece)); const ok = h === info.pieces[m.index];
+          if (!ok) { log(`piece ${m.index}: sha1 ${h} DOES NOT MATCH pieces[${m.index}]`); return stop(`piece ${m.index} failed its hash: the peer sent bad data`); } verified.set(m.index, piece); log(`piece ${m.index}: verified`); set('t-blocks', `${fmt(received)} of ${fmt(totalBytes)} bytes · ${verified.size} of ${job.pieces.length} piece(s) verified · ${(received / 1048576 / ((Date.now() - t1) / 1000)).toFixed(2)} MB/s`);
+          if (job.pieces.length === 1) { set('t-piece', `<span class="ok">sha1 ${h} = pieces[${m.index}] ✓</span>${m.index === 0 && torrent.infohash === '242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0' ? ` · the first bytes are <span class="mono">${bytesToHex(piece.subarray(0, 7))}</span>: 'utxo' 0xff, format 2 — the UTXO snapshot's own header` : ''}`, ''); }
+          if (verified.size === job.pieces.length) { const secs = ((Date.now() - t0) / 1000).toFixed(1);
+            if (job.play) { // the file is the bytes [offset, offset + length) of the verified piece stream
+              const f = job.play; const out = new Uint8Array(f.length); let cursor = 0; for (const i of job.pieces) { const piece = verified.get(i); const pieceStart = i * PIECE_LENGTH; const from = Math.max(f.offset, pieceStart) - pieceStart, to = Math.min(f.offset + f.length, pieceStart + piece.length) - pieceStart; out.set(piece.subarray(from, to), cursor); cursor += to - from; }
+              const ext = f.path.split('.').pop().toLowerCase(); const type = { mp4: 'video/mp4', m4v: 'video/mp4', webm: 'video/webm', mp3: 'audio/mpeg', ogg: 'audio/ogg', m4a: 'audio/mp4', wav: 'audio/wav' }[ext]; const url = URL.createObjectURL(new Blob([out], { type: type ?? 'application/octet-stream' }));
+              $('play-card').hidden = false; $('play').innerHTML = type ? (type.startsWith('video') ? `<video controls autoplay src="${url}" style="width:100%;max-height:60vh;background:#000;border-radius:8px"></video>` : `<audio controls autoplay src="${url}" style="width:100%"></audio>`) : `<a href="${url}" download="${esc(f.path.split('/').pop())}">save ${esc(f.path)}</a>`;
+              $('play-note').textContent = `${f.path} · ${fmt(f.length)} bytes from ${job.pieces.length} pieces, each SHA-1 checked against the torrent, in ${secs} s from one peer over WebRTC`; set('t-piece', `<span class="ok">${job.pieces.length} pieces verified</span> · the file assembled and playing`, '');
+              stop(`done: ${f.path} verified and playing, ${secs} s`); } else { if (job.pieces.length > 1) set('t-piece', `<span class="ok">pieces ${job.pieces[0]}–${job.pieces[job.pieces.length - 1]} all verified</span>`, ''); stop(`done: ${job.pieces.length === 1 ? `piece ${index}` : `pieces ${job.pieces[0]}–${job.pieces[job.pieces.length - 1]}`} verified in ${secs} s`); } return; } }
         ask(); }
       else if (m.name === 'keep-alive' || m.name === 'Have' || m.name === 'Port') { /* noted */ }
       else log('message: ' + m.name);
