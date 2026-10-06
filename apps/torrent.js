@@ -16,7 +16,7 @@ if (!entry) {
 } else {
   document.title = `${entry.name} — Torrent Schema`; $('title').firstChild.textContent = entry.name + ' '; $('sub').textContent = entry.about ?? ''; $('one').hidden = false;
   $('entry').innerHTML = Object.entries(entry).filter(([k]) => !k.startsWith('@')).map(([k, v]) => `<tr><th style="width:9rem">${esc(k)}</th><td class="${k === 'infohash' ? 'mono wrap' : ''}">${esc(v)}</td></tr>`).join('');
-  const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify({ '@context': 'https://play-grounds.github.io/torrent-schema/context.jsonld', ...entry }, null, 1); document.head.appendChild(ld);
+  const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify({ '@context': 'https://torrent-schema.github.io/context.jsonld', ...entry }, null, 1); document.head.appendChild(ld);
   $('fetch').href = `peer.html?h=${entry.infohash}`;
   // the metainfo
   if (entry.file) {

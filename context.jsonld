@@ -1,9 +1,9 @@
 {
   "@context": {
     "@version": 1.1,
-    "@vocab": "https://play-grounds.github.io/torrent-schema/",
-    "bt": "https://play-grounds.github.io/torrent-schema/",
-    "bts": "https://play-grounds.github.io/torrent-schema/meta#",
+    "@vocab": "https://torrent-schema.github.io/",
+    "bt": "https://torrent-schema.github.io/",
+    "bts": "https://torrent-schema.github.io/meta#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
     "schema": "https://schema.org/",
     "label": "rdfs:label",

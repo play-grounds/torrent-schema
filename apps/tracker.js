@@ -11,7 +11,7 @@ const host = entry.url.replace(/^wss?:\/\//, '');
 document.title = `${host} — Torrent Schema`; $('title').firstChild.textContent = host + ' '; $('sub').textContent = `${entry.transport} tracker · ${entry.operator ?? 'operator unknown'}${entry.since ? ` · since ${entry.since}` : ''}. ${entry.notes ?? ''}`;
 $('others').innerHTML = trackers.filter((t) => t.transport === 'websocket' && t !== entry).map((t) => `<a href="tracker.html?t=${encodeURIComponent(t.url.replace(/^wss?:\/\//, '').split(/[/:]/)[0])}">${esc(t.url.replace(/^wss?:\/\//, ''))}</a>`).join('');
 $('entry').innerHTML = Object.entries(entry).filter(([k]) => !k.startsWith('@')).map(([k, v]) => `<tr><th style="width:9rem">${esc(k)}</th><td class="${k === 'url' ? 'mono wrap' : ''}">${esc(v)}</td></tr>`).join('');
-const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify({ '@context': 'https://play-grounds.github.io/torrent-schema/context.jsonld', ...entry }, null, 1); document.head.appendChild(ld);
+const ld = document.createElement('script'); ld.type = 'application/ld+json'; ld.textContent = JSON.stringify({ '@context': 'https://torrent-schema.github.io/context.jsonld', ...entry }, null, 1); document.head.appendChild(ld);
 if (entry.transport !== 'websocket') { for (const id of ['l-conn', 'l-ann', 'l-all', 'l-scr']) $(id).textContent = 'not a WebSocket tracker: a browser cannot ask it'; $('known').innerHTML = ''; }
 else {
   const peerId = '2d5453303030312d' + Array.from(crypto.getRandomValues(new Uint8Array(12)), (b) => b.toString(16).padStart(2, '0')).join('');

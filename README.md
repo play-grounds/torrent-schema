@@ -2,7 +2,7 @@
 
 **v0.0.3** · A machine-readable model of BitTorrent, written in JSON-LD, in the manner of [bitcoin-desktop/schema](https://github.com/bitcoin-desktop/schema): the schema is the source of truth and the code is a projection of it.
 
-**Live:** https://play-grounds.github.io/torrent-schema/ — the schema rendered from its own documents · [a peer from the schema](https://play-grounds.github.io/torrent-schema/apps/peer.html): a BitTorrent peer in the browser with no library — tracker, WebRTC, handshake, bitfield, a verified piece of the UTXO snapshot · [torrent decoder](https://play-grounds.github.io/torrent-schema/apps/decode.html): drop a `.torrent` and the schema decodes it · [known trackers](https://play-grounds.github.io/torrent-schema/apps/trackers.html): every public WebSocket tracker we know of, as JSON-LD, each asked live.
+**Live:** https://torrent-schema.github.io/ — the schema rendered from its own documents · [a peer from the schema](https://torrent-schema.github.io/apps/peer.html): a BitTorrent peer in the browser with no library — tracker, WebRTC, handshake, bitfield, a verified piece of the UTXO snapshot · [torrent decoder](https://torrent-schema.github.io/apps/decode.html): drop a `.torrent` and the schema decodes it · [known trackers](https://torrent-schema.github.io/apps/trackers.html): every public WebSocket tracker we know of, as JSON-LD, each asked live.
 
 A playground, started for [utxo-swarm](https://github.com/play-grounds/utxo-swarm). Nothing depends on it yet.
 
