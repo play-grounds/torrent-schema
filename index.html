@@ -55,8 +55,14 @@
 </header>
 
 <section style="margin:1.6rem 0">
-  <h2 style="font-size:1.1rem;margin:0 0 .2rem">Data model</h2>
-  <p style="color:var(--mut);margin:0 0 .8rem;font-size:.92rem">The metainfo structures as a UML class diagram — <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/tools/gen-class-diagram.js">generated</a> from the schema, so it never drifts. Filled diamonds are composition; <code>/name</code> entries are derived (computed, not stored); <code>?</code> marks optional fields.</p>
+  <h2 style="font-size:1.1rem;margin:0 0 .2rem">The whole schema, as layers</h2>
+  <p style="color:var(--mut);margin:0 0 .8rem;font-size:.92rem">Seven modules from the bytes up to the index that finds a torrent, with what flows between them. The boxes are <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/tools/gen-layers-diagram.js">generated</a> from the schema; each is a link to its module. Only the shaded box is data at rest: everything else is messages about it.</p>
+  <a href="layers.svg"><img src="layers.svg" alt="The seven modules as layers: nostr finds a torrent, metainfo is the .torrent file, tracker and webtorrent find peers, wire and webseed exchange pieces, bencode encodes everything; arrows carry the infohash down and pieces up" style="width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff"></a>
+</section>
+
+<section style="margin:1.6rem 0">
+  <h2 style="font-size:1.1rem;margin:0 0 .2rem">The data model: the .torrent file</h2>
+  <p style="color:var(--mut);margin:0 0 .8rem;font-size:.92rem">Three structs, and that is all of BitTorrent's data at rest. Everything a swarm must agree on is the <code>info</code> dictionary, hashed once; trackers, peers and Nostr events carry that one hash and nothing else that is authoritative, which is why the forty-one other structs are messages, not data. The metainfo structures as a UML class diagram — <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/tools/gen-class-diagram.js">generated</a> from the schema, so it never drifts. Filled diamonds are composition; <code>/name</code> entries are derived (computed, not stored); <code>?</code> marks optional fields.</p>
   <a href="class-diagram.svg"><img src="class-diagram.svg" alt="UML class diagram: MetaInfo composed of Info, Info composed of FileEntry; fields and derived values from the schema" style="width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff"></a>
 </section>
 

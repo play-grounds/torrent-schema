@@ -9,6 +9,7 @@
     "test": "node --test",
     "pages": "node tools/gen-class-pages.js",
     "og": "node tools/gen-og.js",
-    "diagram": "node tools/gen-class-diagram.js"
+    "diagram": "node tools/gen-class-diagram.js",
+    "layers": "node tools/gen-layers-diagram.js"
   }
 }

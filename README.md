@@ -33,7 +33,13 @@ Done so far, bottom up:
 
 Next, in order: the DHT (BEP 5), v2 and hybrid torrents (BEP 52), the Fast extension messages (BEP 6); and the gaps the nostr module makes visible in NIP-35 — no web seed tag, no v2 hash, file sizes optional — taken to the NIP as proposals. See [SPEC_COVERAGE.md](SPEC_COVERAGE.md).
 
-## Data model
+## The whole schema, as layers
+
+![The seven modules as layers, with what flows between them](layers.svg)
+
+Generated from the schema by [`tools/gen-layers-diagram.js`](tools/gen-layers-diagram.js): the boxes and their counts come from the documents, the flow labels are written by hand. Only the shaded box, the `.torrent` file, is data at rest; the other six modules are messages about it.
+
+## The data model: the .torrent file
 
 The metainfo structures as a UML class diagram — **generated from [`schema/metainfo.jsonld`](schema/metainfo.jsonld)** by [`tools/gen-class-diagram.js`](tools/gen-class-diagram.js), so it can never drift. Filled diamonds are composition; `+name()` methods are **derived** values (computed from the bytes, never stored); `?` marks optional fields.
 
