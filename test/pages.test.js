@@ -27,3 +27,4 @@ for (const [i, d] of docs.entries()) for (const node of d['@graph']) {
   });
 }
 test('every term in terms.json points at a page that exists', async () => { const ids = new Set(docs.flatMap((d) => d['@graph'].map((n) => String(n['@id']).replace(/^bt:/, '')))); for (const v of Object.values(terms)) assert.ok(ids.has(v.split('#')[0]), v); });
+test('classes.json lists every node once, in schema order, and says which have an instance', async () => { const cat = await load('classes.json'); const ids = docs.flatMap((d) => d['@graph'].map((n) => String(n['@id']).replace(/^bt:/, ''))); assert.deepEqual(cat.classes.map((c) => c.id), ids); for (const c of cat.classes) { const isl = await island(c.id); assert.equal(!!c.instance, !!isl['@graph'][1], c.id); } });

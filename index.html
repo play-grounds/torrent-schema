@@ -31,6 +31,7 @@
   table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
   td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.desc { color: var(--fg); } code { font-family: var(--mono); font-size: .9em; }
   .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  table.catalogue { font-size: .86rem; } table.catalogue td { padding: 3px 8px; } table.catalogue td.desc { color: var(--mut); } table.catalogue td.name a { color: var(--link); }
   footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
 </style>
 </head>
@@ -39,6 +40,7 @@
   <h1>Torrent <span>Schema</span> <span class="pill" id="version">v</span></h1>
   <p class="tag">A machine-readable model of BitTorrent in JSON-LD, in the manner of <a href="https://bitcoin-desktop.github.io/schema/">Bitcoin Schema</a>: structures, their bencode keys and value types, derivations, and validity rules. One schema; many projections: a codec with no per-field code, this page, the diagram, the tests.</p>
   <nav>
+    <a href="#catalogue">📚 all classes</a>
     <a href="apps/peer.html">🕸 a peer from the schema</a>
     <a href="apps/decode.html">🧲 torrent decoder</a>
     <a href="apps/trackers.html">📡 known trackers</a>

@@ -212,6 +212,9 @@ export async function build() {
     for (const m of n.members ?? []) if (m['@id']) terms[short(m['@id'])] = `${id}#${short(m['@id'])}`;
   }
   await writeFile(new URL('terms.json', root), JSON.stringify(terms, null, 1) + '\n');
+  // the catalogue: one row per node, the index renders it as a table and anyone may read it as data
+  const classes = nodes.map((x) => { const n = x.node; const id = short(n['@id']); const inst = n['@type'] === 'Struct' ? I[id] : undefined; return { id, label: n.label, type: short(n['@type']), module: x.module, layer: x.mod.layer, encoding: n.encoding ? short(n.encoding) : undefined, bep: n.bep, kind: n.kind, wireSize: n.wireSize, fields: n.fields?.length, members: n.members?.length, rules: n.rules?.length, instance: inst ? { source: inst.source, bytes: inst.bytes ? inst.bytes.length / 2 : undefined } : undefined, summary: String(n.comment ?? '').split(/(?<=\.)\s/)[0] }; });
+  await writeFile(new URL('classes.json', root), JSON.stringify({ version: pkg.version, generated: new Date().toISOString().slice(0, 10), classes }, null, 1) + '\n');
   await writeFile(new URL('404.html', root), `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Torrent Schema — term lookup</title>
 <meta name="robots" content="noindex"><style>html{font:15px/1.5 system-ui,sans-serif;background:#fbfaf7;color:#1e1d1a}body{max-width:720px;margin:3rem auto;padding:0 16px}a{color:#1f5fa3}</style></head>
