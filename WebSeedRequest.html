@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WebSeedRequest — Struct of the webseed module — Torrent Schema</title>
+<meta name="description" content="What a block request becomes over HTTP: a GET of the right URL with a Range header.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="WebSeedRequest — Struct, webseed module">
+<meta property="og:description" content="What a block request becomes over HTTP: a GET of the right URL with a Range header.">
+<meta property="og:url" content="https://torrent-schema.github.io/WebSeedRequest">
+<meta property="og:image" content="https://torrent-schema.github.io/og/WebSeedRequest.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="WebSeedRequest: Struct of the webseed module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WebSeedRequest — Torrent Schema">
+<meta name="twitter:description" content="What a block request becomes over HTTP: a GET of the right URL with a Range header.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/WebSeedRequest.png">
+<link rel="canonical" href="https://torrent-schema.github.io/WebSeedRequest">
+<link rel="alternate" type="application/ld+json" href="schema/webseed.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>WebSeedRequest</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="webseed">module: webseed</a><a href="schema/webseed.jsonld">schema/webseed.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="webseed">webseed</a> · encoding <a href="urlquery">urlquery</a> · 2 fields · BEP 19 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/WebSeedRequest</code></p>
+  <p class="comment">What a block request becomes over HTTP: a GET of the right URL with a Range header. Single-file torrents: the URL is the file (a URL ending in '/' has the name appended). Multi-file: the URL is a directory root; name/path components appended; a block that spans two files is two requests.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>query key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="wsUrl"><td class="name">url</td><td class="type">url</td><td class="type">utf8</td><td class="desc"></td><td class="val" data-f="url"><code class="pre">https://melvin.me/datstr/snapshots/utxo-knots-150307.dat</code></td></tr><tr id="range"><td class="name">Range</td><td class="type">Range</td><td class="type">utf8</td><td class="desc">'bytes=&lt;first&gt;-&lt;last&gt;', inclusive; first = index * pieceLength + begin (minus the file's start offset in a multi-file torrent).</td><td class="val" data-f="Range"><span class="mut">—</span></td></tr></table><div class="derived-label">derived (computed, never stored)</div><table><tr><th>value</th><th>derivation</th><th>computed from the instance</th></tr><tr id="expectedStatus"><td class="name">expectedStatus</td><td class="desc"><code>206 Partial Content, with Content-Range 'bytes &lt;first&gt;-&lt;last&gt;/&lt;total&gt;'; a 200 with the whole file means the server ignored the Range and must not be used as a web seed</code></td><td class="val"><span class="mut">—</span></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">not captured: derived from the snapshot torrent for block 0 at its web seed, as the schema says a peer must form it. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/utxo-knots-150307.torrent">test/vectors/utxo-knots-150307.torrent</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><table><tr><th>computed</th><th>value</th></tr><tr><td class="name">first</td><td class="val"><code class="pre">0</code></td></tr><tr><td class="name">last</td><td class="val"><code class="pre">16383</code></td></tr></table><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:WebSeedRequest&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:webseed&quot;,
+   &quot;label&quot;: &quot;WebSeedRequest&quot;,
+   &quot;encoding&quot;: &quot;bt:urlquery&quot;,
+   &quot;bep&quot;: 19,
+   &quot;comment&quot;: &quot;What a block request becomes over HTTP: a GET of the right URL with a Range header. Single-file torrents: the URL is the file (a URL ending in '/' has the name appended). Multi-file: the URL is a directory root; name/path components appended; a block that spans two files is two requests.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:wsUrl&quot;,
+     &quot;label&quot;: &quot;url&quot;,
+     &quot;key&quot;: &quot;url&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: true
+    },
+    {
+     &quot;property&quot;: &quot;bt:range&quot;,
+     &quot;label&quot;: &quot;Range&quot;,
+     &quot;key&quot;: &quot;Range&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;'bytes=&lt;first&gt;-&lt;last&gt;', inclusive; first = index * pieceLength + begin (minus the file's start offset in a multi-file torrent).&quot;
+    }
+   ],
+   &quot;derived&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:expectedStatus&quot;,
+     &quot;label&quot;: &quot;expectedStatus&quot;,
+     &quot;derivation&quot;: &quot;206 Partial Content, with Content-Range 'bytes &lt;first&gt;-&lt;last&gt;/&lt;total&gt;'; a 200 with the whole file means the server ignored the Range and must not be used as a web seed&quot;,
+     &quot;comment&quot;: &quot;&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;WebSeedRequest#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:WebSeedRequest&quot;,
+   &quot;source&quot;: &quot;test/vectors/utxo-knots-150307.torrent&quot;,
+   &quot;captured&quot;: &quot;not captured: derived from the snapshot torrent for block 0 at its web seed, as the schema says a peer must form it&quot;,
+   &quot;value&quot;: {
+    &quot;url&quot;: &quot;https://melvin.me/datstr/snapshots/utxo-knots-150307.dat&quot;,
+    &quot;headers&quot;: {
+     &quot;Range&quot;: &quot;bytes=0-16383&quot;
+    }
+   },
+   &quot;computed&quot;: {
+    &quot;first&quot;: 0,
+    &quot;last&quot;: 16383
+   }
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:WebSeedRequest","@type":"Struct","module":"bt:webseed","label":"WebSeedRequest","encoding":"bt:urlquery","bep":19,"comment":"What a block request becomes over HTTP: a GET of the right URL with a Range header. Single-file torrents: the URL is the file (a URL ending in '/' has the name appended). Multi-file: the URL is a directory root; name/path components appended; a block that spans two files is two requests.","fields":[{"property":"bt:wsUrl","label":"url","key":"url","valueType":"utf8","required":true},{"property":"bt:range","label":"Range","key":"Range","valueType":"utf8","required":true,"comment":"'bytes=\u003cfirst>-\u003clast>', inclusive; first = index * pieceLength + begin (minus the file's start offset in a multi-file torrent)."}],"derived":[{"property":"bt:expectedStatus","label":"expectedStatus","derivation":"206 Partial Content, with Content-Range 'bytes \u003cfirst>-\u003clast>/\u003ctotal>'; a 200 with the whole file means the server ignored the Range and must not be used as a web seed","comment":""}]},{"@id":"WebSeedRequest#instance","@type":"Instance","of":"bt:WebSeedRequest","source":"test/vectors/utxo-knots-150307.torrent","captured":"not captured: derived from the snapshot torrent for block 0 at its web seed, as the schema says a peer must form it","value":{"url":"https://melvin.me/datstr/snapshots/utxo-knots-150307.dat","headers":{"Range":"bytes=0-16383"}},"computed":{"first":0,"last":16383}}]}</script>
+<footer><p>Generated from <a href="schema/webseed.jsonld">schema/webseed.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WebSocket tracker exchange — RuleSet of the webtorrent module — Torrent Schema</title>
+<meta name="description" content="">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="WebSocket tracker exchange — RuleSet, webtorrent module">
+<meta property="og:description" content="">
+<meta property="og:url" content="https://torrent-schema.github.io/webtorrentRules">
+<meta property="og:image" content="https://torrent-schema.github.io/og/webtorrentRules.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="WebSocket tracker exchange: RuleSet of the webtorrent module of Torrent Schema">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WebSocket tracker exchange — Torrent Schema">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/webtorrentRules.png">
+<link rel="canonical" href="https://torrent-schema.github.io/webtorrentRules">
+<link rel="alternate" type="application/ld+json" href="schema/webtorrent.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>WebSocket tracker exchange</span> <small>RuleSet · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="webtorrent">module: webtorrent</a><a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">RuleSet · module <a href="webtorrent">webtorrent</a> · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/webtorrentRules</code></p>
+  <p class="comment"></p>
+</header>
+<div class="card"><h2>8 rules · scope <b>webtorrent</b></h2><table><tr><th>#</th><th>rule</th><th>error code</th><th>check</th></tr><tr id="rule-ws-binary"><td class="name">1</td><td class="desc">info_hash, peer_id and offer_id are binary strings of exactly 20 characters</td><td class="type">ws-bad-id</td><td class="desc"><code>length == 20 and every char code &lt; 256</code></td></tr><tr id="rule-ws-reply-interval"><td class="name">2</td><td class="desc">an announce reply carries an interval</td><td class="type">ws-no-interval</td><td class="desc"><code>interval &gt; 0 unless 'failure reason'</code></td></tr><tr id="rule-ws-offer-per-tracker"><td class="name">3</td><td class="desc">an offer is announced to one tracker only</td><td class="type">ws-offer-reused</td><td class="desc"><code>each tracker gets offers made for it; the same offer on two trackers reaches the same peer twice, it answers twice, and two connections with one set of ICE credentials break each other (found the first time this page announced one offer to two trackers)</code></td></tr><tr id="rule-ws-answer-matches"><td class="name">4</td><td class="desc">an answer names an offer this peer made and has not yet used</td><td class="type">ws-unknown-offer</td><td class="desc"><code>offer_id in outstanding offers; else ignore the answer</code></td></tr><tr id="rule-ws-infohash-ours"><td class="name">5</td><td class="desc">a forwarded offer or an answer is for a torrent this peer announced</td><td class="type">ws-wrong-torrent</td><td class="desc"><code>info_hash in announced</code></td></tr><tr id="rule-ws-sdp-type"><td class="name">6</td><td class="desc">an offer's description is of type 'offer' and an answer's of type 'answer'</td><td class="type">ws-bad-sdp</td><td class="desc"><code>offer.type == 'offer'; answer.type == 'answer'</code></td></tr><tr id="rule-ws-wire-unchanged"><td class="name">7</td><td class="desc">once connected, the data channel carries the wire protocol exactly as over TCP</td><td class="type">wire-bad-handshake</td><td class="desc"><code>the first 68 bytes on the channel are a Handshake for the same info_hash</code></td></tr><tr id="rule-ws-no-trickle"><td class="name">8</td><td class="desc">a description sent through the tracker does not say trickle</td><td class="type">ws-trickle</td><td class="desc"><code>the SDP has no a=ice-options:trickle line: the protocol carries one whole description each way and no candidates afterwards, so the line promises what cannot come; browsers put it in by default and WebTorrent clients strip it (found when no stranger answered offers that kept it)</code></td></tr></table></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:webtorrentRules&quot;,
+   &quot;@type&quot;: &quot;RuleSet&quot;,
+   &quot;module&quot;: &quot;bt:webtorrent&quot;,
+   &quot;label&quot;: &quot;WebSocket tracker exchange&quot;,
+   &quot;scope&quot;: &quot;webtorrent&quot;,
+   &quot;rules&quot;: [
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-binary&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;info_hash, peer_id and offer_id are binary strings of exactly 20 characters&quot;,
+     &quot;errorCode&quot;: &quot;ws-bad-id&quot;,
+     &quot;check&quot;: &quot;length == 20 and every char code &lt; 256&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-reply-interval&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;an announce reply carries an interval&quot;,
+     &quot;errorCode&quot;: &quot;ws-no-interval&quot;,
+     &quot;check&quot;: &quot;interval &gt; 0 unless 'failure reason'&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-offer-per-tracker&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;an offer is announced to one tracker only&quot;,
+     &quot;errorCode&quot;: &quot;ws-offer-reused&quot;,
+     &quot;check&quot;: &quot;each tracker gets offers made for it; the same offer on two trackers reaches the same peer twice, it answers twice, and two connections with one set of ICE credentials break each other (found the first time this page announced one offer to two trackers)&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-answer-matches&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;an answer names an offer this peer made and has not yet used&quot;,
+     &quot;errorCode&quot;: &quot;ws-unknown-offer&quot;,
+     &quot;check&quot;: &quot;offer_id in outstanding offers; else ignore the answer&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-infohash-ours&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a forwarded offer or an answer is for a torrent this peer announced&quot;,
+     &quot;errorCode&quot;: &quot;ws-wrong-torrent&quot;,
+     &quot;check&quot;: &quot;info_hash in announced&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-sdp-type&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;an offer's description is of type 'offer' and an answer's of type 'answer'&quot;,
+     &quot;errorCode&quot;: &quot;ws-bad-sdp&quot;,
+     &quot;check&quot;: &quot;offer.type == 'offer'; answer.type == 'answer'&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-wire-unchanged&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;once connected, the data channel carries the wire protocol exactly as over TCP&quot;,
+     &quot;errorCode&quot;: &quot;wire-bad-handshake&quot;,
+     &quot;check&quot;: &quot;the first 68 bytes on the channel are a Handshake for the same info_hash&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-ws-no-trickle&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a description sent through the tracker does not say trickle&quot;,
+     &quot;errorCode&quot;: &quot;ws-trickle&quot;,
+     &quot;check&quot;: &quot;the SDP has no a=ice-options:trickle line: the protocol carries one whole description each way and no candidates afterwards, so the line promises what cannot come; browsers put it in by default and WebTorrent clients strip it (found when no stranger answered offers that kept it)&quot;
+    }
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:webtorrentRules","@type":"RuleSet","module":"bt:webtorrent","label":"WebSocket tracker exchange","scope":"webtorrent","rules":[{"@id":"bt:rule-ws-binary","@type":"ValidationRule","label":"info_hash, peer_id and offer_id are binary strings of exactly 20 characters","errorCode":"ws-bad-id","check":"length == 20 and every char code \u003c 256"},{"@id":"bt:rule-ws-reply-interval","@type":"ValidationRule","label":"an announce reply carries an interval","errorCode":"ws-no-interval","check":"interval > 0 unless 'failure reason'"},{"@id":"bt:rule-ws-offer-per-tracker","@type":"ValidationRule","label":"an offer is announced to one tracker only","errorCode":"ws-offer-reused","check":"each tracker gets offers made for it; the same offer on two trackers reaches the same peer twice, it answers twice, and two connections with one set of ICE credentials break each other (found the first time this page announced one offer to two trackers)"},{"@id":"bt:rule-ws-answer-matches","@type":"ValidationRule","label":"an answer names an offer this peer made and has not yet used","errorCode":"ws-unknown-offer","check":"offer_id in outstanding offers; else ignore the answer"},{"@id":"bt:rule-ws-infohash-ours","@type":"ValidationRule","label":"a forwarded offer or an answer is for a torrent this peer announced","errorCode":"ws-wrong-torrent","check":"info_hash in announced"},{"@id":"bt:rule-ws-sdp-type","@type":"ValidationRule","label":"an offer's description is of type 'offer' and an answer's of type 'answer'","errorCode":"ws-bad-sdp","check":"offer.type == 'offer'; answer.type == 'answer'"},{"@id":"bt:rule-ws-wire-unchanged","@type":"ValidationRule","label":"once connected, the data channel carries the wire protocol exactly as over TCP","errorCode":"wire-bad-handshake","check":"the first 68 bytes on the channel are a Handshake for the same info_hash"},{"@id":"bt:rule-ws-no-trickle","@type":"ValidationRule","label":"a description sent through the tracker does not say trickle","errorCode":"ws-trickle","check":"the SDP has no a=ice-options:trickle line: the protocol carries one whole description each way and no candidates afterwards, so the line promises what cannot come; browsers put it in by default and WebTorrent clients strip it (found when no stranger answered offers that kept it)"}]}]}</script>
+<footer><p>Generated from <a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

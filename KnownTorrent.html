@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KnownTorrent — Struct of the tracker module — Torrent Schema</title>
+<meta name="description" content="A torrent whose infohash is known and named (data/torrents.jsonld), so that a tracker's counts for it can be shown under a name.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="KnownTorrent — Struct, tracker module">
+<meta property="og:description" content="A torrent whose infohash is known and named (data/torrents.jsonld), so that a tracker's counts for it can be shown under a name.">
+<meta property="og:url" content="https://torrent-schema.github.io/KnownTorrent">
+<meta property="og:image" content="https://torrent-schema.github.io/og/KnownTorrent.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KnownTorrent: Struct of the tracker module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="KnownTorrent — Torrent Schema">
+<meta name="twitter:description" content="A torrent whose infohash is known and named (data/torrents.jsonld), so that a tracker's counts for it can be shown under a name.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/KnownTorrent.png">
+<link rel="canonical" href="https://torrent-schema.github.io/KnownTorrent">
+<link rel="alternate" type="application/ld+json" href="schema/tracker.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>KnownTorrent</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="tracker">module: tracker</a><a href="schema/tracker.jsonld">schema/tracker.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="tracker">tracker</a> · encoding <a href="json">json</a> · 6 fields · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/KnownTorrent</code></p>
+  <p class="comment">A torrent whose infohash is known and named (data/torrents.jsonld), so that a tracker's counts for it can be shown under a name.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>JSON key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="infoHash"><td class="name">infohash</td><td class="type">infohash</td><td class="type">bytes</td><td class="desc">Hex here, unlike on the wire.</td><td class="val" data-f="infohash"><code class="pre">242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0</code></td></tr><tr id="torrentName"><td class="name">name</td><td class="type">name</td><td class="type">utf8</td><td class="desc"></td><td class="val" data-f="name"><code class="pre">utxo-knots-150307.dat</code></td></tr><tr id="about"><td class="name">about</td><td class="type">about</td><td class="type">utf8?</td><td class="desc"></td><td class="val" data-f="about"><code class="pre">the txbt4 UTXO snapshot at block 150,307 (869,836,053 bytes)</code></td></tr><tr id="source"><td class="name">source</td><td class="type">source</td><td class="type">utf8</td><td class="desc">Where the infohash was learned.</td><td class="val" data-f="source"><code class="pre">play-grounds/utxo-swarm</code></td></tr><tr id="kind"><td class="name">kind</td><td class="type">kind</td><td class="type">utf8?</td><td class="desc"></td><td class="val" data-f="kind"><code class="pre">data</code></td></tr><tr id="torrentFile"><td class="name">file</td><td class="type">file</td><td class="type">utf8?</td><td class="desc">Where the .torrent file is kept, relative to data/, so the metainfo can be shown and a piece fetched; the infohash the file yields must equal the entry's.</td><td class="val" data-f="file"><code class="pre">torrents/utxo-knots-150307.torrent</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the known torrents entry for the snapshot. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/data/torrents.jsonld">data/torrents.jsonld</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:KnownTorrent&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:tracker&quot;,
+   &quot;label&quot;: &quot;KnownTorrent&quot;,
+   &quot;encoding&quot;: &quot;bt:json&quot;,
+   &quot;comment&quot;: &quot;A torrent whose infohash is known and named (data/torrents.jsonld), so that a tracker's counts for it can be shown under a name.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:infoHash&quot;,
+     &quot;label&quot;: &quot;infohash&quot;,
+     &quot;key&quot;: &quot;infohash&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;size&quot;: 20,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Hex here, unlike on the wire.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:torrentName&quot;,
+     &quot;label&quot;: &quot;name&quot;,
+     &quot;key&quot;: &quot;name&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: true
+    },
+    {
+     &quot;property&quot;: &quot;bt:about&quot;,
+     &quot;label&quot;: &quot;about&quot;,
+     &quot;key&quot;: &quot;about&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:source&quot;,
+     &quot;label&quot;: &quot;source&quot;,
+     &quot;key&quot;: &quot;source&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Where the infohash was learned.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:kind&quot;,
+     &quot;label&quot;: &quot;kind&quot;,
+     &quot;key&quot;: &quot;kind&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:torrentFile&quot;,
+     &quot;label&quot;: &quot;file&quot;,
+     &quot;key&quot;: &quot;file&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Where the .torrent file is kept, relative to data/, so the metainfo can be shown and a piece fetched; the infohash the file yields must equal the entry's.&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;KnownTorrent#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:KnownTorrent&quot;,
+   &quot;source&quot;: &quot;data/torrents.jsonld&quot;,
+   &quot;captured&quot;: &quot;the known torrents entry for the snapshot&quot;,
+   &quot;value&quot;: {
+    &quot;@type&quot;: &quot;bt:KnownTorrent&quot;,
+    &quot;infohash&quot;: &quot;242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&quot;,
+    &quot;name&quot;: &quot;utxo-knots-150307.dat&quot;,
+    &quot;about&quot;: &quot;the txbt4 UTXO snapshot at block 150,307 (869,836,053 bytes)&quot;,
+    &quot;source&quot;: &quot;play-grounds/utxo-swarm&quot;,
+    &quot;kind&quot;: &quot;data&quot;,
+    &quot;file&quot;: &quot;torrents/utxo-knots-150307.torrent&quot;,
+    &quot;nostrEvent&quot;: &quot;86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64&quot;
+   }
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:KnownTorrent","@type":"Struct","module":"bt:tracker","label":"KnownTorrent","encoding":"bt:json","comment":"A torrent whose infohash is known and named (data/torrents.jsonld), so that a tracker's counts for it can be shown under a name.","fields":[{"property":"bt:infoHash","label":"infohash","key":"infohash","valueType":"bytes","size":20,"required":true,"comment":"Hex here, unlike on the wire."},{"property":"bt:torrentName","label":"name","key":"name","valueType":"utf8","required":true},{"property":"bt:about","label":"about","key":"about","valueType":"utf8","required":false},{"property":"bt:source","label":"source","key":"source","valueType":"utf8","required":true,"comment":"Where the infohash was learned."},{"property":"bt:kind","label":"kind","key":"kind","valueType":"utf8","required":false},{"property":"bt:torrentFile","label":"file","key":"file","valueType":"utf8","required":false,"comment":"Where the .torrent file is kept, relative to data/, so the metainfo can be shown and a piece fetched; the infohash the file yields must equal the entry's."}]},{"@id":"KnownTorrent#instance","@type":"Instance","of":"bt:KnownTorrent","source":"data/torrents.jsonld","captured":"the known torrents entry for the snapshot","value":{"@type":"bt:KnownTorrent","infohash":"242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0","name":"utxo-knots-150307.dat","about":"the txbt4 UTXO snapshot at block 150,307 (869,836,053 bytes)","source":"play-grounds/utxo-swarm","kind":"data","file":"torrents/utxo-knots-150307.torrent","nostrEvent":"86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64"}}]}</script>
+<footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

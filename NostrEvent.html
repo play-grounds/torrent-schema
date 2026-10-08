@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NostrEvent — Struct of the nostr module — Torrent Schema</title>
+<meta name="description" content="The envelope every Nostr event shares (NIP-01).">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="NostrEvent — Struct, nostr module">
+<meta property="og:description" content="The envelope every Nostr event shares (NIP-01).">
+<meta property="og:url" content="https://torrent-schema.github.io/NostrEvent">
+<meta property="og:image" content="https://torrent-schema.github.io/og/NostrEvent.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="NostrEvent: Struct of the nostr module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NostrEvent — Torrent Schema">
+<meta name="twitter:description" content="The envelope every Nostr event shares (NIP-01).">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/NostrEvent.png">
+<link rel="canonical" href="https://torrent-schema.github.io/NostrEvent">
+<link rel="alternate" type="application/ld+json" href="schema/nostr.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>NostrEvent</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="nostr">module: nostr</a><a href="schema/nostr.jsonld">schema/nostr.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="nostr">nostr</a> · encoding <a href="nostrEvent">nostrEvent</a> · 7 fields · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/NostrEvent</code></p>
+  <p class="comment">The envelope every Nostr event shares (NIP-01). A TorrentEvent is one of these with kind 2003 and its tags read as fields.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>JSON key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="eventId"><td class="name">id</td><td class="type">id</td><td class="type">bytes</td><td class="desc">SHA-256 of the serialisation, hex. Derived in principle; stored in practice, and a rule checks it.</td><td class="val" data-f="id"><code class="pre">86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64</code></td></tr><tr id="pubkey"><td class="name">pubkey</td><td class="type">pubkey</td><td class="type">bytes</td><td class="desc">The author's x-only public key, hex. The only identity a listing has: who says this hash is this title.</td><td class="val" data-f="pubkey"><code class="pre">cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c</code></td></tr><tr id="createdAt"><td class="name">created_at</td><td class="type">created_at</td><td class="type">int</td><td class="desc">Unix seconds, as the author claims; relays accept a window around their own clock.</td><td class="val" data-f="created_at"><code class="pre">1789373541</code></td></tr><tr id="kind"><td class="name">kind</td><td class="type">kind</td><td class="type">int</td><td class="desc"> <span class="mut">(one of <a href="TorrentKind">TorrentKind</a>)</span></td><td class="val" data-f="kind"><code class="pre">2003</code></td></tr><tr id="tags"><td class="name">tags</td><td class="type">tags</td><td class="type">list&lt;list&lt;utf8&gt;&gt;</td><td class="desc">Each tag an array of strings, the first its name. What the TorrentEvent reads.</td><td class="val" data-f="tags"><code class="pre">[[&quot;title&quot;,&quot;Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307&quot;],[&quot;x&quot;,&quot;242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&quot;],[&quot;file&quot;,&quot;utxo-knots-150307.dat&quot;,&quot;869836053&quot;],[&quot;tracker&quot;,&quot;wss://tracker.openwebtorrent.com&quot;],[&quot;tracker&quot;,&quot;wss://tracker.webtorrent.dev&quot;],[&quot;tracker&quot;,&quot;wss://tracker.btorrent.xyz&quot;],[&quot;tracker&quot;,&quot;udp://tracker.opentrackr.org:1337/announce&quot;],[&quot;tracker&quot;,&quot;udp://open.tracker.cl:1337/announce&quot;],[&quot;tracker&quot;,&quot;https://melvin.me/datstr/snapshots/utxo-knots-150307.dat&quot;],[&quot;alt&quot;,&quot;Torrent: Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307&quot;],[&quot;i&quot;,&quot;tcat:other&quot;],[&quot;t&quot;,&quot;assumeutxo&quot;]]</code> <span class="mut">… 23 items</span></td></tr><tr id="content"><td class="name">content</td><td class="type">content</td><td class="type">utf8</td><td class="desc">For kind 2003 a long description, pre-formatted; conventionally repeats the magnet and any checksums so a reader with no NIP-35 client still has them.</td><td class="val" data-f="content"><code class="pre">UTXO set at height 150307, the last block shared with Bitcoin Core's testnet4 and the natural genesis state of the BLAKE2b (Bitcoin Knots) fork. Core dumptxoutset v2 format; loads with `loadtxoutset` on Knots 29.4.1 or feeds a bitcoin-kernel browser node.
+
+base height: 150307
+base hash: 000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc
+txoutset_hash: 372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518
+coins: 14230182
+bytes: 869836053
+sha256: 86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd
+produced by: Bitcoin Knots v29.4.1.knots20260508, dumptxoutse</code><span class="mut"> … 1218 chars</span></td></tr><tr id="sig"><td class="name">sig</td><td class="type">sig</td><td class="type">bytes</td><td class="desc">BIP-340 Schnorr over 'id' by 'pubkey', hex.</td><td class="val" data-f="sig"><code class="pre">225ff59c976974d9d8fa4a8605f67a9f84de030f8b871b2dc48eefbf8f5c40f69d81dbc3dc35a0d8f95288ce1fdecb39f78760557b5e77e4ca94db06528e2fb2</code></td></tr></table><div class="derived-label">derived (computed, never stored)</div><table><tr><th>value</th><th>derivation</th><th>computed from the instance</th></tr><tr id="eventIdDerived"><td class="name">id</td><td class="desc"><code>hex(sha256(utf8(JSON.stringify([0, pubkey, created_at, kind, tags, content]))))</code><br>NIP-01. JSON.stringify with no whitespace and only the escapes JSON requires; the hex is lowercase.</td><td class="val"><code class="pre">86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the kind 2003 event announcing the snapshot, as relays hold it. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/nostr/utxo-knots-150307.json">test/vectors/nostr/utxo-knots-150307.json</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="rule-result">rules: <span class="ok">all pass</span></p><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:NostrEvent&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:nostr&quot;,
+   &quot;label&quot;: &quot;NostrEvent&quot;,
+   &quot;encoding&quot;: &quot;bt:nostrEvent&quot;,
+   &quot;comment&quot;: &quot;The envelope every Nostr event shares (NIP-01). A TorrentEvent is one of these with kind 2003 and its tags read as fields.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:eventId&quot;,
+     &quot;label&quot;: &quot;id&quot;,
+     &quot;key&quot;: &quot;id&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;size&quot;: 32,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;SHA-256 of the serialisation, hex. Derived in principle; stored in practice, and a rule checks it.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:pubkey&quot;,
+     &quot;label&quot;: &quot;pubkey&quot;,
+     &quot;key&quot;: &quot;pubkey&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;size&quot;: 32,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;The author's x-only public key, hex. The only identity a listing has: who says this hash is this title.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:createdAt&quot;,
+     &quot;label&quot;: &quot;created_at&quot;,
+     &quot;key&quot;: &quot;created_at&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Unix seconds, as the author claims; relays accept a window around their own clock.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:kind&quot;,
+     &quot;label&quot;: &quot;kind&quot;,
+     &quot;key&quot;: &quot;kind&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;enumType&quot;: &quot;bt:TorrentKind&quot;,
+     &quot;required&quot;: true
+    },
+    {
+     &quot;property&quot;: &quot;bt:tags&quot;,
+     &quot;label&quot;: &quot;tags&quot;,
+     &quot;key&quot;: &quot;tags&quot;,
+     &quot;valueType&quot;: &quot;list&quot;,
+     &quot;itemType&quot;: &quot;list:utf8&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Each tag an array of strings, the first its name. What the TorrentEvent reads.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:content&quot;,
+     &quot;label&quot;: &quot;content&quot;,
+     &quot;key&quot;: &quot;content&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;For kind 2003 a long description, pre-formatted; conventionally repeats the magnet and any checksums so a reader with no NIP-35 client still has them.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:sig&quot;,
+     &quot;label&quot;: &quot;sig&quot;,
+     &quot;key&quot;: &quot;sig&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;size&quot;: 64,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;BIP-340 Schnorr over 'id' by 'pubkey', hex.&quot;
+    }
+   ],
+   &quot;derived&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:eventIdDerived&quot;,
+     &quot;label&quot;: &quot;id&quot;,
+     &quot;derivation&quot;: &quot;hex(sha256(utf8(JSON.stringify([0, pubkey, created_at, kind, tags, content]))))&quot;,
+     &quot;comment&quot;: &quot;NIP-01. JSON.stringify with no whitespace and only the escapes JSON requires; the hex is lowercase.&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;NostrEvent#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:NostrEvent&quot;,
+   &quot;source&quot;: &quot;test/vectors/nostr/utxo-knots-150307.json&quot;,
+   &quot;captured&quot;: &quot;the kind 2003 event announcing the snapshot, as relays hold it&quot;,
+   &quot;value&quot;: {
+    &quot;kind&quot;: 2003,
+    &quot;pubkey&quot;: &quot;cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c&quot;,
+    &quot;created_at&quot;: 1789373541,
+    &quot;content&quot;: &quot;UTXO set at height 150307, the last block shared with Bitcoin Core's testnet4 and the natural genesis state of the BLAKE2b (Bitcoin Knots) fork. Core dumptxoutset v2 format; loads with `loadtxoutset` on Knots 29.4.1 or feeds a bitcoin-kernel browser node.\n\nbase height: 150307\nbase hash: 000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc\ntxoutset_hash: 372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518\ncoins: 14230182\nbytes: 869836053\nsha256: 86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd\nproduced by: Bitcoin Knots v29.4.1.knots20260508, dumptxoutset rollback=150307, 2026-09-14\n\nmagnet: magnet:?xt=urn:btih:242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&amp;dn=utxo-knots-150307.dat&amp;tr=wss%3A%2F%2Ftracker.openwebtorrent.com&amp;tr=wss%3A%2F%2Ftracker.webtorrent.dev&amp;tr=wss%3A%2F%2Ftracker.btorrent.xyz&amp;tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&amp;tr=udp%3A%2F%2Fopen.tracker.cl%3A1337%2Fannounce&amp;ws=https%3A%2F%2Fmelvin.me%2Fdatstr%2Fsnapshots%2Futxo-knots-150307.dat\nwebseed: https://melvin.me/datstr/snapshots/utxo-knots-150307.dat\nmanifest: https://melvin.me/datstr/snapshots/utxo-knots-150307.json\nchain: btc:testnet4-blake2b (fork at 150308) — https://datstr.com/&quot;,
+    &quot;tags&quot;: [
+     [
+      &quot;title&quot;,
+      &quot;Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307&quot;
+     ],
+     [
+      &quot;x&quot;,
+      &quot;242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&quot;
+     ],
+     [
+      &quot;file&quot;,
+      &quot;utxo-knots-150307.dat&quot;,
+      &quot;869836053&quot;
+     ],
+     [
+      &quot;tracker&quot;,
+      &quot;wss://tracker.openwebtorrent.com&quot;
+     ],
+     [
+      &quot;tracker&quot;,
+      &quot;wss://tracker.webtorrent.dev&quot;
+     ],
+     [
+      &quot;tracker&quot;,
+      &quot;wss://tracker.btorrent.xyz&quot;
+     ],
+     [
+      &quot;tracker&quot;,
+      &quot;udp://tracker.opentrackr.org:1337/announce&quot;
+     ],
+     [
+      &quot;tracker&quot;,
+      &quot;udp://open.tracker.cl:1337/announce&quot;
+     ],
+     [
+      &quot;tracker&quot;,
+      &quot;https://melvin.me/datstr/snapshots/utxo-knots-150307.dat&quot;
+     ],
+     [
+      &quot;alt&quot;,
+      &quot;Torrent: Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307&quot;
+     ],
+     [
+      &quot;i&quot;,
+      &quot;tcat:other&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;assumeutxo&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;utxo&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;bitcoin&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;blake2b&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;testnet4&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;txbt4&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;knots&quot;
+     ],
+     [
+      &quot;t&quot;,
+      &quot;bitcoin-kernel&quot;
+     ],
+     [
+      &quot;sha256&quot;,
+      &quot;86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd&quot;
+     ],
+     [
+      &quot;txoutset_hash&quot;,
+      &quot;372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518&quot;
+     ],
+     [
+      &quot;base&quot;,
+      &quot;150307&quot;,
+      &quot;000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc&quot;
+     ],
+     [
+      &quot;n&quot;,
+      &quot;tbtc4b2&quot;
+     ]
+    ],
+    &quot;id&quot;: &quot;86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64&quot;,
+    &quot;sig&quot;: &quot;225ff59c976974d9d8fa4a8605f67a9f84de030f8b871b2dc48eefbf8f5c40f69d81dbc3dc35a0d8f95288ce1fdecb39f78760557b5e77e4ca94db06528e2fb2&quot;
+   },
+   &quot;computed&quot;: {
+    &quot;id&quot;: &quot;86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64&quot;
+   },
+   &quot;result&quot;: null
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:NostrEvent","@type":"Struct","module":"bt:nostr","label":"NostrEvent","encoding":"bt:nostrEvent","comment":"The envelope every Nostr event shares (NIP-01). A TorrentEvent is one of these with kind 2003 and its tags read as fields.","fields":[{"property":"bt:eventId","label":"id","key":"id","valueType":"bytes","size":32,"required":true,"comment":"SHA-256 of the serialisation, hex. Derived in principle; stored in practice, and a rule checks it."},{"property":"bt:pubkey","label":"pubkey","key":"pubkey","valueType":"bytes","size":32,"required":true,"comment":"The author's x-only public key, hex. The only identity a listing has: who says this hash is this title."},{"property":"bt:createdAt","label":"created_at","key":"created_at","valueType":"int","required":true,"comment":"Unix seconds, as the author claims; relays accept a window around their own clock."},{"property":"bt:kind","label":"kind","key":"kind","valueType":"int","enumType":"bt:TorrentKind","required":true},{"property":"bt:tags","label":"tags","key":"tags","valueType":"list","itemType":"list:utf8","required":true,"comment":"Each tag an array of strings, the first its name. What the TorrentEvent reads."},{"property":"bt:content","label":"content","key":"content","valueType":"utf8","required":true,"comment":"For kind 2003 a long description, pre-formatted; conventionally repeats the magnet and any checksums so a reader with no NIP-35 client still has them."},{"property":"bt:sig","label":"sig","key":"sig","valueType":"bytes","size":64,"required":true,"comment":"BIP-340 Schnorr over 'id' by 'pubkey', hex."}],"derived":[{"property":"bt:eventIdDerived","label":"id","derivation":"hex(sha256(utf8(JSON.stringify([0, pubkey, created_at, kind, tags, content]))))","comment":"NIP-01. JSON.stringify with no whitespace and only the escapes JSON requires; the hex is lowercase."}]},{"@id":"NostrEvent#instance","@type":"Instance","of":"bt:NostrEvent","source":"test/vectors/nostr/utxo-knots-150307.json","captured":"the kind 2003 event announcing the snapshot, as relays hold it","value":{"kind":2003,"pubkey":"cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c","created_at":1789373541,"content":"UTXO set at height 150307, the last block shared with Bitcoin Core's testnet4 and the natural genesis state of the BLAKE2b (Bitcoin Knots) fork. Core dumptxoutset v2 format; loads with `loadtxoutset` on Knots 29.4.1 or feeds a bitcoin-kernel browser node.\n\nbase height: 150307\nbase hash: 000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc\ntxoutset_hash: 372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518\ncoins: 14230182\nbytes: 869836053\nsha256: 86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd\nproduced by: Bitcoin Knots v29.4.1.knots20260508, dumptxoutset rollback=150307, 2026-09-14\n\nmagnet: magnet:?xt=urn:btih:242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&dn=utxo-knots-150307.dat&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.dev&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.tracker.cl%3A1337%2Fannounce&ws=https%3A%2F%2Fmelvin.me%2Fdatstr%2Fsnapshots%2Futxo-knots-150307.dat\nwebseed: https://melvin.me/datstr/snapshots/utxo-knots-150307.dat\nmanifest: https://melvin.me/datstr/snapshots/utxo-knots-150307.json\nchain: btc:testnet4-blake2b (fork at 150308) — https://datstr.com/","tags":[["title","Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307"],["x","242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0"],["file","utxo-knots-150307.dat","869836053"],["tracker","wss://tracker.openwebtorrent.com"],["tracker","wss://tracker.webtorrent.dev"],["tracker","wss://tracker.btorrent.xyz"],["tracker","udp://tracker.opentrackr.org:1337/announce"],["tracker","udp://open.tracker.cl:1337/announce"],["tracker","https://melvin.me/datstr/snapshots/utxo-knots-150307.dat"],["alt","Torrent: Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307"],["i","tcat:other"],["t","assumeutxo"],["t","utxo"],["t","bitcoin"],["t","blake2b"],["t","testnet4"],["t","txbt4"],["t","knots"],["t","bitcoin-kernel"],["sha256","86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd"],["txoutset_hash","372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518"],["base","150307","000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc"],["n","tbtc4b2"]],"id":"86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64","sig":"225ff59c976974d9d8fa4a8605f67a9f84de030f8b871b2dc48eefbf8f5c40f69d81dbc3dc35a0d8f95288ce1fdecb39f78760557b5e77e4ca94db06528e2fb2"},"computed":{"id":"86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64"},"result":null}]}</script>
+<footer><p>Generated from <a href="schema/nostr.jsonld">schema/nostr.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

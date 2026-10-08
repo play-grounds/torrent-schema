@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UdpAnnounceResponse — Struct of the tracker module — Torrent Schema</title>
+<meta name="description" content="20 bytes of header, then compact peers to the end of the datagram.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="UdpAnnounceResponse — Struct, tracker module">
+<meta property="og:description" content="20 bytes of header, then compact peers to the end of the datagram.">
+<meta property="og:url" content="https://torrent-schema.github.io/UdpAnnounceResponse">
+<meta property="og:image" content="https://torrent-schema.github.io/og/UdpAnnounceResponse.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="UdpAnnounceResponse: Struct of the tracker module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UdpAnnounceResponse — Torrent Schema">
+<meta name="twitter:description" content="20 bytes of header, then compact peers to the end of the datagram.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/UdpAnnounceResponse.png">
+<link rel="canonical" href="https://torrent-schema.github.io/UdpAnnounceResponse">
+<link rel="alternate" type="application/ld+json" href="schema/tracker.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>UdpAnnounceResponse</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="tracker">module: tracker</a><a href="schema/tracker.jsonld">schema/tracker.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="tracker">tracker</a> · encoding <a href="binary">binary</a> · 6 fields · BEP 15 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/UdpAnnounceResponse</code></p>
+  <p class="comment">20 bytes of header, then compact peers to the end of the datagram.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="action"><td class="name">action</td><td class="type">u32be</td><td class="type">= 1</td><td class="desc"></td><td class="val" data-f="action"><code class="pre">1</code></td></tr><tr id="transactionId"><td class="name">transaction_id</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="transaction_id"><code class="pre">1772049136</code></td></tr><tr id="interval"><td class="name">interval</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="interval"><code class="pre">3617</code></td></tr><tr id="leechers"><td class="name">leechers</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="leechers"><code class="pre">1</code></td></tr><tr id="seeders"><td class="name">seeders</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="seeders"><code class="pre">2</code></td></tr><tr id="peers"><td class="name">peers</td><td class="type"></td><td class="type"><a href="CompactPeer">CompactPeer</a></td><td class="desc"></td><td class="val" data-f="peers"><code class="pre">[
+ {
+  &quot;ip&quot;: &quot;86.49.17.222&quot;,
+  &quot;port&quot;: 6881
+ },
+ {
+  &quot;ip&quot;: &quot;86.49.17.222&quot;,
+  &quot;port&quot;: 42267
+ },
+ {
+  &quot;ip&quot;: &quot;86.49.17.222&quot;,
+  &quot;port&quot;: 39849
+ }
+]</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the UDP datagram received from tracker.opentrackr.org:1337 for the snapshot, byte for byte. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/tracker/udpAnnounceResponse.bin">test/vectors/tracker/udpAnnounceResponse.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">38 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="action" title="action">00 00 00 01 </span><span class="f" data-f="transaction_id" title="transaction_id">69 9f 52 f0 </span><span class="f" data-f="interval" title="interval">00 00 0e 21 </span><span class="f" data-f="leechers" title="leechers">00 00 00 01
+</span><span class="f" data-f="seeders" title="seeders">00 00 00 02 </span><span class="f" data-f="peers[0].ip" title="peers[0].ip">56 31 11 de </span><span class="f" data-f="peers[0].port" title="peers[0].port">1a e1 </span><span class="f" data-f="peers[1].ip" title="peers[1].ip">56 31 11 de </span><span class="f" data-f="peers[1].port" title="peers[1].port">a5 1b
+</span><span class="f" data-f="peers[2].ip" title="peers[2].ip">56 31 11 de </span><span class="f" data-f="peers[2].port" title="peers[2].port">9b a9 </span></pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:UdpAnnounceResponse&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:tracker&quot;,
+   &quot;label&quot;: &quot;UdpAnnounceResponse&quot;,
+   &quot;encoding&quot;: &quot;bt:binary&quot;,
+   &quot;bep&quot;: 15,
+   &quot;comment&quot;: &quot;20 bytes of header, then compact peers to the end of the datagram.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:action&quot;,
+     &quot;label&quot;: &quot;action&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;,
+     &quot;constValue&quot;: 1
+    },
+    {
+     &quot;property&quot;: &quot;bt:transactionId&quot;,
+     &quot;label&quot;: &quot;transaction_id&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:interval&quot;,
+     &quot;label&quot;: &quot;interval&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:leechers&quot;,
+     &quot;label&quot;: &quot;leechers&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:seeders&quot;,
+     &quot;label&quot;: &quot;seeders&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:peers&quot;,
+     &quot;label&quot;: &quot;peers&quot;,
+     &quot;wireType&quot;: &quot;struct&quot;,
+     &quot;structType&quot;: &quot;bt:CompactPeer&quot;,
+     &quot;repeat&quot;: &quot;toEnd&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;UdpAnnounceResponse#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:UdpAnnounceResponse&quot;,
+   &quot;source&quot;: &quot;test/vectors/tracker/udpAnnounceResponse.bin&quot;,
+   &quot;captured&quot;: &quot;the UDP datagram received from tracker.opentrackr.org:1337 for the snapshot, byte for byte&quot;,
+   &quot;bytes&quot;: &quot;00000001699f52f000000e210000000100000002563111de1ae1563111dea51b563111de9ba9&quot;,
+   &quot;value&quot;: {
+    &quot;action&quot;: 1,
+    &quot;transaction_id&quot;: 1772049136,
+    &quot;interval&quot;: 3617,
+    &quot;leechers&quot;: 1,
+    &quot;seeders&quot;: 2,
+    &quot;peers&quot;: [
+     {
+      &quot;ip&quot;: &quot;86.49.17.222&quot;,
+      &quot;port&quot;: 6881
+     },
+     {
+      &quot;ip&quot;: &quot;86.49.17.222&quot;,
+      &quot;port&quot;: 42267
+     },
+     {
+      &quot;ip&quot;: &quot;86.49.17.222&quot;,
+      &quot;port&quot;: 39849
+     }
+    ]
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;action&quot;,
+     0,
+     4
+    ],
+    [
+     &quot;transaction_id&quot;,
+     4,
+     8
+    ],
+    [
+     &quot;interval&quot;,
+     8,
+     12
+    ],
+    [
+     &quot;leechers&quot;,
+     12,
+     16
+    ],
+    [
+     &quot;seeders&quot;,
+     16,
+     20
+    ],
+    [
+     &quot;peers[0].ip&quot;,
+     20,
+     24
+    ],
+    [
+     &quot;peers[0].port&quot;,
+     24,
+     26
+    ],
+    [
+     &quot;peers[1].ip&quot;,
+     26,
+     30
+    ],
+    [
+     &quot;peers[1].port&quot;,
+     30,
+     32
+    ],
+    [
+     &quot;peers[2].ip&quot;,
+     32,
+     36
+    ],
+    [
+     &quot;peers[2].port&quot;,
+     36,
+     38
+    ]
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:UdpAnnounceResponse","@type":"Struct","module":"bt:tracker","label":"UdpAnnounceResponse","encoding":"bt:binary","bep":15,"comment":"20 bytes of header, then compact peers to the end of the datagram.","fields":[{"property":"bt:action","label":"action","wireType":"u32be","constValue":1},{"property":"bt:transactionId","label":"transaction_id","wireType":"u32be"},{"property":"bt:interval","label":"interval","wireType":"u32be"},{"property":"bt:leechers","label":"leechers","wireType":"u32be"},{"property":"bt:seeders","label":"seeders","wireType":"u32be"},{"property":"bt:peers","label":"peers","wireType":"struct","structType":"bt:CompactPeer","repeat":"toEnd"}]},{"@id":"UdpAnnounceResponse#instance","@type":"Instance","of":"bt:UdpAnnounceResponse","source":"test/vectors/tracker/udpAnnounceResponse.bin","captured":"the UDP datagram received from tracker.opentrackr.org:1337 for the snapshot, byte for byte","bytes":"00000001699f52f000000e210000000100000002563111de1ae1563111dea51b563111de9ba9","value":{"action":1,"transaction_id":1772049136,"interval":3617,"leechers":1,"seeders":2,"peers":[{"ip":"86.49.17.222","port":6881},{"ip":"86.49.17.222","port":42267},{"ip":"86.49.17.222","port":39849}]},"spans":[["action",0,4],["transaction_id",4,8],["interval",8,12],["leechers",12,16],["seeders",16,20],["peers[0].ip",20,24],["peers[0].port",24,26],["peers[1].ip",26,30],["peers[1].port",30,32],["peers[2].ip",32,36],["peers[2].port",36,38]]}]}</script>
+<footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extended — Struct of the wire module — Torrent Schema</title>
+<meta name="description" content="Message id 20: one more id byte, then the payload.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="Extended — Struct, wire module">
+<meta property="og:description" content="Message id 20: one more id byte, then the payload.">
+<meta property="og:url" content="https://torrent-schema.github.io/Extended">
+<meta property="og:image" content="https://torrent-schema.github.io/og/Extended.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Extended: Struct of the wire module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Extended — Torrent Schema">
+<meta name="twitter:description" content="Message id 20: one more id byte, then the payload.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/Extended.png">
+<link rel="canonical" href="https://torrent-schema.github.io/Extended">
+<link rel="alternate" type="application/ld+json" href="schema/wire.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>Extended</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="wire">module: wire</a><a href="schema/wire.jsonld">schema/wire.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="wire">wire</a> · encoding <a href="binary">binary</a> · 2 fields · BEP 10 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/Extended</code></p>
+  <p class="comment">Message id 20: one more id byte, then the payload. Id 0 is the extended handshake; other ids are whatever the receiving peer's handshake said they mean (its 'm' dictionary), so each side uses the other's numbering.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="extId"><td class="name">ext_id</td><td class="type">u8</td><td class="type"></td><td class="desc">0 = extended handshake; else the id the receiver assigned to a named extension.</td><td class="val" data-f="ext_id"><code class="pre">0</code></td></tr><tr id="extPayload"><td class="name">payload</td><td class="type">rest</td><td class="type"></td><td class="desc">Bencoded (ExtendedHandshake, UtPex, UtMetadata), in the last case followed by raw bytes.</td><td class="val" data-f="payload"><code>6431323a636f6d706c6574655f61676f692d3165313a6d6431313a6c745f646f6e746861766569376531303a73686172</code><span class="mut"> … 213 bytes</span></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">qBittorrent's extended handshake frame: id 20, extension id 0, a bencoded dictionary. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin">test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">214 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="ext_id" title="ext_id">00 </span><span class="f" data-f="payload" title="payload">64 31 32 3a 63 6f 6d 70 6c 65 74 65 5f 61 67
+6f 69 2d 31 65 31 3a 6d 64 31 31 3a 6c 74 5f 64
+6f 6e 74 68 61 76 65 69 37 65 31 30 3a 73 68 61
+72 65 5f 6d 6f 64 65 69 38 65 31 31 3a 75 70 6c
+6f 61 64 5f 6f 6e 6c 79 69 33 65 31 32 3a 75 74
+5f 68 6f 6c 65 70 75 6e 63 68 69 34 65 31 31 3a
+75 74 5f 6d 65 74 61 64 61 74 61 69 32 65 36 3a
+75 74 5f 70 65 78 69 31 65 65 31 33 3a 6d 65 74
+61 64 61 74 61 5f 73 69 7a 65 69 34 32 34 38 65
+34 3a 72 65 71 71 69 32 30 30 30 65 31 31 3a 75
+70 6c 6f 61 64 5f 6f 6e 6c 79 69 31 65 31 3a 76
+32 30 3a 71 42 69 74 74 6f 72 72 65 6e 74 2f 35
+2e 33 2e 30 72 63 31 36 3a 79 6f 75 72 69 70 34
+3a 7f 00 00 01 65 </span></pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:Extended&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:wire&quot;,
+   &quot;label&quot;: &quot;Extended&quot;,
+   &quot;encoding&quot;: &quot;bt:binary&quot;,
+   &quot;bep&quot;: 10,
+   &quot;comment&quot;: &quot;Message id 20: one more id byte, then the payload. Id 0 is the extended handshake; other ids are whatever the receiving peer's handshake said they mean (its 'm' dictionary), so each side uses the other's numbering.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:extId&quot;,
+     &quot;label&quot;: &quot;ext_id&quot;,
+     &quot;wireType&quot;: &quot;u8&quot;,
+     &quot;comment&quot;: &quot;0 = extended handshake; else the id the receiver assigned to a named extension.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:extPayload&quot;,
+     &quot;label&quot;: &quot;payload&quot;,
+     &quot;wireType&quot;: &quot;rest&quot;,
+     &quot;comment&quot;: &quot;Bencoded (ExtendedHandshake, UtPex, UtMetadata), in the last case followed by raw bytes.&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;Extended#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:Extended&quot;,
+   &quot;source&quot;: &quot;test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin&quot;,
+   &quot;captured&quot;: &quot;qBittorrent's extended handshake frame: id 20, extension id 0, a bencoded dictionary&quot;,
+   &quot;bytes&quot;: &quot;006431323a636f6d706c6574655f61676f692d3165313a6d6431313a6c745f646f6e746861766569376531303a73686172655f6d6f646569386531313a75706c6f61645f6f6e6c7969336531323a75745f686f6c6570756e636869346531313a75745f6d65746164617461693265363a75745f7065786931656531333a6d657461646174615f73697a65693432343865343a7265717169323030306531313a75706c6f61645f6f6e6c79693165313a7632303a71426974746f7272656e742f352e332e30726331363a796f75726970343a7f00000165&quot;,
+   &quot;value&quot;: {
+    &quot;ext_id&quot;: 0,
+    &quot;payload&quot;: &quot;6431323a636f6d706c6574655f61676f692d3165313a6d6431313a6c745f646f6e746861766569376531303a73686172655f6d6f646569386531313a75706c6f61645f6f6e6c7969336531323a75745f686f6c6570756e636869346531313a75745f6d65746164617461693265363a75745f7065786931656531333a6d657461646174615f73697a65693432343865343a7265717169323030306531313a75706c6f61645f6f6e6c79693165313a7632303a71426974746f7272656e742f352e332e30726331363a796f75726970343a7f00000165&quot;
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;ext_id&quot;,
+     0,
+     1
+    ],
+    [
+     &quot;payload&quot;,
+     1,
+     214
+    ]
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Extended","@type":"Struct","module":"bt:wire","label":"Extended","encoding":"bt:binary","bep":10,"comment":"Message id 20: one more id byte, then the payload. Id 0 is the extended handshake; other ids are whatever the receiving peer's handshake said they mean (its 'm' dictionary), so each side uses the other's numbering.","fields":[{"property":"bt:extId","label":"ext_id","wireType":"u8","comment":"0 = extended handshake; else the id the receiver assigned to a named extension."},{"property":"bt:extPayload","label":"payload","wireType":"rest","comment":"Bencoded (ExtendedHandshake, UtPex, UtMetadata), in the last case followed by raw bytes."}]},{"@id":"Extended#instance","@type":"Instance","of":"bt:Extended","source":"test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin","captured":"qBittorrent's extended handshake frame: id 20, extension id 0, a bencoded dictionary","bytes":"006431323a636f6d706c6574655f61676f692d3165313a6d6431313a6c745f646f6e746861766569376531303a73686172655f6d6f646569386531313a75706c6f61645f6f6e6c7969336531323a75745f686f6c6570756e636869346531313a75745f6d65746164617461693265363a75745f7065786931656531333a6d657461646174615f73697a65693432343865343a7265717169323030306531313a75706c6f61645f6f6e6c79693165313a7632303a71426974746f7272656e742f352e332e30726331363a796f75726970343a7f00000165","value":{"ext_id":0,"payload":"6431323a636f6d706c6574655f61676f692d3165313a6d6431313a6c745f646f6e746861766569376531303a73686172655f6d6f646569386531313a75706c6f61645f6f6e6c7969336531323a75745f686f6c6570756e636869346531313a75745f6d65746164617461693265363a75745f7065786931656531333a6d657461646174615f73697a65693432343865343a7265717169323030306531313a75706c6f61645f6f6e6c79693165313a7632303a71426974746f7272656e742f352e332e30726331363a796f75726970343a7f00000165"},"spans":[["ext_id",0,1],["payload",1,214]]}]}</script>
+<footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

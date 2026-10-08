@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>peer wire — RuleSet of the wire module — Torrent Schema</title>
+<meta name="description" content="What a peer checks on what the other sends.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="peer wire — RuleSet, wire module">
+<meta property="og:description" content="What a peer checks on what the other sends.">
+<meta property="og:url" content="https://torrent-schema.github.io/wireRules">
+<meta property="og:image" content="https://torrent-schema.github.io/og/wireRules.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="peer wire: RuleSet of the wire module of Torrent Schema">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="peer wire — Torrent Schema">
+<meta name="twitter:description" content="What a peer checks on what the other sends.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/wireRules.png">
+<link rel="canonical" href="https://torrent-schema.github.io/wireRules">
+<link rel="alternate" type="application/ld+json" href="schema/wire.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>peer wire</span> <small>RuleSet · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="wire">module: wire</a><a href="schema/wire.jsonld">schema/wire.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">RuleSet · module <a href="wire">wire</a> · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/wireRules</code></p>
+  <p class="comment">What a peer checks on what the other sends. A failure closes the connection; nothing here is negotiable.</p>
+</header>
+<div class="card"><h2>11 rules · scope <b>wire</b></h2><table><tr><th>#</th><th>rule</th><th>error code</th><th>check</th></tr><tr id="rule-handshake-pstr"><td class="name">1</td><td class="desc">the handshake begins 19 'BitTorrent protocol'</td><td class="type">wire-bad-handshake</td><td class="desc"><code>pstrlen == 19 and pstr == 'BitTorrent protocol'</code></td></tr><tr id="rule-handshake-infohash"><td class="name">2</td><td class="desc">the infohash is one we serve</td><td class="type">wire-unknown-infohash</td><td class="desc"><code>info_hash in our torrents</code></td></tr><tr id="rule-handshake-self"><td class="name">3</td><td class="desc">the peer is not ourselves</td><td class="type">wire-self-connection</td><td class="desc"><code>peer_id != our peer_id</code></td></tr><tr id="rule-frame-length"><td class="name">4</td><td class="desc">a frame's length is sane</td><td class="type">wire-frame-too-long</td><td class="desc"><code>length &lt;= 13 + 16384 for a piece (the one large message); a few bytes for the rest; a client refuses larger</code></td></tr><tr id="rule-bitfield-first"><td class="name">5</td><td class="desc">a bitfield comes first and fits the torrent</td><td class="type">wire-bad-bitfield</td><td class="desc"><code>bitfield is the first message after the handshake, byteLength(bits) == ceil(pieceCount / 8), spare bits zero</code></td></tr><tr id="rule-index-range"><td class="name">6</td><td class="desc">have, request, piece and cancel name a piece that exists</td><td class="type">wire-bad-index</td><td class="desc"><code>index &lt; pieceCount</code></td></tr><tr id="rule-request-bounds"><td class="name">7</td><td class="desc">a request stays inside its piece and is not too large</td><td class="type">wire-bad-request</td><td class="desc"><code>begin + length &lt;= pieceLength(index) and length &lt;= 131072</code></td></tr><tr id="rule-request-choked"><td class="name">8</td><td class="desc">requests are only served while the requester is unchoked</td><td class="type">wire-request-while-choked</td><td class="desc"><code>we sent unchoke since our last choke</code></td></tr><tr id="rule-piece-hash"><td class="name">9</td><td class="desc">a completed piece hashes to its entry in 'pieces'</td><td class="type">wire-bad-piece</td><td class="desc"><code>sha1(piece bytes) == pieces[index]; else discard the piece and distrust its sources</code></td></tr><tr id="rule-extension-bit"><td class="name">10</td><td class="desc">extended messages only after both handshakes set the extension bit</td><td class="type">wire-extension-unsupported</td><td class="desc"><code>reserved[5] &amp; 0x10 on both sides</code></td></tr><tr id="rule-metadata-hash"><td class="name">11</td><td class="desc">metadata fetched by ut_metadata hashes to the infohash</td><td class="type">wire-bad-metadata</td><td class="desc"><code>sha1(all pieces concatenated) == info_hash</code></td></tr></table></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:wireRules&quot;,
+   &quot;@type&quot;: &quot;RuleSet&quot;,
+   &quot;module&quot;: &quot;bt:wire&quot;,
+   &quot;label&quot;: &quot;peer wire&quot;,
+   &quot;scope&quot;: &quot;wire&quot;,
+   &quot;comment&quot;: &quot;What a peer checks on what the other sends. A failure closes the connection; nothing here is negotiable.&quot;,
+   &quot;rules&quot;: [
+    {
+     &quot;@id&quot;: &quot;bt:rule-handshake-pstr&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;the handshake begins 19 'BitTorrent protocol'&quot;,
+     &quot;errorCode&quot;: &quot;wire-bad-handshake&quot;,
+     &quot;check&quot;: &quot;pstrlen == 19 and pstr == 'BitTorrent protocol'&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-handshake-infohash&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;the infohash is one we serve&quot;,
+     &quot;errorCode&quot;: &quot;wire-unknown-infohash&quot;,
+     &quot;check&quot;: &quot;info_hash in our torrents&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-handshake-self&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;the peer is not ourselves&quot;,
+     &quot;errorCode&quot;: &quot;wire-self-connection&quot;,
+     &quot;check&quot;: &quot;peer_id != our peer_id&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-frame-length&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a frame's length is sane&quot;,
+     &quot;errorCode&quot;: &quot;wire-frame-too-long&quot;,
+     &quot;check&quot;: &quot;length &lt;= 13 + 16384 for a piece (the one large message); a few bytes for the rest; a client refuses larger&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-bitfield-first&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a bitfield comes first and fits the torrent&quot;,
+     &quot;errorCode&quot;: &quot;wire-bad-bitfield&quot;,
+     &quot;check&quot;: &quot;bitfield is the first message after the handshake, byteLength(bits) == ceil(pieceCount / 8), spare bits zero&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-index-range&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;have, request, piece and cancel name a piece that exists&quot;,
+     &quot;errorCode&quot;: &quot;wire-bad-index&quot;,
+     &quot;check&quot;: &quot;index &lt; pieceCount&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-request-bounds&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a request stays inside its piece and is not too large&quot;,
+     &quot;errorCode&quot;: &quot;wire-bad-request&quot;,
+     &quot;check&quot;: &quot;begin + length &lt;= pieceLength(index) and length &lt;= 131072&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-request-choked&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;requests are only served while the requester is unchoked&quot;,
+     &quot;errorCode&quot;: &quot;wire-request-while-choked&quot;,
+     &quot;check&quot;: &quot;we sent unchoke since our last choke&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-piece-hash&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a completed piece hashes to its entry in 'pieces'&quot;,
+     &quot;errorCode&quot;: &quot;wire-bad-piece&quot;,
+     &quot;check&quot;: &quot;sha1(piece bytes) == pieces[index]; else discard the piece and distrust its sources&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-extension-bit&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;extended messages only after both handshakes set the extension bit&quot;,
+     &quot;errorCode&quot;: &quot;wire-extension-unsupported&quot;,
+     &quot;check&quot;: &quot;reserved[5] &amp; 0x10 on both sides&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-metadata-hash&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;metadata fetched by ut_metadata hashes to the infohash&quot;,
+     &quot;errorCode&quot;: &quot;wire-bad-metadata&quot;,
+     &quot;check&quot;: &quot;sha1(all pieces concatenated) == info_hash&quot;
+    }
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:wireRules","@type":"RuleSet","module":"bt:wire","label":"peer wire","scope":"wire","comment":"What a peer checks on what the other sends. A failure closes the connection; nothing here is negotiable.","rules":[{"@id":"bt:rule-handshake-pstr","@type":"ValidationRule","label":"the handshake begins 19 'BitTorrent protocol'","errorCode":"wire-bad-handshake","check":"pstrlen == 19 and pstr == 'BitTorrent protocol'"},{"@id":"bt:rule-handshake-infohash","@type":"ValidationRule","label":"the infohash is one we serve","errorCode":"wire-unknown-infohash","check":"info_hash in our torrents"},{"@id":"bt:rule-handshake-self","@type":"ValidationRule","label":"the peer is not ourselves","errorCode":"wire-self-connection","check":"peer_id != our peer_id"},{"@id":"bt:rule-frame-length","@type":"ValidationRule","label":"a frame's length is sane","errorCode":"wire-frame-too-long","check":"length \u003c= 13 + 16384 for a piece (the one large message); a few bytes for the rest; a client refuses larger"},{"@id":"bt:rule-bitfield-first","@type":"ValidationRule","label":"a bitfield comes first and fits the torrent","errorCode":"wire-bad-bitfield","check":"bitfield is the first message after the handshake, byteLength(bits) == ceil(pieceCount / 8), spare bits zero"},{"@id":"bt:rule-index-range","@type":"ValidationRule","label":"have, request, piece and cancel name a piece that exists","errorCode":"wire-bad-index","check":"index \u003c pieceCount"},{"@id":"bt:rule-request-bounds","@type":"ValidationRule","label":"a request stays inside its piece and is not too large","errorCode":"wire-bad-request","check":"begin + length \u003c= pieceLength(index) and length \u003c= 131072"},{"@id":"bt:rule-request-choked","@type":"ValidationRule","label":"requests are only served while the requester is unchoked","errorCode":"wire-request-while-choked","check":"we sent unchoke since our last choke"},{"@id":"bt:rule-piece-hash","@type":"ValidationRule","label":"a completed piece hashes to its entry in 'pieces'","errorCode":"wire-bad-piece","check":"sha1(piece bytes) == pieces[index]; else discard the piece and distrust its sources"},{"@id":"bt:rule-extension-bit","@type":"ValidationRule","label":"extended messages only after both handshakes set the extension bit","errorCode":"wire-extension-unsupported","check":"reserved[5] & 0x10 on both sides"},{"@id":"bt:rule-metadata-hash","@type":"ValidationRule","label":"metadata fetched by ut_metadata hashes to the infohash","errorCode":"wire-bad-metadata","check":"sha1(all pieces concatenated) == info_hash"}]}]}</script>
+<footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

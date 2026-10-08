@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WsAnnounce — Struct of the webtorrent module — Torrent Schema</title>
+<meta name="description" content="The announce a browser sends, with offers for the peers it hopes to meet.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="WsAnnounce — Struct, webtorrent module">
+<meta property="og:description" content="The announce a browser sends, with offers for the peers it hopes to meet.">
+<meta property="og:url" content="https://torrent-schema.github.io/WsAnnounce">
+<meta property="og:image" content="https://torrent-schema.github.io/og/WsAnnounce.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="WsAnnounce: Struct of the webtorrent module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WsAnnounce — Torrent Schema">
+<meta name="twitter:description" content="The announce a browser sends, with offers for the peers it hopes to meet.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/WsAnnounce.png">
+<link rel="canonical" href="https://torrent-schema.github.io/WsAnnounce">
+<link rel="alternate" type="application/ld+json" href="schema/webtorrent.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>WsAnnounce</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="webtorrent">module: webtorrent</a><a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="webtorrent">webtorrent</a> · encoding <a href="json">json</a> · 9 fields · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/WsAnnounce</code></p>
+  <p class="comment">The announce a browser sends, with offers for the peers it hopes to meet. The same fields as the HTTP announce, plus the offers; 'numwant' is how many offers the tracker should forward.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>JSON key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="wsAction"><td class="name">action</td><td class="type">action</td><td class="type">utf8</td><td class="desc"></td><td class="val" data-f="action"><code class="pre">announce</code></td></tr><tr id="infoHash"><td class="name">info_hash</td><td class="type">info_hash</td><td class="type">bytes</td><td class="desc">Binary string.</td><td class="val" data-f="info_hash"><code class="pre">242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0</code></td></tr><tr id="peerId"><td class="name">peer_id</td><td class="type">peer_id</td><td class="type">bytes</td><td class="desc">Binary string.</td><td class="val" data-f="peer_id"><code class="pre">2d5453303030312d386630313864393238316561</code></td></tr><tr id="numwant"><td class="name">numwant</td><td class="type">numwant</td><td class="type">int?</td><td class="desc"></td><td class="val" data-f="numwant"><code class="pre">5</code></td></tr><tr id="uploaded"><td class="name">uploaded</td><td class="type">uploaded</td><td class="type">int?</td><td class="desc"></td><td class="val" data-f="uploaded"><code class="pre">0</code></td></tr><tr id="downloaded"><td class="name">downloaded</td><td class="type">downloaded</td><td class="type">int?</td><td class="desc"></td><td class="val" data-f="downloaded"><code class="pre">0</code></td></tr><tr id="left"><td class="name">left</td><td class="type">left</td><td class="type">int?</td><td class="desc">0 for a seeder; a seeder announces with no offers and only answers.</td><td class="val" data-f="left"><code class="pre">869836053</code></td></tr><tr id="event"><td class="name">event</td><td class="type">event</td><td class="type">utf8?</td><td class="desc"> <span class="mut">(one of <a href="AnnounceEvent">AnnounceEvent</a>)</span></td><td class="val" data-f="event"><code class="pre">started</code></td></tr><tr id="offers"><td class="name">offers</td><td class="type">offers</td><td class="type">list&lt;<a href="WsOffer">WsOffer</a>&gt;?</td><td class="desc">Empty or absent from a seeder; the tracker forwards each to one other peer.</td><td class="val" data-f="offers"><code class="pre">[
+ {
+  &quot;offer&quot;: {
+   &quot;type&quot;: &quot;offer&quot;,
+   &quot;sdp&quot;: &quot;v=0\r\no=rtc 3413278232 0 IN IP4 203.0.113.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic:WMS *\r\na=ice-options:ice2,trickle\r\na=fingerprint:sha-256 2001:db8::1:2001:db8::1:2001:db8::1:2001:db8::1\r\nm=application 51242 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 203.0.113.1\r\na=mid:0\r\na=sendrecv\r\na=sctp-port:5000\r\na=max-message-size:262144\r\na=setup:actpass\r\na=ice-ufrag:qs0S\r\na=ice-pwd:n4yhgSTE+8awaOdG4YtDlL\r\na=candidate:3 1 UDP 2116025855 2001:db8::1 51242 typ host\r\na=candidate:1 1 UDP 2114977791 203.0.113.1 51242 typ host\r\na=candidate:2 1 UDP 2114977535 203.0.113.1 51242 typ host\r\na=candidate:4 1 UDP 1678769407 203.0.113.1 51242 typ srflx raddr 203.0.113.1 rport 0\r\na=end-of-candidates\r\n&quot;
+  },
+  &quot;offer_id&quot;: &quot;e0d76e6c575bfc47ed219b58823d27f8aca89037&quot;
+ }
+]</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the announce this codec sent to tracker.openwebtorrent.com for the snapshot, carrying one WebRTC offer (ids shown as hex; on the wire they are 20-char binary strings). Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/webtorrent/announce-session.json">test/vectors/webtorrent/announce-session.json</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:WsAnnounce&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:webtorrent&quot;,
+   &quot;label&quot;: &quot;WsAnnounce&quot;,
+   &quot;encoding&quot;: &quot;bt:json&quot;,
+   &quot;comment&quot;: &quot;The announce a browser sends, with offers for the peers it hopes to meet. The same fields as the HTTP announce, plus the offers; 'numwant' is how many offers the tracker should forward.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:wsAction&quot;,
+     &quot;label&quot;: &quot;action&quot;,
+     &quot;key&quot;: &quot;action&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: true,
+     &quot;constValue&quot;: &quot;announce&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:infoHash&quot;,
+     &quot;label&quot;: &quot;info_hash&quot;,
+     &quot;key&quot;: &quot;info_hash&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;size&quot;: 20,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Binary string.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:peerId&quot;,
+     &quot;label&quot;: &quot;peer_id&quot;,
+     &quot;key&quot;: &quot;peer_id&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;size&quot;: 20,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Binary string.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:numwant&quot;,
+     &quot;label&quot;: &quot;numwant&quot;,
+     &quot;key&quot;: &quot;numwant&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:uploaded&quot;,
+     &quot;label&quot;: &quot;uploaded&quot;,
+     &quot;key&quot;: &quot;uploaded&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:downloaded&quot;,
+     &quot;label&quot;: &quot;downloaded&quot;,
+     &quot;key&quot;: &quot;downloaded&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:left&quot;,
+     &quot;label&quot;: &quot;left&quot;,
+     &quot;key&quot;: &quot;left&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;0 for a seeder; a seeder announces with no offers and only answers.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:event&quot;,
+     &quot;label&quot;: &quot;event&quot;,
+     &quot;key&quot;: &quot;event&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;enumType&quot;: &quot;bt:AnnounceEvent&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:offers&quot;,
+     &quot;label&quot;: &quot;offers&quot;,
+     &quot;key&quot;: &quot;offers&quot;,
+     &quot;valueType&quot;: &quot;list&quot;,
+     &quot;itemType&quot;: &quot;struct&quot;,
+     &quot;structType&quot;: &quot;bt:WsOffer&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Empty or absent from a seeder; the tracker forwards each to one other peer.&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;WsAnnounce#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:WsAnnounce&quot;,
+   &quot;source&quot;: &quot;test/vectors/webtorrent/announce-session.json&quot;,
+   &quot;captured&quot;: &quot;the announce this codec sent to tracker.openwebtorrent.com for the snapshot, carrying one WebRTC offer (ids shown as hex; on the wire they are 20-char binary strings)&quot;,
+   &quot;value&quot;: {
+    &quot;action&quot;: &quot;announce&quot;,
+    &quot;info_hash&quot;: &quot;242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&quot;,
+    &quot;peer_id&quot;: &quot;2d5453303030312d386630313864393238316561&quot;,
+    &quot;numwant&quot;: 5,
+    &quot;uploaded&quot;: 0,
+    &quot;downloaded&quot;: 0,
+    &quot;left&quot;: 869836053,
+    &quot;event&quot;: &quot;started&quot;,
+    &quot;offers&quot;: [
+     {
+      &quot;offer&quot;: {
+       &quot;type&quot;: &quot;offer&quot;,
+       &quot;sdp&quot;: &quot;v=0\r\no=rtc 3413278232 0 IN IP4 203.0.113.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic:WMS *\r\na=ice-options:ice2,trickle\r\na=fingerprint:sha-256 2001:db8::1:2001:db8::1:2001:db8::1:2001:db8::1\r\nm=application 51242 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 203.0.113.1\r\na=mid:0\r\na=sendrecv\r\na=sctp-port:5000\r\na=max-message-size:262144\r\na=setup:actpass\r\na=ice-ufrag:qs0S\r\na=ice-pwd:n4yhgSTE+8awaOdG4YtDlL\r\na=candidate:3 1 UDP 2116025855 2001:db8::1 51242 typ host\r\na=candidate:1 1 UDP 2114977791 203.0.113.1 51242 typ host\r\na=candidate:2 1 UDP 2114977535 203.0.113.1 51242 typ host\r\na=candidate:4 1 UDP 1678769407 203.0.113.1 51242 typ srflx raddr 203.0.113.1 rport 0\r\na=end-of-candidates\r\n&quot;
+      },
+      &quot;offer_id&quot;: &quot;e0d76e6c575bfc47ed219b58823d27f8aca89037&quot;
+     }
+    ]
+   }
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:WsAnnounce","@type":"Struct","module":"bt:webtorrent","label":"WsAnnounce","encoding":"bt:json","comment":"The announce a browser sends, with offers for the peers it hopes to meet. The same fields as the HTTP announce, plus the offers; 'numwant' is how many offers the tracker should forward.","fields":[{"property":"bt:wsAction","label":"action","key":"action","valueType":"utf8","required":true,"constValue":"announce"},{"property":"bt:infoHash","label":"info_hash","key":"info_hash","valueType":"bytes","size":20,"required":true,"comment":"Binary string."},{"property":"bt:peerId","label":"peer_id","key":"peer_id","valueType":"bytes","size":20,"required":true,"comment":"Binary string."},{"property":"bt:numwant","label":"numwant","key":"numwant","valueType":"int","required":false},{"property":"bt:uploaded","label":"uploaded","key":"uploaded","valueType":"int","required":false},{"property":"bt:downloaded","label":"downloaded","key":"downloaded","valueType":"int","required":false},{"property":"bt:left","label":"left","key":"left","valueType":"int","required":false,"comment":"0 for a seeder; a seeder announces with no offers and only answers."},{"property":"bt:event","label":"event","key":"event","valueType":"utf8","enumType":"bt:AnnounceEvent","required":false},{"property":"bt:offers","label":"offers","key":"offers","valueType":"list","itemType":"struct","structType":"bt:WsOffer","required":false,"comment":"Empty or absent from a seeder; the tracker forwards each to one other peer."}]},{"@id":"WsAnnounce#instance","@type":"Instance","of":"bt:WsAnnounce","source":"test/vectors/webtorrent/announce-session.json","captured":"the announce this codec sent to tracker.openwebtorrent.com for the snapshot, carrying one WebRTC offer (ids shown as hex; on the wire they are 20-char binary strings)","value":{"action":"announce","info_hash":"242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0","peer_id":"2d5453303030312d386630313864393238316561","numwant":5,"uploaded":0,"downloaded":0,"left":869836053,"event":"started","offers":[{"offer":{"type":"offer","sdp":"v=0\r\no=rtc 3413278232 0 IN IP4 203.0.113.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic:WMS *\r\na=ice-options:ice2,trickle\r\na=fingerprint:sha-256 2001:db8::1:2001:db8::1:2001:db8::1:2001:db8::1\r\nm=application 51242 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 203.0.113.1\r\na=mid:0\r\na=sendrecv\r\na=sctp-port:5000\r\na=max-message-size:262144\r\na=setup:actpass\r\na=ice-ufrag:qs0S\r\na=ice-pwd:n4yhgSTE+8awaOdG4YtDlL\r\na=candidate:3 1 UDP 2116025855 2001:db8::1 51242 typ host\r\na=candidate:1 1 UDP 2114977791 203.0.113.1 51242 typ host\r\na=candidate:2 1 UDP 2114977535 203.0.113.1 51242 typ host\r\na=candidate:4 1 UDP 1678769407 203.0.113.1 51242 typ srflx raddr 203.0.113.1 rport 0\r\na=end-of-candidates\r\n"},"offer_id":"e0d76e6c575bfc47ed219b58823d27f8aca89037"}]}}]}</script>
+<footer><p>Generated from <a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

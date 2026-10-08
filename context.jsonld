@@ -74,6 +74,27 @@
     },
     "code": "bts:code",
     "position": "bts:position",
-    "kind": "bts:kind"
+    "kind": "bts:kind",
+    "Instance": "bts:Instance",
+    "of": {
+      "@id": "bts:of",
+      "@type": "@id"
+    },
+    "source": "bts:source",
+    "captured": "bts:captured",
+    "bytes": "bts:bytes",
+    "value": {
+      "@id": "bts:value",
+      "@type": "@json"
+    },
+    "spans": {
+      "@id": "bts:spans",
+      "@type": "@json"
+    },
+    "computed": {
+      "@id": "bts:computed",
+      "@type": "@json"
+    },
+    "result": "bts:result"
   }
 }

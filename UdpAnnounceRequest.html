@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UdpAnnounceRequest — Struct of the tracker module — Torrent Schema</title>
+<meta name="description" content="The announce over UDP: the same facts as the HTTP query, in 98 fixed bytes.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="UdpAnnounceRequest — Struct, tracker module">
+<meta property="og:description" content="The announce over UDP: the same facts as the HTTP query, in 98 fixed bytes.">
+<meta property="og:url" content="https://torrent-schema.github.io/UdpAnnounceRequest">
+<meta property="og:image" content="https://torrent-schema.github.io/og/UdpAnnounceRequest.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="UdpAnnounceRequest: Struct of the tracker module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="UdpAnnounceRequest — Torrent Schema">
+<meta name="twitter:description" content="The announce over UDP: the same facts as the HTTP query, in 98 fixed bytes.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/UdpAnnounceRequest.png">
+<link rel="canonical" href="https://torrent-schema.github.io/UdpAnnounceRequest">
+<link rel="alternate" type="application/ld+json" href="schema/tracker.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>UdpAnnounceRequest</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="tracker">module: tracker</a><a href="schema/tracker.jsonld">schema/tracker.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="tracker">tracker</a> · encoding <a href="binary">binary</a> · <b>98 bytes</b> on the wire · 13 fields · BEP 15 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/UdpAnnounceRequest</code></p>
+  <p class="comment">The announce over UDP: the same facts as the HTTP query, in 98 fixed bytes.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="connectionId"><td class="name">connection_id</td><td class="type">u64be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="connection_id"><code class="pre">13804681028950256497</code></td></tr><tr id="action"><td class="name">action</td><td class="type">u32be</td><td class="type">= 1</td><td class="desc">1 = announce.</td><td class="val" data-f="action"><code class="pre">1</code></td></tr><tr id="transactionId"><td class="name">transaction_id</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="transaction_id"><code class="pre">1772049136</code></td></tr><tr id="infoHash"><td class="name">info_hash</td><td class="type">bytes20</td><td class="type"></td><td class="desc"></td><td class="val" data-f="info_hash"><code class="pre">242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0</code></td></tr><tr id="peerId"><td class="name">peer_id</td><td class="type">bytes20</td><td class="type"></td><td class="desc"></td><td class="val" data-f="peer_id"><code class="pre">2d5453303030312d303132333435363738396162</code></td></tr><tr id="downloaded"><td class="name">downloaded</td><td class="type">u64be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="downloaded"><code class="pre">0</code></td></tr><tr id="left"><td class="name">left</td><td class="type">u64be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="left"><code class="pre">869836053</code></td></tr><tr id="uploaded"><td class="name">uploaded</td><td class="type">u64be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="uploaded"><code class="pre">0</code></td></tr><tr id="event"><td class="name">event</td><td class="type">u32be</td><td class="type"></td><td class="desc">0 none, 1 completed, 2 started, 3 stopped. <span class="mut">(one of <a href="AnnounceEvent">AnnounceEvent</a>)</span></td><td class="val" data-f="event"><code class="pre">2</code></td></tr><tr id="ipAddress"><td class="name">ip</td><td class="type">u32be</td><td class="type"></td><td class="desc">0 = use the sender's address.</td><td class="val" data-f="ip"><code class="pre">0</code></td></tr><tr id="key"><td class="name">key</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="key"><code class="pre">3735928559</code></td></tr><tr id="numWant"><td class="name">num_want</td><td class="type">i32be</td><td class="type"></td><td class="desc">-1 = default.</td><td class="val" data-f="num_want"><code class="pre">50</code></td></tr><tr id="port"><td class="name">port</td><td class="type">u16be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="port"><code class="pre">6881</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the UDP datagram sent to tracker.opentrackr.org:1337 for the snapshot, byte for byte. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/tracker/udpAnnounceRequest.bin">test/vectors/tracker/udpAnnounceRequest.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">98 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="connection_id" title="connection_id">bf 94 14 41 68 27 6b 71 </span><span class="f" data-f="action" title="action">00 00 00 01 </span><span class="f" data-f="transaction_id" title="transaction_id">69 9f 52 f0
+</span><span class="f" data-f="info_hash" title="info_hash">24 2e 9b 7d cb a1 5c c0 ed 8f 1b c5 f0 6b 68 da
+00 8f 87 c0 </span><span class="f" data-f="peer_id" title="peer_id">2d 54 53 30 30 30 31 2d 30 31 32 33
+34 35 36 37 38 39 61 62 </span><span class="f" data-f="downloaded" title="downloaded">00 00 00 00 00 00 00 00
+</span><span class="f" data-f="left" title="left">00 00 00 00 33 d8 a5 15 </span><span class="f" data-f="uploaded" title="uploaded">00 00 00 00 00 00 00 00
+</span><span class="f" data-f="event" title="event">00 00 00 02 </span><span class="f" data-f="ip" title="ip">00 00 00 00 </span><span class="f" data-f="key" title="key">de ad be ef </span><span class="f" data-f="num_want" title="num_want">00 00 00 32
+</span><span class="f" data-f="port" title="port">1a e1 </span></pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:UdpAnnounceRequest&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:tracker&quot;,
+   &quot;label&quot;: &quot;UdpAnnounceRequest&quot;,
+   &quot;encoding&quot;: &quot;bt:binary&quot;,
+   &quot;bep&quot;: 15,
+   &quot;wireSize&quot;: 98,
+   &quot;comment&quot;: &quot;The announce over UDP: the same facts as the HTTP query, in 98 fixed bytes.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:connectionId&quot;,
+     &quot;label&quot;: &quot;connection_id&quot;,
+     &quot;wireType&quot;: &quot;u64be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:action&quot;,
+     &quot;label&quot;: &quot;action&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;,
+     &quot;constValue&quot;: 1,
+     &quot;comment&quot;: &quot;1 = announce.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:transactionId&quot;,
+     &quot;label&quot;: &quot;transaction_id&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:infoHash&quot;,
+     &quot;label&quot;: &quot;info_hash&quot;,
+     &quot;wireType&quot;: &quot;bytes20&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:peerId&quot;,
+     &quot;label&quot;: &quot;peer_id&quot;,
+     &quot;wireType&quot;: &quot;bytes20&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:downloaded&quot;,
+     &quot;label&quot;: &quot;downloaded&quot;,
+     &quot;wireType&quot;: &quot;u64be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:left&quot;,
+     &quot;label&quot;: &quot;left&quot;,
+     &quot;wireType&quot;: &quot;u64be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:uploaded&quot;,
+     &quot;label&quot;: &quot;uploaded&quot;,
+     &quot;wireType&quot;: &quot;u64be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:event&quot;,
+     &quot;label&quot;: &quot;event&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;,
+     &quot;enumType&quot;: &quot;bt:AnnounceEvent&quot;,
+     &quot;comment&quot;: &quot;0 none, 1 completed, 2 started, 3 stopped.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:ipAddress&quot;,
+     &quot;label&quot;: &quot;ip&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;,
+     &quot;comment&quot;: &quot;0 = use the sender's address.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:key&quot;,
+     &quot;label&quot;: &quot;key&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:numWant&quot;,
+     &quot;label&quot;: &quot;num_want&quot;,
+     &quot;wireType&quot;: &quot;i32be&quot;,
+     &quot;comment&quot;: &quot;-1 = default.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:port&quot;,
+     &quot;label&quot;: &quot;port&quot;,
+     &quot;wireType&quot;: &quot;u16be&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;UdpAnnounceRequest#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:UdpAnnounceRequest&quot;,
+   &quot;source&quot;: &quot;test/vectors/tracker/udpAnnounceRequest.bin&quot;,
+   &quot;captured&quot;: &quot;the UDP datagram sent to tracker.opentrackr.org:1337 for the snapshot, byte for byte&quot;,
+   &quot;bytes&quot;: &quot;bf94144168276b7100000001699f52f0242e9b7dcba15cc0ed8f1bc5f06b68da008f87c02d5453303030312d30313233343536373839616200000000000000000000000033d8a51500000000000000000000000200000000deadbeef000000321ae1&quot;,
+   &quot;value&quot;: {
+    &quot;connection_id&quot;: &quot;13804681028950256497&quot;,
+    &quot;action&quot;: 1,
+    &quot;transaction_id&quot;: 1772049136,
+    &quot;info_hash&quot;: &quot;242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&quot;,
+    &quot;peer_id&quot;: &quot;2d5453303030312d303132333435363738396162&quot;,
+    &quot;downloaded&quot;: 0,
+    &quot;left&quot;: 869836053,
+    &quot;uploaded&quot;: 0,
+    &quot;event&quot;: 2,
+    &quot;ip&quot;: 0,
+    &quot;key&quot;: 3735928559,
+    &quot;num_want&quot;: 50,
+    &quot;port&quot;: 6881
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;connection_id&quot;,
+     0,
+     8
+    ],
+    [
+     &quot;action&quot;,
+     8,
+     12
+    ],
+    [
+     &quot;transaction_id&quot;,
+     12,
+     16
+    ],
+    [
+     &quot;info_hash&quot;,
+     16,
+     36
+    ],
+    [
+     &quot;peer_id&quot;,
+     36,
+     56
+    ],
+    [
+     &quot;downloaded&quot;,
+     56,
+     64
+    ],
+    [
+     &quot;left&quot;,
+     64,
+     72
+    ],
+    [
+     &quot;uploaded&quot;,
+     72,
+     80
+    ],
+    [
+     &quot;event&quot;,
+     80,
+     84
+    ],
+    [
+     &quot;ip&quot;,
+     84,
+     88
+    ],
+    [
+     &quot;key&quot;,
+     88,
+     92
+    ],
+    [
+     &quot;num_want&quot;,
+     92,
+     96
+    ],
+    [
+     &quot;port&quot;,
+     96,
+     98
+    ]
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:UdpAnnounceRequest","@type":"Struct","module":"bt:tracker","label":"UdpAnnounceRequest","encoding":"bt:binary","bep":15,"wireSize":98,"comment":"The announce over UDP: the same facts as the HTTP query, in 98 fixed bytes.","fields":[{"property":"bt:connectionId","label":"connection_id","wireType":"u64be"},{"property":"bt:action","label":"action","wireType":"u32be","constValue":1,"comment":"1 = announce."},{"property":"bt:transactionId","label":"transaction_id","wireType":"u32be"},{"property":"bt:infoHash","label":"info_hash","wireType":"bytes20"},{"property":"bt:peerId","label":"peer_id","wireType":"bytes20"},{"property":"bt:downloaded","label":"downloaded","wireType":"u64be"},{"property":"bt:left","label":"left","wireType":"u64be"},{"property":"bt:uploaded","label":"uploaded","wireType":"u64be"},{"property":"bt:event","label":"event","wireType":"u32be","enumType":"bt:AnnounceEvent","comment":"0 none, 1 completed, 2 started, 3 stopped."},{"property":"bt:ipAddress","label":"ip","wireType":"u32be","comment":"0 = use the sender's address."},{"property":"bt:key","label":"key","wireType":"u32be"},{"property":"bt:numWant","label":"num_want","wireType":"i32be","comment":"-1 = default."},{"property":"bt:port","label":"port","wireType":"u16be"}]},{"@id":"UdpAnnounceRequest#instance","@type":"Instance","of":"bt:UdpAnnounceRequest","source":"test/vectors/tracker/udpAnnounceRequest.bin","captured":"the UDP datagram sent to tracker.opentrackr.org:1337 for the snapshot, byte for byte","bytes":"bf94144168276b7100000001699f52f0242e9b7dcba15cc0ed8f1bc5f06b68da008f87c02d5453303030312d30313233343536373839616200000000000000000000000033d8a51500000000000000000000000200000000deadbeef000000321ae1","value":{"connection_id":"13804681028950256497","action":1,"transaction_id":1772049136,"info_hash":"242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0","peer_id":"2d5453303030312d303132333435363738396162","downloaded":0,"left":869836053,"uploaded":0,"event":2,"ip":0,"key":3735928559,"num_want":50,"port":6881},"spans":[["connection_id",0,8],["action",8,12],["transaction_id",12,16],["info_hash",16,36],["peer_id",36,56],["downloaded",56,64],["left",64,72],["uploaded",72,80],["event",80,84],["ip",84,88],["key",88,92],["num_want",92,96],["port",96,98]]}]}</script>
+<footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

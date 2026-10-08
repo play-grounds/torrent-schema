@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CompactPeer6 — Struct of the tracker module — Torrent Schema</title>
+<meta name="description" content="">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="CompactPeer6 — Struct, tracker module">
+<meta property="og:description" content="">
+<meta property="og:url" content="https://torrent-schema.github.io/CompactPeer6">
+<meta property="og:image" content="https://torrent-schema.github.io/og/CompactPeer6.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CompactPeer6: Struct of the tracker module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CompactPeer6 — Torrent Schema">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/CompactPeer6.png">
+<link rel="canonical" href="https://torrent-schema.github.io/CompactPeer6">
+<link rel="alternate" type="application/ld+json" href="schema/tracker.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>CompactPeer6</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="tracker">module: tracker</a><a href="schema/tracker.jsonld">schema/tracker.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="tracker">tracker</a> · encoding <a href="binary">binary</a> · <b>18 bytes</b> on the wire · 2 fields · BEP 7 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/CompactPeer6</code></p>
+  <p class="comment"></p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th></tr><tr id="ip6"><td class="name">ip</td><td class="type">ip6</td><td class="type"></td><td class="desc"></td></tr><tr id="port16"><td class="name">port</td><td class="type">u16be</td><td class="type"></td><td class="desc"></td></tr></table></div><div class="card"><h2>no captured instance yet</h2><p class="comment mut">No real CompactPeer6 has been captured into test/vectors/ so far; this page shows the definition only. The codec reads and writes it, and a capture is the next step.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:CompactPeer6&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:tracker&quot;,
+   &quot;label&quot;: &quot;CompactPeer6&quot;,
+   &quot;encoding&quot;: &quot;bt:binary&quot;,
+   &quot;bep&quot;: 7,
+   &quot;wireSize&quot;: 18,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:ip6&quot;,
+     &quot;label&quot;: &quot;ip&quot;,
+     &quot;wireType&quot;: &quot;ip6&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:port16&quot;,
+     &quot;label&quot;: &quot;port&quot;,
+     &quot;wireType&quot;: &quot;u16be&quot;
+    }
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:CompactPeer6","@type":"Struct","module":"bt:tracker","label":"CompactPeer6","encoding":"bt:binary","bep":7,"wireSize":18,"fields":[{"property":"bt:ip6","label":"ip","wireType":"ip6"},{"property":"bt:port16","label":"port","wireType":"u16be"}]}]}</script>
+<footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

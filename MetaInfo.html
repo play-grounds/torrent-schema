@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MetaInfo — Struct of the metainfo module — Torrent Schema</title>
+<meta name="description" content="The top-level dictionary of a .torrent file.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="MetaInfo — Struct, metainfo module">
+<meta property="og:description" content="The top-level dictionary of a .torrent file.">
+<meta property="og:url" content="https://torrent-schema.github.io/MetaInfo">
+<meta property="og:image" content="https://torrent-schema.github.io/og/MetaInfo.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="MetaInfo: Struct of the metainfo module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MetaInfo — Torrent Schema">
+<meta name="twitter:description" content="The top-level dictionary of a .torrent file.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/MetaInfo.png">
+<link rel="canonical" href="https://torrent-schema.github.io/MetaInfo">
+<link rel="alternate" type="application/ld+json" href="schema/metainfo.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>MetaInfo</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="metainfo">module: metainfo</a><a href="schema/metainfo.jsonld">schema/metainfo.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="metainfo">metainfo</a> · encoding <a href="bencode">bencode</a> · 8 fields · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/MetaInfo</code></p>
+  <p class="comment">The top-level dictionary of a .torrent file. Only 'info' is required; the rest are hints about where to find peers and who made the file. Keys not listed here are preserved by the codec as 'extra' so a file round-trips byte-exactly.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>bencode key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="announce"><td class="name">announce</td><td class="type">announce</td><td class="type">utf8?</td><td class="desc">The tracker URL (BEP 3). Outside the infohash: replaceable without changing the torrent.</td><td class="val" data-f="announce"><span class="mut">—</span></td></tr><tr id="announceList"><td class="name">announce-list</td><td class="type">announce-list</td><td class="type">list&lt;list&lt;utf8&gt;&gt;?</td><td class="desc">Tiers of tracker URLs: a list of lists; a client tries a tier's trackers in random order before moving to the next tier. <span class="mut">(BEP 12)</span></td><td class="val" data-f="announce-list"><span class="mut">—</span></td></tr><tr id="urlList"><td class="name">url-list</td><td class="type">url-list</td><td class="type">list&lt;utf8&gt;?</td><td class="desc">Web seeds: plain HTTP(S) URLs of the content (a file, or a directory root for multi-file torrents). A client fetches pieces from them with Range requests as if from a peer. Outside the infohash. A single string instead of a list is tolerated on input. <span class="mut">(BEP 19)</span></td><td class="val" data-f="url-list"><span class="mut">—</span></td></tr><tr id="creationDate"><td class="name">creation date</td><td class="type">creation date</td><td class="type">int?</td><td class="desc">Unix time the file was made. Outside the infohash.</td><td class="val" data-f="creation date"><code class="pre">1790048392</code></td></tr><tr id="comment"><td class="name">comment</td><td class="type">comment</td><td class="type">utf8?</td><td class="desc"></td><td class="val" data-f="comment"><span class="mut">—</span></td></tr><tr id="createdBy"><td class="name">created by</td><td class="type">created by</td><td class="type">utf8?</td><td class="desc">The program that made the file, e.g. 'WebTorrent/0300'.</td><td class="val" data-f="created by"><code class="pre">WebTorrent/0300</code></td></tr><tr id="encodingName"><td class="name">encoding</td><td class="type">encoding</td><td class="type">utf8?</td><td class="desc">The character encoding of the strings in 'info' when not UTF-8; rare, historical.</td><td class="val" data-f="encoding"><span class="mut">—</span></td></tr><tr id="info"><td class="name">info</td><td class="type">info</td><td class="type"><a href="Info">Info</a></td><td class="desc">The torrent's identity. Its canonical bencoding, byte for byte as it appears in the file, is what the infohash covers.</td><td class="val" data-f="info"><code class="pre">{
+ &quot;name&quot;: &quot;utxo-knots-150307.dat&quot;,
+ &quot;piece length&quot;: 4194304,
+ &quot;pieces&quot;: [
+  &quot;26b0fb2642b221755e95a52352cbad975cf40250&quot;,
+  &quot;7c92bb512cd770355311ee66b9cdd7929de3235e&quot;,
+  &quot;c4d9ce88d9b3336877a7c7bc504ddca4c0505a0b&quot;,
+  &quot;0a0704521418e0a768a435db18098a23b38e32f2&quot;,
+  &quot;f24543ae4e3f997e275bce5a8cb0d87e694678a5&quot;,
+  &quot;8d1f0776758dd3212b6493e288f6c1324b54cad6&quot;,
+  &quot;56c5c933a6b5e17dc79386dbcd8dbf2ae90f7d6e&quot;,
+  &quot;8ef3dacdcf9947bc73f47d239047788d78e0bfd2&quot;,
+  &quot;03c80665cd6fd061154cde95ba2f6285c73bc5a6&quot;,
+  &quot;d7d8e16c887a75325e3e7b0eb9d5329e245d2b10&quot;,
+  &quot;e09be3b9baa52aa9012b199c9e8b990f801be10c&quot;,
+  &quot;04bdf9289e03072c95c5080fc2db6ea763ae2fd7&quot;,
+  &quot;f11c1f1ad3e362bd6095d92c7c8ee471a9b87910&quot;,
+  &quot;e6103850dbcda154469004e3aa2d6051bf5e5c23&quot;,
+  &quot;7baf961e5b976c2048c41c9cff9f0d9e0b40ceb0&quot;,
+  &quot;db7d925bd28e20293487a0f0b230c587ccef8680&quot;,
+  &quot;2c688f050c1b13877c92998450452a790a5747c0&quot;,
+  &quot;c86309f88992e072e8309f6f5ef03c8d5cc2a003&quot;,
+  &quot;d3d6705ddc65fbfb1ae21fb83440f036bb68bd6c&quot;,
+  &quot;569d31a241f2be031556251b384c49c7ea171780&quot;,
+  &quot;982c88d10f79f7f295b00e9b727e11f7a422df34&quot;,
+  &quot;cee4b275c3ac2c005eb323c30466fdc00b5be7f6&quot;,
+  &quot;d04d44e9af3633634440ef8c0707367c2f5389cc&quot;,
+  &quot;78d895d93984619cc417dfebf63bd7d71135da19&quot;,
+  &quot;aa2a4dfaea734fec89d938282e3951ada5307b90&quot;,
+  &quot;d2577a37500f36520883718987d1b73f43420669&quot;,
+  &quot;c68d96552b1ab4a1a1d9f3707283ff52c31a67e4&quot;,
+  &quot;6973bd1369cc7dd834dd0cdcf448c2b9373ca4a7&quot;,
+  &quot;efde6fbd914c4a62d6debf857f655460f7ad60e6&quot;,
+  &quot;ad9cb3032a647266a5b811ccb0246a6ead615f2a&quot;,
+  &quot;c99ec970c5bb1e790ca2cea53aa608a1b94ef115&quot;,
+  &quot;f0feae8dd62f2f66d665d3c37fa26465fdf7bee9&quot;,
+  &quot;bb98c9ff4039bdeaea9dd841917407dfc97f01c2&quot;,
+  &quot;f3f8d5d5963deaab9d35f42b10bd9aa9063180c5&quot;,
+  &quot;43d47e281561ed6aba3172569f093817d051a61e&quot;,
+  &quot;c5024776518510e6f6b7efecdabe51e732cc2c48&quot;,
+  &quot;e5881ccd408c45b209410d24e427688ea19822c2&quot;,
+  &quot;034a6e3c3cdaf249e427f8fb98d62aa11c7896a7&quot;,
+  &quot;60ac813c6447283149bd1bd5e91dda20cee945b3&quot;,
+  &quot;d2ad5a06a8c5088d0084168e356d6a7ee4ca1129&quot;,
+  &quot;44511a6be8d340c28e94399a86a16b1c8dac6caf&quot;,
+  &quot;c911898bf3c50234d0cc0712f58f3db70e4059de&quot;,
+  &quot;29676482e5816c71573293dea746b8443eb7e562&quot;,
+  &quot;4ff11f2348f42f18fe8c755d988366eada73ed7a&quot;,
+  &quot;dcae00aa21f353340d88a1052f5aa0d961f875ec&quot;,
+  &quot;94aaef0f5ef53aafc66659230bf46871cef797b4&quot;,
+  &quot;ddaf7646beb38371bce45c012bc2b4c05a2c2024&quot;,
+  &quot;077c7089bc1617af2a1d182f6981ad50acf518d7&quot;,
+  &quot;71ccaa8d7cf5a7b109d0e30d19865c213bc4ed9b&quot;,
+  &quot;fd615f46a6c4d3d7e2b6dc40980fff0defa62633&quot;,
+  &quot;5377c122720c02742c1b054ab5e19a012afb23da&quot;,
+  &quot;eb02615e66fb98a53557dae564b5bed43f3165c0&quot;,
+  &quot;612f2a36b4e365b94eda481384ca55159373327e&quot;,
+  &quot;7dc17353bb941ebeecf719907ec49acb8bc653c3&quot;,
+  &quot;5e5ad0eafe03235fb0664c928a45ceb715b7fe2b&quot;,
+  &quot;c1316def19ac30bc848fb7bafc3adc09fc04a388&quot;,
+  &quot;93a8e70a1796c0102917634b1198dbbc436ee7a2&quot;,
+  &quot;bed63b4cde2bb4aebb0263de9ea1ffbe6824de17&quot;,
+  &quot;c2ac119fc49b6e4a1440e5764bd2c0a5fe8a2ab1&quot;,
+  &quot;37cfb170c4b59e88de11f296a14fea6133725905&quot;,
+  &quot;01657bb33e10ec0ef1d1ae2712ad9b76f6621f24&quot;,
+  &quot;b2702c295c51c36f584a4ca2983b3a1ce0e4fd4e&quot;,
+  &quot;2ff132931d37a431b0958eafaf06ea8ff001d102&quot;,
+  &quot;dcf0281c2d93beb3d8bec39a19c069c5d574a554&quot;,
+  &quot;7bcafe7509901c5776f78456a06cf49c012ca582&quot;,
+  &quot;09269a395a9604f46c6faf13233bc08ae2135c83&quot;,
+  &quot;fa2be0edc2feabeedfbc6b4770f1a006291e5c2d&quot;,
+  &quot;48fba599ee5ec80dd357961ca8af0c4749cdbff6&quot;,
+  &quot;e05e75f425ecf27f8b1ae703c513bff96237dd78&quot;,
+  &quot;567399f357246c7aa4d167002186f6ff656bde35&quot;,
+  &quot;8795629bf1c7dd4f7ccd87c6257cc5c907cca8fa&quot;,
+  &quot;5ffdd5493ac8942205e980e3fa79b5ca59f7df45&quot;,
+  &quot;367bb59bae6ca90b91008033ef1bcf048543fcd2&quot;,
+  &quot;56ff95ca391722a8ad1a92d744e565faece24f32&quot;,
+  &quot;264b7b9d4cbe67076770e9d1784cc29df19c58e0&quot;,
+  &quot;8726d41fd528ab6b5acd378f014d61429236d0df&quot;,
+  &quot;f9f5d6a27f8bfd1c8f08c43a75123a026200980d&quot;,
+  &quot;2f607e1738ed66ca6f81dca61100fcd658de86c9&quot;,
+  &quot;6bd72098f5d52f948a8031b0fd2c39ae8c75245f&quot;,
+  &quot;26e2439eb62c7cc771ac0b12c488a174f6aaca31&quot;,
+  &quot;2c8c56c0bf591d797779ca9d65508724b16e3f98&quot;,
+  &quot;d4ecab9c53972b2555404a0cf6df1259f77db80d&quot;,
+  &quot;ffedd1f55ba87e79a378b43ad0bdd07268857923&quot;,
+  &quot;31aa7828171a9b9d5bc9a1ecc0d30711185d7cc4&quot;,
+  &quot;8a688a184c0b0595391bdab7bb022e1af1f2900d&quot;,
+  &quot;617b194cc5b33924e565acd748ab9f189262600c&quot;,
+  &quot;669a5362499c882488350cabe0ff0a8def9db81f&quot;,
+  &quot;99bcca3ae772d4edc2b6dfe239d96862b30d9f1e&quot;,
+  &quot;7ca08aa6195bff3de3f1cd8ae1eb44341e374db5&quot;,
+  &quot;733e73834b1a4a8b7f4d4e81d486ff03baa62b8b&quot;,
+  &quot;d3958c0064129647dd91592baea44aa416e54792&quot;,
+  &quot;25ef6f03e9532b19f0c98701a75d573592a740fd&quot;,
+  &quot;9c37acb1fac774478f67da9a69e5cebd5202d44a&quot;,
+  &quot;ecc2b7a237ce67f25885d879297a2180c22a0ecb&quot;,
+  &quot;c1104a62955c201de592e23d4c59d0e36f9f7785&quot;,
+  &quot;44be3a5de231214f03eb85a717df3df0ba3e9fcf&quot;,
+  &quot;71e7ff57b3c9e54e5735878bac9c153f5b75e2d9&quot;,
+  &quot;ad52e6d137f4f9ae35f1bd9e9cfe61a18920bd56&quot;,
+  &quot;4d44907bafb2d8686a2d80dfb669f88ce388bf09&quot;,
+  &quot;010f535067f4a47b61e8057c5fb272ab0ac56734&quot;,
+  &quot;37aa255221cf4c27eb95addb76adfbcbb2e13617&quot;,
+  &quot;18f382aabb49d0a3d5692fee9b323061ba090606&quot;,
+  &quot;fa0beb83671e39133e7f6302dab446babbf3440f&quot;,
+  &quot;75e03f25236fda1905cf3526f3ad617d4d8250ab&quot;,
+  &quot;958b2140a88d7aad126afe4ac5d0df407b737b3b&quot;,
+  &quot;0587bdfc9d28ef3a443c291ab32b39e4290d28f2&quot;,
+  &quot;76d9b4c18cef98624a085b73e0bffc5c59fd3e99&quot;,
+  &quot;1b5895eb42a2a307547915211e7e5e7fa9210ffe&quot;,
+  &quot;7e4b778003cda2b4a6ba624b21a3470c0eab4b97&quot;,
+  &quot;c853ba19ac20ca335d7c56fb5cfffaa34b054212&quot;,
+  &quot;4545f55263b6d8045de6d9c9476934d75ea5caa8&quot;,
+  &quot;93f0ffed852f0a9a7b0c9bae6982b98078a54514&quot;,
+  &quot;307c8f58675f8ccafe319e1dbc8bffb8b44e14b6&quot;,
+  &quot;9c4492033ddd7dc7e835723152158e62b0465288&quot;,
+  &quot;c00e0ce58519249723f1cd2227203d4ce5694d43&quot;,
+  &quot;5ba1f24d432ab0ca4fb64d400f4634ff9d5e91e0&quot;,
+  &quot;2d58a386d3e2482cc7534b08214d3bc42ed1df96&quot;,
+  &quot;1cabd05ab9ba71f474aef618e4ee3df58a225f0c&quot;,
+  &quot;17ccf39dd536b716e36da580549ec46f839e9cb3&quot;,
+  &quot;e2b7df8b027718d2fba80f017e76781b745dcd5d&quot;,
+  &quot;1e0f3fcd38ffa0a85066b3d94b58a12545b5d7e7&quot;,
+  &quot;4005ccee4d3ab53c91131aea2e28f4098fa4c714&quot;,
+  &quot;342d55f30ac441d3c517c7208d3535fb5161be84&quot;,
+  &quot;e4b1705cd596c89c25f11cdfe8660740e5291eb3&quot;,
+  &quot;1821b915e8f5ddb1adbba5e800adfbf5a9a54a59&quot;,
+  &quot;76aeeaddaf05b4de82e4b71b16ad0ef33e24b66a&quot;,
+  &quot;190e03270f74d47652eecc456bc1792b719eff9a&quot;,
+  &quot;59b26d62b344de5ee3781dbcd439af82aefb67e3&quot;,
+  &quot;e5c74047ec058b0701dd8de4f49bac7f82317c9a&quot;,
+  &quot;571f48007eab90dd00ef61521dbba815f1c0bb1c&quot;,
+  &quot;f402ba506b0d6618618a71cd83d37aef3a87f1bf&quot;,
+  &quot;be2666ead2e8181b2538c740dc7675593757a95d&quot;,
+  &quot;83d393890d21c61d3c0fb97f7df8b12b7b7ffdc1&quot;,
+  &quot;1e2e0eab569ff46c99af4c2fb6c77956cd607cfd&quot;,
+  &quot;5b48bd23dc115900b8f37336b5101253c29d017a&quot;,
+  &quot;7e41aed60b965db03773d24ad2a74c9d37ba2056&quot;,
+  &quot;102237fae82e23f7d8afd82af8faba4314d9b95b&quot;,
+  &quot;a9a5adeb58ffa15d81879d272e27d6f040feec1b&quot;,
+  &quot;3264874dc30a3acd07a49e97d693f4b55359cb8b&quot;,
+  &quot;30e72bd303cba91b61665854add927f23107d341&quot;,
+  &quot;5d4376f06b179f32557fa2a23eacdda90ce96dcd&quot;,
+  &quot;8346a88df9b9eb0c29fec98fc0cbb53f66170cff&quot;,
+  &quot;9f45179778796d933c1412daf6b3fceebe964001&quot;,
+  &quot;c3125930c5583c929c738001e4b4217115e9d559&quot;,
+  &quot;9aa0f6aeae69a65b3faf74d6029bafaadbd31f65&quot;,
+  &quot;918470a61da78e438682892d877fc54b565628d8&quot;,
+  &quot;7ed95d9bad15201ecc1be7cca00cd88086b8613d&quot;,
+  &quot;6d8eaf23e226c31a4e3f5179c93abd9d0ae9ef58&quot;,
+  &quot;66a982dd50b9e8f3433888b0dc80614a756f1dab&quot;,
+  &quot;67423e653ca4a5c45b27738824510ac53bf13523&quot;,
+  &quot;21b5c98e77f85953537ea385fabf81b73287a58a&quot;,
+  &quot;53619a36a277d04f4e4145d1f390f14730d48d53&quot;,
+  &quot;27c030380fb31f38812d1d276a027d7826e3ff67&quot;,
+  &quot;a18231b6f9354f5e1e8913c238a853003d6a7163&quot;,
+  &quot;755ba7a43b6956d98a33be7e5bf699ca86eedfde&quot;,
+  &quot;d170a3559eadecc604ff7097a9c3a4b5ffe79c1d&quot;,
+  &quot;e5830f04b8e64dd5cec348a97dc7c7ae2c4cb968&quot;,
+  &quot;720d267758da813a7e1bc5c822da59100b190c2e&quot;,
+  &quot;4b302ee4c672ef1504281544ec35bce190aff914&quot;,
+  &quot;3da303d1637ebba6c27f2c0968f4134e8bcbb8ec&quot;,
+  &quot;a3f6b7e4a5f280eac637f7cdd888338329a76065&quot;,
+  &quot;c40ef39ef423a9e42c4de6cf960aa6ce3de54f10&quot;,
+  &quot;188af2636a8153ca587297b1e5f9ba736ca36a8c&quot;,
+  &quot;24b65224cd9b93e5818326f4d80a95d1bdff5602&quot;,
+  &quot;20d5bf62546dfd3cc40e4bf502332ce079b5353c&quot;,
+  &quot;ce950e1b2e9caa976074db4ca9876a7e1e164a5c&quot;,
+  &quot;86bce9bf562546c33514e96500111c94f02eca29&quot;,
+  &quot;e7e8586a673b45310cdb72fc4aacb90a5a4c2160&quot;,
+  &quot;4870ff5f39ac8a63d6f49af41703b728677da9b8&quot;,
+  &quot;3fa2f72c969e60b498ad5ddade282411dfdbb312&quot;,
+  &quot;0931e0dbc2397961c6c7ad302b8bc1a70a30f910&quot;,
+  &quot;542ebbaefb19fd20f3ca9bd486fcc2699a478e70&quot;,
+  &quot;ff814773f88c513d798cd1d7200433ac34ebe95f&quot;,
+  &quot;52667b7322cfa419ad26d0d5811379f280bd4d6a&quot;,
+  &quot;29b97d72a7986494f6a99522f9180a3c79d046fd&quot;,
+  &quot;41445123f0563d82fac0d2093b0e1606578c4081&quot;,
+  &quot;bd2d49202b0f18b69a89ef7c78b5516d3c62565c&quot;,
+  &quot;617398fd135352d1095b82ea35e45dbe0e58920d&quot;,
+  &quot;22653250e5be23bfd5d67542f556f04157be21aa&quot;,
+  &quot;217ef4cfcd262fc5144c790c0d82c8771dac0925&quot;,
+  &quot;82b1069eed08b4c6999ef1e6bce0c3a3311c1b7a&quot;,
+  &quot;4c60e31264082a7e5c6db206e4169a0f27359c20&quot;,
+  &quot;7b2a88a56010458fbded1e13e7f7d2e618f8e8f7&quot;,
+  &quot;0849065016ad710bd3212115a18ddbf46a9f1a6b&quot;,
+  &quot;3f062c89217dac7a7a4cdc380a5d50dacb07c7a9&quot;,
+  &quot;286fb8860a2dfeaa5fa19aebf927149a132d368f&quot;,
+  &quot;bf368ff06812bf4fc53e91e3a0702d9fc1b26aea&quot;,
+  &quot;60e06390bcb5ba0ff4865c4e078649aa8473a333&quot;,
+  &quot;5b9ca1e6c378eefa79efb6888e39bd320e760f51&quot;,
+  &quot;1db6c0c897f1582e6cc061490ebfbd54a226af26&quot;,
+  &quot;f7ecb0dcb33258248c5b5f2b92e15f3d031701f2&quot;,
+  &quot;b5bd95770fe4365cfaa089a09027154afae7b58d&quot;,
+  &quot;f673ca4d861fda84e03e8e91a315735fa4f0518d&quot;,
+  &quot;9fd8e63ea943b1f8efc7ef00eb07ddcf98d869ff&quot;,
+  &quot;2a6056262bf6a6847db9583893c01162e9629152&quot;,
+  &quot;2930fe28d4a11a007b4f3e3ca1816092bc68ea1c&quot;,
+  &quot;1e35c031b84dd9c9fcd4b4f71acc40b1dca7c69b&quot;,
+  &quot;76b72f031ddc1f99bd422f1afa9d77ed9778bafc&quot;,
+  &quot;d2e2283edc522d6f60ee3439a10188fc9871bbab&quot;,
+  &quot;9895516c38619cd1411a61a3d54e74d6e15eaa51&quot;,
+  &quot;49cceec98e3e4c0b68ceebed07e683aae6005d2c&quot;,
+  &quot;072aab80103377b3e2aab69e57144fe3182bade7&quot;,
+  &quot;6872fcf4d948303210237a91ebc2b02c166fcbd8&quot;,
+  &quot;248698515a0e01048bc32d8e1160a0e64f56cfa4&quot;,
+  &quot;9f95e4d503941f38c56bb9a268d513d4c8792023&quot;,
+  &quot;8b9760c34ddfca0d778a0acb1c931b54cc6a855b&quot;,
+  &quot;91e33460ca5d61b1f366c21fd87912aa579f1562&quot;,
+  &quot;fa86fd6c4f9dfa74cae2006880d72f68321bbda4&quot;
+ ],
+ &quot;length&quot;: 869836053
+}</code></td></tr></table><div class="derived-label">derived (computed, never stored)</div><table><tr><th>value</th><th>derivation</th><th>computed from the instance</th></tr><tr id="infohash"><td class="name">infohash</td><td class="desc"><code>hex(sha1(rawBytes(info)))</code><br>The 20-byte identity of the torrent: SHA-1 of the bencoded 'info' dictionary. Computed over the bytes as they appear in the file (which, for a canonical file, equal bencode(info)). This is the key in trackers, the DHT and magnet links.</td><td class="val"><code class="pre">242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0</code></td></tr><tr id="magnet"><td class="name">magnet</td><td class="desc"><code>'magnet:?xt=urn:btih:' + infohash + '&amp;dn=' + enc(info.name) + ('&amp;tr=' + enc(t) for t in announce-list flattened or announce) + ('&amp;ws=' + enc(w) for w in url-list)</code><br>A magnet link carries the infohash and, as hints, the name, trackers and web seeds; a peer with the infohash can fetch the info dictionary from the swarm (BEP 9) and verify it against the hash. <span class="mut">(BEP 9)</span></td><td class="val"><code class="pre">magnet:?xt=urn:btih:242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&amp;dn=utxo-knots-150307.dat</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the .torrent of the txbt4 UTXO snapshot, made by WebTorrent 3 on 2026-09-14; 208 pieces of 4 MiB. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/utxo-knots-150307.torrent">test/vectors/utxo-knots-150307.torrent</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">4315 bytes</p><pre class="hex" id="hex"><span class="f" data-f="" title="">64 31 30 3a 63 72 65 61 74 65 64 20 62 79 31 35
+3a 57 65 62 54 6f 72 72 65 6e 74 2f 30 33 30 30
+31 33 3a 63 72 65 61 74 69 6f 6e 20 64 61 74 65
+69 31 37 39 30 30 34 38 33 39 32 65 34 3a 69 6e
+66 6f 64 36 3a 6c 65 6e 67 74 68 69 38 36 39 38
+33 36 30 35 33 65 34 3a 6e 61 6d 65 32 31 3a 75
+74 78 6f 2d 6b 6e 6f 74 73 2d 31 35 30 33 30 37
+2e 64 61 74 31 32 3a 70 69 65 63 65 20 6c 65 6e
+67 74 68 69 34 31 39 34 33 30 34 65 36 3a 70 69
+65 63 65 73 34 31 36 30 3a 26 b0 fb 26 42 b2 21
+75 5e 95 a5 23 52 cb ad 97 5c f4 02 50 7c 92 bb
+51 2c d7 70 35 53 11 ee 66 b9 cd d7 92 9d e3 23
+5e c4 d9 ce 88 d9 b3 33 68 77 a7 c7 bc 50 4d dc
+a4 c0 50 5a 0b 0a 07 04 52 14 18 e0 a7 68 a4 35
+db 18 09 8a 23 b3 8e 32 f2 f2 45 43 ae 4e 3f 99
+7e 27 5b ce 5a 8c b0 d8 7e 69 46 78 a5 8d 1f 07
+76 75 8d d3 21 2b 64 93 e2 88 f6 c1 32 4b 54 ca
+d6 56 c5 c9 33 a6 b5 e1 7d c7 93 86 db cd 8d bf
+2a e9 0f 7d 6e 8e f3 da cd cf 99 47 bc 73 f4 7d
+23 90 47 78 8d 78 e0 bf d2 03 c8 06 65 cd 6f d0
+61 15 4c de 95 ba 2f 62 85 c7 3b c5 a6 d7 d8 e1
+6c 88 7a 75 32 5e 3e 7b 0e b9 d5 32 9e 24 5d 2b
+10 e0 9b e3 b9 ba a5 2a a9 01 2b 19 9c 9e 8b 99
+0f 80 1b e1 0c 04 bd f9 28 9e 03 07 2c 95 c5 08
+0f c2 db 6e a7 63 ae 2f d7 f1 1c 1f 1a d3 e3 62
+bd 60 95 d9 2c 7c 8e e4 71 a9 b8 79 10 e6 10 38
+50 db cd a1 54 46 90 04 e3 aa 2d 60 51 bf 5e 5c
+23 7b af 96 1e 5b 97 6c 20 48 c4 1c 9c ff 9f 0d
+9e 0b 40 ce b0 db 7d 92 5b d2 8e 20 29 34 87 a0
+f0 b2 30 c5 87 cc ef 86 80 2c 68 8f 05 0c 1b 13
+87 7c 92 99 84 50 45 2a 79 0a 57 47 c0 c8 63 09
+f8 89 92 e0 72 e8 30 9f 6f 5e f0 3c 8d 5c c2 a0
+03 d3 d6 70 5d dc 65 fb fb 1a e2 1f b8 34 40 f0
+36 bb 68 bd 6c 56 9d 31 a2 41 f2 be 03 15 56 25
+1b 38 4c 49 c7 ea 17 17 80 98 2c 88 d1 0f 79 f7
+f2 95 b0 0e 9b 72 7e 11 f7 a4 22 df 34 ce e4 b2
+75 c3 ac 2c 00 5e b3 23 c3 04 66 fd c0 0b 5b e7
+f6 d0 4d 44 e9 af 36 33 63 44 40 ef 8c 07 07 36
+7c 2f 53 89 cc 78 d8 95 d9 39 84 61 9c c4 17 df
+eb f6 3b d7 d7 11 35 da 19 aa 2a 4d fa ea 73 4f
+ec 89 d9 38 28 2e 39 51 ad a5 30 7b 90 d2 57 7a
+37 50 0f 36 52 08 83 71 89 87 d1 b7 3f 43 42 06
+69 c6 8d 96 55 2b 1a b4 a1 a1 d9 f3 70 72 83 ff
+52 c3 1a 67 e4 69 73 bd 13 69 cc 7d d8 34 dd 0c
+dc f4 48 c2 b9 37 3c a4 a7 ef de 6f bd 91 4c 4a
+62 d6 de bf 85 7f 65 54 60 f7 ad 60 e6 ad 9c b3
+03 2a 64 72 66 a5 b8 11 cc b0 24 6a 6e ad 61 5f
+2a c9 9e c9 70 c5 bb 1e 79 0c a2 ce a5 3a a6 08
+a1 b9 4e f1 15 f0 fe ae 8d d6 2f 2f 66 d6 65 d3
+c3 7f a2 64 65 fd f7 be e9 bb 98 c9 ff 40 39 bd
+ea ea 9d d8 41 91 74 07 df c9 7f 01 c2 f3 f8 d5
+d5 96 3d ea ab 9d 35 f4 2b 10 bd 9a a9 06 31 80
+c5 43 d4 7e 28 15 61 ed 6a ba 31 72 56 9f 09 38
+17 d0 51 a6 1e c5 02 47 76 51 85 10 e6 f6 b7 ef
+ec da be 51 e7 32 cc 2c 48 e5 88 1c cd 40 8c 45
+b2 09 41 0d 24 e4 27 68 8e a1 98 22 c2 03 4a 6e
+3c 3c da f2 49 e4 27 f8 fb 98 d6 2a a1 1c 78 96
+a7 60 ac 81 3c 64 47 28 31 49 bd 1b d5 e9 1d da
+20 ce e9 45 b3 d2 ad 5a 06 a8 c5 08 8d 00 84 16
+8e 35 6d 6a 7e e4 ca 11 29 44 51 1a 6b e8 d3 40
+c2 8e 94 39 9a 86 a1 6b 1c 8d ac 6c af c9 11 89
+8b f3 c5 02 34 d0 cc 07 12 f5 8f 3d b7 0e 40 59
+de 29 67 64 82 e5 81 6c 71 57 32 93 de a7 46 b8
+44 3e b7 e5 62 4f f1 1f 23 48 f4 2f 18 fe 8c 75
+</span><span class="mut">… 3291 more bytes</span></pre><pre class="hex txt">d10:created by15:WebTorrent/030013:creation datei1790048392e4:infod6:lengthi869836053e4:name21:utxo-knots-150307.dat12:piece lengthi4194304e6:pieces4160:&amp;··&amp;B·!u^··#R···\··P|··Q,·p5S··f······#^······3hw···PM···PZ····R····h·5····#··2··EC·N?·~'[·Z···~iFx····vu··!+d·····2KT··V··3···}·······*··}n······G·s·}#·Gx·x······e·o·a·L···/b··;·····l·zu2^&gt;{···2·$]+·······*··+·············(···,······n·c·/·······b·`··,|··q··y···8P···TF····-`Q·^\#{···[·l H········@···}·[·· )4····0······,h······|···PE*y·WG··c·····r·0·o^·&lt;·\·····p]·e······4@·6·h·lV·1·A····V%·8LI······,···y······r~···&quot;·4···u··,·^·#··f···[···MD··63cD@····6|/S··x···9·a······;···5···*M··sO···8(.9Q··0{··Wz7P·6R··q····?CB·i···U+······pr··R··g·is··i·}·4····H··7&lt;····o··LJb·····eT`··`·····*drf·····$jn·a_*···p···y····:····N·······//f·e····de········@9·····A·t···········=···5·+·····1··C·~(·a·j·1rV··8··Q····GvQ·········Q·2·,H····@·E··A·$·'h···&quot;··Jn&lt;&lt;··I·'····*··x··`··&lt;dG(1I······ ··E···Z·········5mj~···)DQ·k··@···9···k···l········4······=··@Y·)gd···lqW2···F·D&gt;··bO··#H·/···u]··f··s·z····!·S4····/Z··a·u·····^·:··fY#··hq······vF···q··\·+···Z, $·|p·····*··/i··P····q···|·········\!;····a_F·······@······&amp;3Sw·&quot;r··t,··J····*·#···a^f···5W··d···?1e·a/*6··e·N·H···U··s2~}·sS········~·····S·^Z····#_·fL··E·····+·1m···0······:··············)·cK····Cn····;L·+····c·····h$········nJ·@·vK·····*·7··p·········O·a3rY··e{·&gt;······'···v·b·$·p,)\Q·oXJL··;:····N/·2··7·1··············(·-·········i··t·T{··u···Wv··V·l···,···&amp;·9Z···lo··#;····\··+········kGp···)·\-H····^···W·····GI····^u·%···········b7·xVs··W$lz··g·!···ek·5··b····O|···%|······_··I:··&quot;·····y··Y··E6{···l·····3·····C··V···9·&quot;·····D·e···O2&amp;K{·L·g·gp··xL····X··&amp;···(·kZ·7··MaB·6·············:u·:·b···/`~·8·f·o·······X···k· ···/···1··,9··u$_&amp;·C··,|·q······t···1,·V··Y·ywy··eP·$·n?·····S·+%U@J····Y·}······[·~y·x·:···rh·y#1·x(····[········]|··h··L···9·····.·····a{·L··9$·e··H····b`·f·SbI··$·5·············:·r······9·hb····|····[·=······D4·7M·s&gt;s·K·J··MN·······+·····d··G··Y+··J···G·%·o··S+······]W5··@··7····tG·g··i···R··J····7·g·X··y)z!··*····Jb·\ ····=LY··o·w·D·:]·1!O······=··&gt;··q··W···NW5·····?[u···R··7···5·····a·· ·VMD·{···hj-···i········SPg··{a··|_·r···g47·%R!·L'····v·····6······I···i/··20a········g·9·&gt;·c···F···D·u·?%#o····5&amp;··a}M·P···!@··z··j·J···@{s{;·····(·:D&lt;)··+9·)·(·v······bJ·[s···\Y·&gt;··X··B···Ty·!·~^··!··~Kw·······bK!·G···K··S··· ·3]|V·\···K·B·EE·Rc···]···Gi4·^········/··{···i···x·E·0|·Xg_· <span class="mut">… 4315 bytes</span></pre><p class="rule-result">rules: <span class="ok">all pass</span></p><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:MetaInfo&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:metainfo&quot;,
+   &quot;label&quot;: &quot;MetaInfo&quot;,
+   &quot;encoding&quot;: &quot;bt:bencode&quot;,
+   &quot;comment&quot;: &quot;The top-level dictionary of a .torrent file. Only 'info' is required; the rest are hints about where to find peers and who made the file. Keys not listed here are preserved by the codec as 'extra' so a file round-trips byte-exactly.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:announce&quot;,
+     &quot;label&quot;: &quot;announce&quot;,
+     &quot;key&quot;: &quot;announce&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;The tracker URL (BEP 3). Outside the infohash: replaceable without changing the torrent.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:announceList&quot;,
+     &quot;label&quot;: &quot;announce-list&quot;,
+     &quot;key&quot;: &quot;announce-list&quot;,
+     &quot;valueType&quot;: &quot;list&quot;,
+     &quot;itemType&quot;: &quot;list:utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;bep&quot;: 12,
+     &quot;comment&quot;: &quot;Tiers of tracker URLs: a list of lists; a client tries a tier's trackers in random order before moving to the next tier.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:urlList&quot;,
+     &quot;label&quot;: &quot;url-list&quot;,
+     &quot;key&quot;: &quot;url-list&quot;,
+     &quot;valueType&quot;: &quot;list&quot;,
+     &quot;itemType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;bep&quot;: 19,
+     &quot;comment&quot;: &quot;Web seeds: plain HTTP(S) URLs of the content (a file, or a directory root for multi-file torrents). A client fetches pieces from them with Range requests as if from a peer. Outside the infohash. A single string instead of a list is tolerated on input.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:creationDate&quot;,
+     &quot;label&quot;: &quot;creation date&quot;,
+     &quot;key&quot;: &quot;creation date&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Unix time the file was made. Outside the infohash.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:comment&quot;,
+     &quot;label&quot;: &quot;comment&quot;,
+     &quot;key&quot;: &quot;comment&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:createdBy&quot;,
+     &quot;label&quot;: &quot;created by&quot;,
+     &quot;key&quot;: &quot;created by&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;The program that made the file, e.g. 'WebTorrent/0300'.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:encodingName&quot;,
+     &quot;label&quot;: &quot;encoding&quot;,
+     &quot;key&quot;: &quot;encoding&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;The character encoding of the strings in 'info' when not UTF-8; rare, historical.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:info&quot;,
+     &quot;label&quot;: &quot;info&quot;,
+     &quot;key&quot;: &quot;info&quot;,
+     &quot;valueType&quot;: &quot;struct&quot;,
+     &quot;structType&quot;: &quot;bt:Info&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;The torrent's identity. Its canonical bencoding, byte for byte as it appears in the file, is what the infohash covers.&quot;
+    }
+   ],
+   &quot;derived&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:infohash&quot;,
+     &quot;label&quot;: &quot;infohash&quot;,
+     &quot;derivation&quot;: &quot;hex(sha1(rawBytes(info)))&quot;,
+     &quot;comment&quot;: &quot;The 20-byte identity of the torrent: SHA-1 of the bencoded 'info' dictionary. Computed over the bytes as they appear in the file (which, for a canonical file, equal bencode(info)). This is the key in trackers, the DHT and magnet links.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:magnet&quot;,
+     &quot;label&quot;: &quot;magnet&quot;,
+     &quot;derivation&quot;: &quot;'magnet:?xt=urn:btih:' + infohash + '&amp;dn=' + enc(info.name) + ('&amp;tr=' + enc(t) for t in announce-list flattened or announce) + ('&amp;ws=' + enc(w) for w in url-list)&quot;,
+     &quot;bep&quot;: 9,
+     &quot;comment&quot;: &quot;A magnet link carries the infohash and, as hints, the name, trackers and web seeds; a peer with the infohash can fetch the info dictionary from the swarm (BEP 9) and verify it against the hash.&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;MetaInfo#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:MetaInfo&quot;,
+   &quot;source&quot;: &quot;test/vectors/utxo-knots-150307.torrent&quot;,
+   &quot;captured&quot;: &quot;the .torrent of the txbt4 UTXO snapshot, made by WebTorrent 3 on 2026-09-14; 208 pieces of 4 MiB&quot;,
+   &quot;bytes&quot;: &quot;6431303a6372656174656420627931353a576562546f7272656e742f3033303031333a6372656174696f6e2064617465693137393030343833393265343a696e666f64363a6c656e6774686938363938333630353365343a6e616d6532313a7574786f2d6b6e6f74732d3135303330372e64617431323a7069656365206c656e677468693431393433303465363a706965636573343136303a26b0fb2642b221755e95a52352cbad975cf402507c92bb512cd770355311ee66b9cdd7929de3235ec4d9ce88d9b3336877a7c7bc504ddca4c0505a0b0a0704521418e0a768a435db18098a23b38e32f2f24543ae4e3f997e275bce5a8cb0d87e694678a58d1f0776758dd3212b6493e288f6c1324b54cad656c5c933a6b5e17dc79386dbcd8dbf2ae90f7d6e8ef3dacdcf9947bc73f47d239047788d78e0bfd203c80665cd6fd061154cde95ba2f6285c73bc5a6d7d8e16c887a75325e3e7b0eb9d5329e245d2b10e09be3b9baa52aa9012b199c9e8b990f801be10c04bdf9289e03072c95c5080fc2db6ea763ae2fd7f11c1f1ad3e362bd6095d92c7c8ee471a9b87910e6103850dbcda154469004e3aa2d6051bf5e5c237baf961e5b976c2048c41c9cff9f0d9e0b40ceb0db7d925bd28e20293487a0f0b230c587ccef86802c688f050c1b13877c92998450452a790a5747c0c86309f88992e072e8309f6f5ef03c8d5cc2a003d3d6705ddc65fbfb1ae21fb83440f036bb68bd6c569d31a241f2be031556251b384c49c7ea171780982c88d10f79f7f295b00e9b727e11f7a422df34cee4b275c3ac2c005eb323c30466fdc00b5be7f6d04d44e9af3633634440ef8c0707367c2f5389cc78d895d93984619cc417dfebf63bd7d71135da19aa2a4dfaea734fec89d938282e3951ada5307b90d2577a37500f36520883718987d1b73f43420669c68d96552b1ab4a1a1d9f3707283ff52c31a67e46973bd1369cc7dd834dd0cdcf448c2b9373ca4a7efde6fbd914c4a62d6debf857f655460f7ad60e6ad9cb3032a647266a5b811ccb0246a6ead615f2ac99ec970c5bb1e790ca2cea53aa608a1b94ef115f0feae8dd62f2f66d665d3c37fa26465fdf7bee9bb98c9ff4039bdeaea9dd841917407dfc97f01c2f3f8d5d5963deaab9d35f42b10bd9aa9063180c543d47e281561ed6aba3172569f093817d051a61ec5024776518510e6f6b7efecdabe51e732cc2c48e5881ccd408c45b209410d24e427688ea19822c2034a6e3c3cdaf249e427f8fb98d62aa11c7896a760ac813c6447283149bd1bd5e91dda20cee945b3d2ad5a06a8c5088d0084168e356d6a7ee4ca112944511a6be8d340c28e94399a86a16b1c8dac6cafc911898bf3c50234d0cc0712f58f3db70e4059de29676482e5816c71573293dea746b8443eb7e5624ff11f2348f42f18fe8c755d988366eada73ed7adcae00aa21f353340d88a1052f5aa0d961f875ec94aaef0f5ef53aafc66659230bf46871cef797b4ddaf7646beb38371bce45c012bc2b4c05a2c2024077c7089bc1617af2a1d182f6981ad50acf518d771ccaa8d7cf5a7b109d0e30d19865c213bc4ed9bfd615f46a6c4d3d7e2b6dc40980fff0defa626335377c122720c02742c1b054ab5e19a012afb23daeb02615e66fb98a53557dae564b5bed43f3165c0612f2a36b4e365b94eda481384ca55159373327e7dc17353bb941ebeecf719907ec49acb8bc653c35e5ad0eafe03235fb0664c928a45ceb715b7fe2bc1316def19ac30bc848fb7bafc3adc09fc04a38893a8e70a1796c0102917634b1198dbbc436ee7a2bed63b4cde2bb4aebb0263de9ea1ffbe6824de17c2ac119fc49b6e4a1440e5764bd2c0a5fe8a2ab137cfb170c4b59e88de11f296a14fea613372590501657bb33e10ec0ef1d1ae2712ad9b76f6621f24b2702c295c51c36f584a4ca2983b3a1ce0e4fd4e2ff132931d37a431b0958eafaf06ea8ff001d102dcf0281c2d93beb3d8bec39a19c069c5d574a5547bcafe7509901c5776f78456a06cf49c012ca58209269a395a9604f46c6faf13233bc08ae2135c83fa2be0edc2feabeedfbc6b4770f1a006291e5c2d48fba599ee5ec80dd357961ca8af0c4749cdbff6e05e75f425ecf27f8b1ae703c513bff96237dd78567399f357246c7aa4d167002186f6ff656bde358795629bf1c7dd4f7ccd87c6257cc5c907cca8fa5ffdd5493ac8942205e980e3fa79b5ca59f7df45367bb59bae6ca90b91008033ef1bcf048543fcd256ff95ca391722a8ad1a92d744e565faece24f32264b7b9d4cbe67076770e9d1784cc29df19c58e08726d41fd528ab6b5acd378f014d61429236d0dff9f5d6a27f8bfd1c8f08c43a75123a026200980d2f607e1738ed66ca6f81dca61100fcd658de86c96bd72098f5d52f948a8031b0fd2c39ae8c75245f26e2439eb62c7cc771ac0b12c488a174f6aaca312c8c56c0bf591d797779ca9d65508724b16e3f98d4ecab9c53972b2555404a0cf6df1259f77db80dffedd1f55ba87e79a378b43ad0bdd0726885792331aa7828171a9b9d5bc9a1ecc0d30711185d7cc48a688a184c0b0595391bdab7bb022e1af1f2900d617b194cc5b33924e565acd748ab9f189262600c669a5362499c882488350cabe0ff0a8def9db81f99bcca3ae772d4edc2b6dfe239d96862b30d9f1e7ca08aa6195bff3de3f1cd8ae1eb44341e374db5733e73834b1a4a8b7f4d4e81d486ff03baa62b8bd3958c0064129647dd91592baea44aa416e5479225ef6f03e9532b19f0c98701a75d573592a740fd9c37acb1fac774478f67da9a69e5cebd5202d44aecc2b7a237ce67f25885d879297a2180c22a0ecbc1104a62955c201de592e23d4c59d0e36f9f778544be3a5de231214f03eb85a717df3df0ba3e9fcf71e7ff57b3c9e54e5735878bac9c153f5b75e2d9ad52e6d137f4f9ae35f1bd9e9cfe61a18920bd564d44907bafb2d8686a2d80dfb669f88ce388bf09010f535067f4a47b61e8057c5fb272ab0ac5673437aa255221cf4c27eb95addb76adfbcbb2e1361718f382aabb49d0a3d5692fee9b323061ba090606fa0beb83671e39133e7f6302dab446babbf3440f75e03f25236fda1905cf3526f3ad617d4d8250ab958b2140a88d7aad126afe4ac5d0df407b737b3b0587bdfc9d28ef3a443c291ab32b39e4290d28f276d9b4c18cef98624a085b73e0bffc5c59fd3e991b5895eb42a2a307547915211e7e5e7fa9210ffe7e4b778003cda2b4a6ba624b21a3470c0eab4b97c853ba19ac20ca335d7c56fb5cfffaa34b0542124545f55263b6d8045de6d9c9476934d75ea5caa893f0ffed852f0a9a7b0c9bae6982b98078a54514307c8f58675f8ccafe319e1dbc8bffb8b44e14b69c4492033ddd7dc7e835723152158e62b0465288c00e0ce58519249723f1cd2227203d4ce5694d435ba1f24d432ab0ca4fb64d400f4634ff9d5e91e02d58a386d3e2482cc7534b08214d3bc42ed1df961cabd05ab9ba71f474aef618e4ee3df58a225f0c17ccf39dd536b716e36da580549ec46f839e9cb3e2b7df8b027718d2fba80f017e76781b745dcd5d1e0f3fcd38ffa0a85066b3d94b58a12545b5d7e74005ccee4d3ab53c91131aea2e28f4098fa4c714342d55f30ac441d3c517c7208d3535fb5161be84e4b1705cd596c89c25f11cdfe8660740e5291eb31821b915e8f5ddb1adbba5e800adfbf5a9a54a5976aeeaddaf05b4de82e4b71b16ad0ef33e24b66a190e03270f74d47652eecc456bc1792b719eff9a59b26d62b344de5ee3781dbcd439af82aefb67e3e5c74047ec058b0701dd8de4f49bac7f82317c9a571f48007eab90dd00ef61521dbba815f1c0bb1cf402ba506b0d6618618a71cd83d37aef3a87f1bfbe2666ead2e8181b2538c740dc7675593757a95d83d393890d21c61d3c0fb97f7df8b12b7b7ffdc11e2e0eab569ff46c99af4c2fb6c77956cd607cfd5b48bd23dc115900b8f37336b5101253c29d017a7e41aed60b965db03773d24ad2a74c9d37ba2056102237fae82e23f7d8afd82af8faba4314d9b95ba9a5adeb58ffa15d81879d272e27d6f040feec1b3264874dc30a3acd07a49e97d693f4b55359cb8b30e72bd303cba91b61665854add927f23107d3415d4376f06b179f32557fa2a23eacdda90ce96dcd8346a88df9b9eb0c29fec98fc0cbb53f66170cff9f45179778796d933c1412daf6b3fceebe964001c3125930c5583c929c738001e4b4217115e9d5599aa0f6aeae69a65b3faf74d6029bafaadbd31f65918470a61da78e438682892d877fc54b565628d87ed95d9bad15201ecc1be7cca00cd88086b8613d6d8eaf23e226c31a4e3f5179c93abd9d0ae9ef5866a982dd50b9e8f3433888b0dc80614a756f1dab67423e653ca4a5c45b27738824510ac53bf1352321b5c98e77f85953537ea385fabf81b73287a58a53619a36a277d04f4e4145d1f390f14730d48d5327c030380fb31f38812d1d276a027d7826e3ff67a18231b6f9354f5e1e8913c238a853003d6a7163755ba7a43b6956d98a33be7e5bf699ca86eedfded170a3559eadecc604ff7097a9c3a4b5ffe79c1de5830f04b8e64dd5cec348a97dc7c7ae2c4cb968720d267758da813a7e1bc5c822da59100b190c2e4b302ee4c672ef1504281544ec35bce190aff9143da303d1637ebba6c27f2c0968f4134e8bcbb8eca3f6b7e4a5f280eac637f7cdd888338329a76065c40ef39ef423a9e42c4de6cf960aa6ce3de54f10188af2636a8153ca587297b1e5f9ba736ca36a8c24b65224cd9b93e5818326f4d80a95d1bdff560220d5bf62546dfd3cc40e4bf502332ce079b5353cce950e1b2e9caa976074db4ca9876a7e1e164a5c86bce9bf562546c33514e96500111c94f02eca29e7e8586a673b45310cdb72fc4aacb90a5a4c21604870ff5f39ac8a63d6f49af41703b728677da9b83fa2f72c969e60b498ad5ddade282411dfdbb3120931e0dbc2397961c6c7ad302b8bc1a70a30f910542ebbaefb19fd20f3ca9bd486fcc2699a478e70ff814773f88c513d798cd1d7200433ac34ebe95f52667b7322cfa419ad26d0d5811379f280bd4d6a29b97d72a7986494f6a99522f9180a3c79d046fd41445123f0563d82fac0d2093b0e1606578c4081bd2d49202b0f18b69a89ef7c78b5516d3c62565c617398fd135352d1095b82ea35e45dbe0e58920d22653250e5be23bfd5d67542f556f04157be21aa217ef4cfcd262fc5144c790c0d82c8771dac092582b1069eed08b4c6999ef1e6bce0c3a3311c1b7a4c60e31264082a7e5c6db206e4169a0f27359c207b2a88a56010458fbded1e13e7f7d2e618f8e8f70849065016ad710bd3212115a18ddbf46a9f1a6b3f062c89217dac7a7a4cdc380a5d50dacb07c7a9286fb8860a2dfeaa5fa19aebf927149a132d368fbf368ff06812bf4fc53e91e3a0702d9fc1b26aea60e06390bcb5ba0ff4865c4e078649aa8473a3335b9ca1e6c378eefa79efb6888e39bd320e760f511db6c0c897f1582e6cc061490ebfbd54a226af26f7ecb0dcb33258248c5b5f2b92e15f3d031701f2b5bd95770fe4365cfaa089a09027154afae7b58df673ca4d861fda84e03e8e91a315735fa4f0518d9fd8e63ea943b1f8efc7ef00eb07ddcf98d869ff2a6056262bf6a6847db9583893c01162e96291522930fe28d4a11a007b4f3e3ca1816092bc68ea1c1e35c031b84dd9c9fcd4b4f71acc40b1dca7c69b76b72f031ddc1f99bd422f1afa9d77ed9778bafcd2e2283edc522d6f60ee3439a10188fc9871bbab9895516c38619cd1411a61a3d54e74d6e15eaa5149cceec98e3e4c0b68ceebed07e683aae6005d2c072aab80103377b3e2aab69e57144fe3182bade76872fcf4d948303210237a91ebc2b02c166fcbd8248698515a0e01048bc32d8e1160a0e64f56cfa49f95e4d503941f38c56bb9a268d513d4c87920238b9760c34ddfca0d778a0acb1c931b54cc6a855b91e33460ca5d61b1f366c21fd87912aa579f1562fa86fd6c4f9dfa74cae2006880d72f68321bbda46565&quot;,
+   &quot;value&quot;: {
+    &quot;creation date&quot;: 1790048392,
+    &quot;created by&quot;: &quot;WebTorrent/0300&quot;,
+    &quot;info&quot;: {
+     &quot;name&quot;: &quot;utxo-knots-150307.dat&quot;,
+     &quot;piece length&quot;: 4194304,
+     &quot;pieces&quot;: [
+      &quot;26b0fb2642b221755e95a52352cbad975cf40250&quot;,
+      &quot;7c92bb512cd770355311ee66b9cdd7929de3235e&quot;,
+      &quot;c4d9ce88d9b3336877a7c7bc504ddca4c0505a0b&quot;,
+      &quot;0a0704521418e0a768a435db18098a23b38e32f2&quot;,
+      &quot;f24543ae4e3f997e275bce5a8cb0d87e694678a5&quot;,
+      &quot;8d1f0776758dd3212b6493e288f6c1324b54cad6&quot;,
+      &quot;56c5c933a6b5e17dc79386dbcd8dbf2ae90f7d6e&quot;,
+      &quot;8ef3dacdcf9947bc73f47d239047788d78e0bfd2&quot;,
+      &quot;03c80665cd6fd061154cde95ba2f6285c73bc5a6&quot;,
+      &quot;d7d8e16c887a75325e3e7b0eb9d5329e245d2b10&quot;,
+      &quot;e09be3b9baa52aa9012b199c9e8b990f801be10c&quot;,
+      &quot;04bdf9289e03072c95c5080fc2db6ea763ae2fd7&quot;,
+      &quot;f11c1f1ad3e362bd6095d92c7c8ee471a9b87910&quot;,
+      &quot;e6103850dbcda154469004e3aa2d6051bf5e5c23&quot;,
+      &quot;7baf961e5b976c2048c41c9cff9f0d9e0b40ceb0&quot;,
+      &quot;db7d925bd28e20293487a0f0b230c587ccef8680&quot;,
+      &quot;2c688f050c1b13877c92998450452a790a5747c0&quot;,
+      &quot;c86309f88992e072e8309f6f5ef03c8d5cc2a003&quot;,
+      &quot;d3d6705ddc65fbfb1ae21fb83440f036bb68bd6c&quot;,
+      &quot;569d31a241f2be031556251b384c49c7ea171780&quot;,
+      &quot;982c88d10f79f7f295b00e9b727e11f7a422df34&quot;,
+      &quot;cee4b275c3ac2c005eb323c30466fdc00b5be7f6&quot;,
+      &quot;d04d44e9af3633634440ef8c0707367c2f5389cc&quot;,
+      &quot;78d895d93984619cc417dfebf63bd7d71135da19&quot;,
+      &quot;aa2a4dfaea734fec89d938282e3951ada5307b90&quot;,
+      &quot;d2577a37500f36520883718987d1b73f43420669&quot;,
+      &quot;c68d96552b1ab4a1a1d9f3707283ff52c31a67e4&quot;,
+      &quot;6973bd1369cc7dd834dd0cdcf448c2b9373ca4a7&quot;,
+      &quot;efde6fbd914c4a62d6debf857f655460f7ad60e6&quot;,
+      &quot;ad9cb3032a647266a5b811ccb0246a6ead615f2a&quot;,
+      &quot;c99ec970c5bb1e790ca2cea53aa608a1b94ef115&quot;,
+      &quot;f0feae8dd62f2f66d665d3c37fa26465fdf7bee9&quot;,
+      &quot;bb98c9ff4039bdeaea9dd841917407dfc97f01c2&quot;,
+      &quot;f3f8d5d5963deaab9d35f42b10bd9aa9063180c5&quot;,
+      &quot;43d47e281561ed6aba3172569f093817d051a61e&quot;,
+      &quot;c5024776518510e6f6b7efecdabe51e732cc2c48&quot;,
+      &quot;e5881ccd408c45b209410d24e427688ea19822c2&quot;,
+      &quot;034a6e3c3cdaf249e427f8fb98d62aa11c7896a7&quot;,
+      &quot;60ac813c6447283149bd1bd5e91dda20cee945b3&quot;,
+      &quot;d2ad5a06a8c5088d0084168e356d6a7ee4ca1129&quot;,
+      &quot;44511a6be8d340c28e94399a86a16b1c8dac6caf&quot;,
+      &quot;c911898bf3c50234d0cc0712f58f3db70e4059de&quot;,
+      &quot;29676482e5816c71573293dea746b8443eb7e562&quot;,
+      &quot;4ff11f2348f42f18fe8c755d988366eada73ed7a&quot;,
+      &quot;dcae00aa21f353340d88a1052f5aa0d961f875ec&quot;,
+      &quot;94aaef0f5ef53aafc66659230bf46871cef797b4&quot;,
+      &quot;ddaf7646beb38371bce45c012bc2b4c05a2c2024&quot;,
+      &quot;077c7089bc1617af2a1d182f6981ad50acf518d7&quot;,
+      &quot;71ccaa8d7cf5a7b109d0e30d19865c213bc4ed9b&quot;,
+      &quot;fd615f46a6c4d3d7e2b6dc40980fff0defa62633&quot;,
+      &quot;5377c122720c02742c1b054ab5e19a012afb23da&quot;,
+      &quot;eb02615e66fb98a53557dae564b5bed43f3165c0&quot;,
+      &quot;612f2a36b4e365b94eda481384ca55159373327e&quot;,
+      &quot;7dc17353bb941ebeecf719907ec49acb8bc653c3&quot;,
+      &quot;5e5ad0eafe03235fb0664c928a45ceb715b7fe2b&quot;,
+      &quot;c1316def19ac30bc848fb7bafc3adc09fc04a388&quot;,
+      &quot;93a8e70a1796c0102917634b1198dbbc436ee7a2&quot;,
+      &quot;bed63b4cde2bb4aebb0263de9ea1ffbe6824de17&quot;,
+      &quot;c2ac119fc49b6e4a1440e5764bd2c0a5fe8a2ab1&quot;,
+      &quot;37cfb170c4b59e88de11f296a14fea6133725905&quot;,
+      &quot;01657bb33e10ec0ef1d1ae2712ad9b76f6621f24&quot;,
+      &quot;b2702c295c51c36f584a4ca2983b3a1ce0e4fd4e&quot;,
+      &quot;2ff132931d37a431b0958eafaf06ea8ff001d102&quot;,
+      &quot;dcf0281c2d93beb3d8bec39a19c069c5d574a554&quot;,
+      &quot;7bcafe7509901c5776f78456a06cf49c012ca582&quot;,
+      &quot;09269a395a9604f46c6faf13233bc08ae2135c83&quot;,
+      &quot;fa2be0edc2feabeedfbc6b4770f1a006291e5c2d&quot;,
+      &quot;48fba599ee5ec80dd357961ca8af0c4749cdbff6&quot;,
+      &quot;e05e75f425ecf27f8b1ae703c513bff96237dd78&quot;,
+      &quot;567399f357246c7aa4d167002186f6ff656bde35&quot;,
+      &quot;8795629bf1c7dd4f7ccd87c6257cc5c907cca8fa&quot;,
+      &quot;5ffdd5493ac8942205e980e3fa79b5ca59f7df45&quot;,
+      &quot;367bb59bae6ca90b91008033ef1bcf048543fcd2&quot;,
+      &quot;56ff95ca391722a8ad1a92d744e565faece24f32&quot;,
+      &quot;264b7b9d4cbe67076770e9d1784cc29df19c58e0&quot;,
+      &quot;8726d41fd528ab6b5acd378f014d61429236d0df&quot;,
+      &quot;f9f5d6a27f8bfd1c8f08c43a75123a026200980d&quot;,
+      &quot;2f607e1738ed66ca6f81dca61100fcd658de86c9&quot;,
+      &quot;6bd72098f5d52f948a8031b0fd2c39ae8c75245f&quot;,
+      &quot;26e2439eb62c7cc771ac0b12c488a174f6aaca31&quot;,
+      &quot;2c8c56c0bf591d797779ca9d65508724b16e3f98&quot;,
+      &quot;d4ecab9c53972b2555404a0cf6df1259f77db80d&quot;,
+      &quot;ffedd1f55ba87e79a378b43ad0bdd07268857923&quot;,
+      &quot;31aa7828171a9b9d5bc9a1ecc0d30711185d7cc4&quot;,
+      &quot;8a688a184c0b0595391bdab7bb022e1af1f2900d&quot;,
+      &quot;617b194cc5b33924e565acd748ab9f189262600c&quot;,
+      &quot;669a5362499c882488350cabe0ff0a8def9db81f&quot;,
+      &quot;99bcca3ae772d4edc2b6dfe239d96862b30d9f1e&quot;,
+      &quot;7ca08aa6195bff3de3f1cd8ae1eb44341e374db5&quot;,
+      &quot;733e73834b1a4a8b7f4d4e81d486ff03baa62b8b&quot;,
+      &quot;d3958c0064129647dd91592baea44aa416e54792&quot;,
+      &quot;25ef6f03e9532b19f0c98701a75d573592a740fd&quot;,
+      &quot;9c37acb1fac774478f67da9a69e5cebd5202d44a&quot;,
+      &quot;ecc2b7a237ce67f25885d879297a2180c22a0ecb&quot;,
+      &quot;c1104a62955c201de592e23d4c59d0e36f9f7785&quot;,
+      &quot;44be3a5de231214f03eb85a717df3df0ba3e9fcf&quot;,
+      &quot;71e7ff57b3c9e54e5735878bac9c153f5b75e2d9&quot;,
+      &quot;ad52e6d137f4f9ae35f1bd9e9cfe61a18920bd56&quot;,
+      &quot;4d44907bafb2d8686a2d80dfb669f88ce388bf09&quot;,
+      &quot;010f535067f4a47b61e8057c5fb272ab0ac56734&quot;,
+      &quot;37aa255221cf4c27eb95addb76adfbcbb2e13617&quot;,
+      &quot;18f382aabb49d0a3d5692fee9b323061ba090606&quot;,
+      &quot;fa0beb83671e39133e7f6302dab446babbf3440f&quot;,
+      &quot;75e03f25236fda1905cf3526f3ad617d4d8250ab&quot;,
+      &quot;958b2140a88d7aad126afe4ac5d0df407b737b3b&quot;,
+      &quot;0587bdfc9d28ef3a443c291ab32b39e4290d28f2&quot;,
+      &quot;76d9b4c18cef98624a085b73e0bffc5c59fd3e99&quot;,
+      &quot;1b5895eb42a2a307547915211e7e5e7fa9210ffe&quot;,
+      &quot;7e4b778003cda2b4a6ba624b21a3470c0eab4b97&quot;,
+      &quot;c853ba19ac20ca335d7c56fb5cfffaa34b054212&quot;,
+      &quot;4545f55263b6d8045de6d9c9476934d75ea5caa8&quot;,
+      &quot;93f0ffed852f0a9a7b0c9bae6982b98078a54514&quot;,
+      &quot;307c8f58675f8ccafe319e1dbc8bffb8b44e14b6&quot;,
+      &quot;9c4492033ddd7dc7e835723152158e62b0465288&quot;,
+      &quot;c00e0ce58519249723f1cd2227203d4ce5694d43&quot;,
+      &quot;5ba1f24d432ab0ca4fb64d400f4634ff9d5e91e0&quot;,
+      &quot;2d58a386d3e2482cc7534b08214d3bc42ed1df96&quot;,
+      &quot;1cabd05ab9ba71f474aef618e4ee3df58a225f0c&quot;,
+      &quot;17ccf39dd536b716e36da580549ec46f839e9cb3&quot;,
+      &quot;e2b7df8b027718d2fba80f017e76781b745dcd5d&quot;,
+      &quot;1e0f3fcd38ffa0a85066b3d94b58a12545b5d7e7&quot;,
+      &quot;4005ccee4d3ab53c91131aea2e28f4098fa4c714&quot;,
+      &quot;342d55f30ac441d3c517c7208d3535fb5161be84&quot;,
+      &quot;e4b1705cd596c89c25f11cdfe8660740e5291eb3&quot;,
+      &quot;1821b915e8f5ddb1adbba5e800adfbf5a9a54a59&quot;,
+      &quot;76aeeaddaf05b4de82e4b71b16ad0ef33e24b66a&quot;,
+      &quot;190e03270f74d47652eecc456bc1792b719eff9a&quot;,
+      &quot;59b26d62b344de5ee3781dbcd439af82aefb67e3&quot;,
+      &quot;e5c74047ec058b0701dd8de4f49bac7f82317c9a&quot;,
+      &quot;571f48007eab90dd00ef61521dbba815f1c0bb1c&quot;,
+      &quot;f402ba506b0d6618618a71cd83d37aef3a87f1bf&quot;,
+      &quot;be2666ead2e8181b2538c740dc7675593757a95d&quot;,
+      &quot;83d393890d21c61d3c0fb97f7df8b12b7b7ffdc1&quot;,
+      &quot;1e2e0eab569ff46c99af4c2fb6c77956cd607cfd&quot;,
+      &quot;5b48bd23dc115900b8f37336b5101253c29d017a&quot;,
+      &quot;7e41aed60b965db03773d24ad2a74c9d37ba2056&quot;,
+      &quot;102237fae82e23f7d8afd82af8faba4314d9b95b&quot;,
+      &quot;a9a5adeb58ffa15d81879d272e27d6f040feec1b&quot;,
+      &quot;3264874dc30a3acd07a49e97d693f4b55359cb8b&quot;,
+      &quot;30e72bd303cba91b61665854add927f23107d341&quot;,
+      &quot;5d4376f06b179f32557fa2a23eacdda90ce96dcd&quot;,
+      &quot;8346a88df9b9eb0c29fec98fc0cbb53f66170cff&quot;,
+      &quot;9f45179778796d933c1412daf6b3fceebe964001&quot;,
+      &quot;c3125930c5583c929c738001e4b4217115e9d559&quot;,
+      &quot;9aa0f6aeae69a65b3faf74d6029bafaadbd31f65&quot;,
+      &quot;918470a61da78e438682892d877fc54b565628d8&quot;,
+      &quot;7ed95d9bad15201ecc1be7cca00cd88086b8613d&quot;,
+      &quot;6d8eaf23e226c31a4e3f5179c93abd9d0ae9ef58&quot;,
+      &quot;66a982dd50b9e8f3433888b0dc80614a756f1dab&quot;,
+      &quot;67423e653ca4a5c45b27738824510ac53bf13523&quot;,
+      &quot;21b5c98e77f85953537ea385fabf81b73287a58a&quot;,
+      &quot;53619a36a277d04f4e4145d1f390f14730d48d53&quot;,
+      &quot;27c030380fb31f38812d1d276a027d7826e3ff67&quot;,
+      &quot;a18231b6f9354f5e1e8913c238a853003d6a7163&quot;,
+      &quot;755ba7a43b6956d98a33be7e5bf699ca86eedfde&quot;,
+      &quot;d170a3559eadecc604ff7097a9c3a4b5ffe79c1d&quot;,
+      &quot;e5830f04b8e64dd5cec348a97dc7c7ae2c4cb968&quot;,
+      &quot;720d267758da813a7e1bc5c822da59100b190c2e&quot;,
+      &quot;4b302ee4c672ef1504281544ec35bce190aff914&quot;,
+      &quot;3da303d1637ebba6c27f2c0968f4134e8bcbb8ec&quot;,
+      &quot;a3f6b7e4a5f280eac637f7cdd888338329a76065&quot;,
+      &quot;c40ef39ef423a9e42c4de6cf960aa6ce3de54f10&quot;,
+      &quot;188af2636a8153ca587297b1e5f9ba736ca36a8c&quot;,
+      &quot;24b65224cd9b93e5818326f4d80a95d1bdff5602&quot;,
+      &quot;20d5bf62546dfd3cc40e4bf502332ce079b5353c&quot;,
+      &quot;ce950e1b2e9caa976074db4ca9876a7e1e164a5c&quot;,
+      &quot;86bce9bf562546c33514e96500111c94f02eca29&quot;,
+      &quot;e7e8586a673b45310cdb72fc4aacb90a5a4c2160&quot;,
+      &quot;4870ff5f39ac8a63d6f49af41703b728677da9b8&quot;,
+      &quot;3fa2f72c969e60b498ad5ddade282411dfdbb312&quot;,
+      &quot;0931e0dbc2397961c6c7ad302b8bc1a70a30f910&quot;,
+      &quot;542ebbaefb19fd20f3ca9bd486fcc2699a478e70&quot;,
+      &quot;ff814773f88c513d798cd1d7200433ac34ebe95f&quot;,
+      &quot;52667b7322cfa419ad26d0d5811379f280bd4d6a&quot;,
+      &quot;29b97d72a7986494f6a99522f9180a3c79d046fd&quot;,
+      &quot;41445123f0563d82fac0d2093b0e1606578c4081&quot;,
+      &quot;bd2d49202b0f18b69a89ef7c78b5516d3c62565c&quot;,
+      &quot;617398fd135352d1095b82ea35e45dbe0e58920d&quot;,
+      &quot;22653250e5be23bfd5d67542f556f04157be21aa&quot;,
+      &quot;217ef4cfcd262fc5144c790c0d82c8771dac0925&quot;,
+      &quot;82b1069eed08b4c6999ef1e6bce0c3a3311c1b7a&quot;,
+      &quot;4c60e31264082a7e5c6db206e4169a0f27359c20&quot;,
+      &quot;7b2a88a56010458fbded1e13e7f7d2e618f8e8f7&quot;,
+      &quot;0849065016ad710bd3212115a18ddbf46a9f1a6b&quot;,
+      &quot;3f062c89217dac7a7a4cdc380a5d50dacb07c7a9&quot;,
+      &quot;286fb8860a2dfeaa5fa19aebf927149a132d368f&quot;,
+      &quot;bf368ff06812bf4fc53e91e3a0702d9fc1b26aea&quot;,
+      &quot;60e06390bcb5ba0ff4865c4e078649aa8473a333&quot;,
+      &quot;5b9ca1e6c378eefa79efb6888e39bd320e760f51&quot;,
+      &quot;1db6c0c897f1582e6cc061490ebfbd54a226af26&quot;,
+      &quot;f7ecb0dcb33258248c5b5f2b92e15f3d031701f2&quot;,
+      &quot;b5bd95770fe4365cfaa089a09027154afae7b58d&quot;,
+      &quot;f673ca4d861fda84e03e8e91a315735fa4f0518d&quot;,
+      &quot;9fd8e63ea943b1f8efc7ef00eb07ddcf98d869ff&quot;,
+      &quot;2a6056262bf6a6847db9583893c01162e9629152&quot;,
+      &quot;2930fe28d4a11a007b4f3e3ca1816092bc68ea1c&quot;,
+      &quot;1e35c031b84dd9c9fcd4b4f71acc40b1dca7c69b&quot;,
+      &quot;76b72f031ddc1f99bd422f1afa9d77ed9778bafc&quot;,
+      &quot;d2e2283edc522d6f60ee3439a10188fc9871bbab&quot;,
+      &quot;9895516c38619cd1411a61a3d54e74d6e15eaa51&quot;,
+      &quot;49cceec98e3e4c0b68ceebed07e683aae6005d2c&quot;,
+      &quot;072aab80103377b3e2aab69e57144fe3182bade7&quot;,
+      &quot;6872fcf4d948303210237a91ebc2b02c166fcbd8&quot;,
+      &quot;248698515a0e01048bc32d8e1160a0e64f56cfa4&quot;,
+      &quot;9f95e4d503941f38c56bb9a268d513d4c8792023&quot;,
+      &quot;8b9760c34ddfca0d778a0acb1c931b54cc6a855b&quot;,
+      &quot;91e33460ca5d61b1f366c21fd87912aa579f1562&quot;,
+      &quot;fa86fd6c4f9dfa74cae2006880d72f68321bbda4&quot;
+     ],
+     &quot;length&quot;: 869836053
+    }
+   },
+   &quot;computed&quot;: {
+    &quot;infohash&quot;: &quot;242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&quot;,
+    &quot;magnet&quot;: &quot;magnet:?xt=urn:btih:242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&amp;dn=utxo-knots-150307.dat&quot;
+   },
+   &quot;result&quot;: null
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:MetaInfo","@type":"Struct","module":"bt:metainfo","label":"MetaInfo","encoding":"bt:bencode","comment":"The top-level dictionary of a .torrent file. Only 'info' is required; the rest are hints about where to find peers and who made the file. Keys not listed here are preserved by the codec as 'extra' so a file round-trips byte-exactly.","fields":[{"property":"bt:announce","label":"announce","key":"announce","valueType":"utf8","required":false,"comment":"The tracker URL (BEP 3). Outside the infohash: replaceable without changing the torrent."},{"property":"bt:announceList","label":"announce-list","key":"announce-list","valueType":"list","itemType":"list:utf8","required":false,"bep":12,"comment":"Tiers of tracker URLs: a list of lists; a client tries a tier's trackers in random order before moving to the next tier."},{"property":"bt:urlList","label":"url-list","key":"url-list","valueType":"list","itemType":"utf8","required":false,"bep":19,"comment":"Web seeds: plain HTTP(S) URLs of the content (a file, or a directory root for multi-file torrents). A client fetches pieces from them with Range requests as if from a peer. Outside the infohash. A single string instead of a list is tolerated on input."},{"property":"bt:creationDate","label":"creation date","key":"creation date","valueType":"int","required":false,"comment":"Unix time the file was made. Outside the infohash."},{"property":"bt:comment","label":"comment","key":"comment","valueType":"utf8","required":false},{"property":"bt:createdBy","label":"created by","key":"created by","valueType":"utf8","required":false,"comment":"The program that made the file, e.g. 'WebTorrent/0300'."},{"property":"bt:encodingName","label":"encoding","key":"encoding","valueType":"utf8","required":false,"comment":"The character encoding of the strings in 'info' when not UTF-8; rare, historical."},{"property":"bt:info","label":"info","key":"info","valueType":"struct","structType":"bt:Info","required":true,"comment":"The torrent's identity. Its canonical bencoding, byte for byte as it appears in the file, is what the infohash covers."}],"derived":[{"property":"bt:infohash","label":"infohash","derivation":"hex(sha1(rawBytes(info)))","comment":"The 20-byte identity of the torrent: SHA-1 of the bencoded 'info' dictionary. Computed over the bytes as they appear in the file (which, for a canonical file, equal bencode(info)). This is the key in trackers, the DHT and magnet links."},{"property":"bt:magnet","label":"magnet","derivation":"'magnet:?xt=urn:btih:' + infohash + '&dn=' + enc(info.name) + ('&tr=' + enc(t) for t in announce-list flattened or announce) + ('&ws=' + enc(w) for w in url-list)","bep":9,"comment":"A magnet link carries the infohash and, as hints, the name, trackers and web seeds; a peer with the infohash can fetch the info dictionary from the swarm (BEP 9) and verify it against the hash."}]},{"@id":"MetaInfo#instance","@type":"Instance","of":"bt:MetaInfo","source":"test/vectors/utxo-knots-150307.torrent","captured":"the .torrent of the txbt4 UTXO snapshot, made by WebTorrent 3 on 2026-09-14; 208 pieces of 4 MiB","bytes":"6431303a6372656174656420627931353a576562546f7272656e742f3033303031333a6372656174696f6e2064617465693137393030343833393265343a696e666f64363a6c656e6774686938363938333630353365343a6e616d6532313a7574786f2d6b6e6f74732d3135303330372e64617431323a7069656365206c656e677468693431393433303465363a706965636573343136303a26b0fb2642b221755e95a52352cbad975cf402507c92bb512cd770355311ee66b9cdd7929de3235ec4d9ce88d9b3336877a7c7bc504ddca4c0505a0b0a0704521418e0a768a435db18098a23b38e32f2f24543ae4e3f997e275bce5a8cb0d87e694678a58d1f0776758dd3212b6493e288f6c1324b54cad656c5c933a6b5e17dc79386dbcd8dbf2ae90f7d6e8ef3dacdcf9947bc73f47d239047788d78e0bfd203c80665cd6fd061154cde95ba2f6285c73bc5a6d7d8e16c887a75325e3e7b0eb9d5329e245d2b10e09be3b9baa52aa9012b199c9e8b990f801be10c04bdf9289e03072c95c5080fc2db6ea763ae2fd7f11c1f1ad3e362bd6095d92c7c8ee471a9b87910e6103850dbcda154469004e3aa2d6051bf5e5c237baf961e5b976c2048c41c9cff9f0d9e0b40ceb0db7d925bd28e20293487a0f0b230c587ccef86802c688f050c1b13877c92998450452a790a5747c0c86309f88992e072e8309f6f5ef03c8d5cc2a003d3d6705ddc65fbfb1ae21fb83440f036bb68bd6c569d31a241f2be031556251b384c49c7ea171780982c88d10f79f7f295b00e9b727e11f7a422df34cee4b275c3ac2c005eb323c30466fdc00b5be7f6d04d44e9af3633634440ef8c0707367c2f5389cc78d895d93984619cc417dfebf63bd7d71135da19aa2a4dfaea734fec89d938282e3951ada5307b90d2577a37500f36520883718987d1b73f43420669c68d96552b1ab4a1a1d9f3707283ff52c31a67e46973bd1369cc7dd834dd0cdcf448c2b9373ca4a7efde6fbd914c4a62d6debf857f655460f7ad60e6ad9cb3032a647266a5b811ccb0246a6ead615f2ac99ec970c5bb1e790ca2cea53aa608a1b94ef115f0feae8dd62f2f66d665d3c37fa26465fdf7bee9bb98c9ff4039bdeaea9dd841917407dfc97f01c2f3f8d5d5963deaab9d35f42b10bd9aa9063180c543d47e281561ed6aba3172569f093817d051a61ec5024776518510e6f6b7efecdabe51e732cc2c48e5881ccd408c45b209410d24e427688ea19822c2034a6e3c3cdaf249e427f8fb98d62aa11c7896a760ac813c6447283149bd1bd5e91dda20cee945b3d2ad5a06a8c5088d0084168e356d6a7ee4ca112944511a6be8d340c28e94399a86a16b1c8dac6cafc911898bf3c50234d0cc0712f58f3db70e4059de29676482e5816c71573293dea746b8443eb7e5624ff11f2348f42f18fe8c755d988366eada73ed7adcae00aa21f353340d88a1052f5aa0d961f875ec94aaef0f5ef53aafc66659230bf46871cef797b4ddaf7646beb38371bce45c012bc2b4c05a2c2024077c7089bc1617af2a1d182f6981ad50acf518d771ccaa8d7cf5a7b109d0e30d19865c213bc4ed9bfd615f46a6c4d3d7e2b6dc40980fff0defa626335377c122720c02742c1b054ab5e19a012afb23daeb02615e66fb98a53557dae564b5bed43f3165c0612f2a36b4e365b94eda481384ca55159373327e7dc17353bb941ebeecf719907ec49acb8bc653c35e5ad0eafe03235fb0664c928a45ceb715b7fe2bc1316def19ac30bc848fb7bafc3adc09fc04a38893a8e70a1796c0102917634b1198dbbc436ee7a2bed63b4cde2bb4aebb0263de9ea1ffbe6824de17c2ac119fc49b6e4a1440e5764bd2c0a5fe8a2ab137cfb170c4b59e88de11f296a14fea613372590501657bb33e10ec0ef1d1ae2712ad9b76f6621f24b2702c295c51c36f584a4ca2983b3a1ce0e4fd4e2ff132931d37a431b0958eafaf06ea8ff001d102dcf0281c2d93beb3d8bec39a19c069c5d574a5547bcafe7509901c5776f78456a06cf49c012ca58209269a395a9604f46c6faf13233bc08ae2135c83fa2be0edc2feabeedfbc6b4770f1a006291e5c2d48fba599ee5ec80dd357961ca8af0c4749cdbff6e05e75f425ecf27f8b1ae703c513bff96237dd78567399f357246c7aa4d167002186f6ff656bde358795629bf1c7dd4f7ccd87c6257cc5c907cca8fa5ffdd5493ac8942205e980e3fa79b5ca59f7df45367bb59bae6ca90b91008033ef1bcf048543fcd256ff95ca391722a8ad1a92d744e565faece24f32264b7b9d4cbe67076770e9d1784cc29df19c58e08726d41fd528ab6b5acd378f014d61429236d0dff9f5d6a27f8bfd1c8f08c43a75123a026200980d2f607e1738ed66ca6f81dca61100fcd658de86c96bd72098f5d52f948a8031b0fd2c39ae8c75245f26e2439eb62c7cc771ac0b12c488a174f6aaca312c8c56c0bf591d797779ca9d65508724b16e3f98d4ecab9c53972b2555404a0cf6df1259f77db80dffedd1f55ba87e79a378b43ad0bdd0726885792331aa7828171a9b9d5bc9a1ecc0d30711185d7cc48a688a184c0b0595391bdab7bb022e1af1f2900d617b194cc5b33924e565acd748ab9f189262600c669a5362499c882488350cabe0ff0a8def9db81f99bcca3ae772d4edc2b6dfe239d96862b30d9f1e7ca08aa6195bff3de3f1cd8ae1eb44341e374db5733e73834b1a4a8b7f4d4e81d486ff03baa62b8bd3958c0064129647dd91592baea44aa416e5479225ef6f03e9532b19f0c98701a75d573592a740fd9c37acb1fac774478f67da9a69e5cebd5202d44aecc2b7a237ce67f25885d879297a2180c22a0ecbc1104a62955c201de592e23d4c59d0e36f9f778544be3a5de231214f03eb85a717df3df0ba3e9fcf71e7ff57b3c9e54e5735878bac9c153f5b75e2d9ad52e6d137f4f9ae35f1bd9e9cfe61a18920bd564d44907bafb2d8686a2d80dfb669f88ce388bf09010f535067f4a47b61e8057c5fb272ab0ac5673437aa255221cf4c27eb95addb76adfbcbb2e1361718f382aabb49d0a3d5692fee9b323061ba090606fa0beb83671e39133e7f6302dab446babbf3440f75e03f25236fda1905cf3526f3ad617d4d8250ab958b2140a88d7aad126afe4ac5d0df407b737b3b0587bdfc9d28ef3a443c291ab32b39e4290d28f276d9b4c18cef98624a085b73e0bffc5c59fd3e991b5895eb42a2a307547915211e7e5e7fa9210ffe7e4b778003cda2b4a6ba624b21a3470c0eab4b97c853ba19ac20ca335d7c56fb5cfffaa34b0542124545f55263b6d8045de6d9c9476934d75ea5caa893f0ffed852f0a9a7b0c9bae6982b98078a54514307c8f58675f8ccafe319e1dbc8bffb8b44e14b69c4492033ddd7dc7e835723152158e62b0465288c00e0ce58519249723f1cd2227203d4ce5694d435ba1f24d432ab0ca4fb64d400f4634ff9d5e91e02d58a386d3e2482cc7534b08214d3bc42ed1df961cabd05ab9ba71f474aef618e4ee3df58a225f0c17ccf39dd536b716e36da580549ec46f839e9cb3e2b7df8b027718d2fba80f017e76781b745dcd5d1e0f3fcd38ffa0a85066b3d94b58a12545b5d7e74005ccee4d3ab53c91131aea2e28f4098fa4c714342d55f30ac441d3c517c7208d3535fb5161be84e4b1705cd596c89c25f11cdfe8660740e5291eb31821b915e8f5ddb1adbba5e800adfbf5a9a54a5976aeeaddaf05b4de82e4b71b16ad0ef33e24b66a190e03270f74d47652eecc456bc1792b719eff9a59b26d62b344de5ee3781dbcd439af82aefb67e3e5c74047ec058b0701dd8de4f49bac7f82317c9a571f48007eab90dd00ef61521dbba815f1c0bb1cf402ba506b0d6618618a71cd83d37aef3a87f1bfbe2666ead2e8181b2538c740dc7675593757a95d83d393890d21c61d3c0fb97f7df8b12b7b7ffdc11e2e0eab569ff46c99af4c2fb6c77956cd607cfd5b48bd23dc115900b8f37336b5101253c29d017a7e41aed60b965db03773d24ad2a74c9d37ba2056102237fae82e23f7d8afd82af8faba4314d9b95ba9a5adeb58ffa15d81879d272e27d6f040feec1b3264874dc30a3acd07a49e97d693f4b55359cb8b30e72bd303cba91b61665854add927f23107d3415d4376f06b179f32557fa2a23eacdda90ce96dcd8346a88df9b9eb0c29fec98fc0cbb53f66170cff9f45179778796d933c1412daf6b3fceebe964001c3125930c5583c929c738001e4b4217115e9d5599aa0f6aeae69a65b3faf74d6029bafaadbd31f65918470a61da78e438682892d877fc54b565628d87ed95d9bad15201ecc1be7cca00cd88086b8613d6d8eaf23e226c31a4e3f5179c93abd9d0ae9ef5866a982dd50b9e8f3433888b0dc80614a756f1dab67423e653ca4a5c45b27738824510ac53bf1352321b5c98e77f85953537ea385fabf81b73287a58a53619a36a277d04f4e4145d1f390f14730d48d5327c030380fb31f38812d1d276a027d7826e3ff67a18231b6f9354f5e1e8913c238a853003d6a7163755ba7a43b6956d98a33be7e5bf699ca86eedfded170a3559eadecc604ff7097a9c3a4b5ffe79c1de5830f04b8e64dd5cec348a97dc7c7ae2c4cb968720d267758da813a7e1bc5c822da59100b190c2e4b302ee4c672ef1504281544ec35bce190aff9143da303d1637ebba6c27f2c0968f4134e8bcbb8eca3f6b7e4a5f280eac637f7cdd888338329a76065c40ef39ef423a9e42c4de6cf960aa6ce3de54f10188af2636a8153ca587297b1e5f9ba736ca36a8c24b65224cd9b93e5818326f4d80a95d1bdff560220d5bf62546dfd3cc40e4bf502332ce079b5353cce950e1b2e9caa976074db4ca9876a7e1e164a5c86bce9bf562546c33514e96500111c94f02eca29e7e8586a673b45310cdb72fc4aacb90a5a4c21604870ff5f39ac8a63d6f49af41703b728677da9b83fa2f72c969e60b498ad5ddade282411dfdbb3120931e0dbc2397961c6c7ad302b8bc1a70a30f910542ebbaefb19fd20f3ca9bd486fcc2699a478e70ff814773f88c513d798cd1d7200433ac34ebe95f52667b7322cfa419ad26d0d5811379f280bd4d6a29b97d72a7986494f6a99522f9180a3c79d046fd41445123f0563d82fac0d2093b0e1606578c4081bd2d49202b0f18b69a89ef7c78b5516d3c62565c617398fd135352d1095b82ea35e45dbe0e58920d22653250e5be23bfd5d67542f556f04157be21aa217ef4cfcd262fc5144c790c0d82c8771dac092582b1069eed08b4c6999ef1e6bce0c3a3311c1b7a4c60e31264082a7e5c6db206e4169a0f27359c207b2a88a56010458fbded1e13e7f7d2e618f8e8f70849065016ad710bd3212115a18ddbf46a9f1a6b3f062c89217dac7a7a4cdc380a5d50dacb07c7a9286fb8860a2dfeaa5fa19aebf927149a132d368fbf368ff06812bf4fc53e91e3a0702d9fc1b26aea60e06390bcb5ba0ff4865c4e078649aa8473a3335b9ca1e6c378eefa79efb6888e39bd320e760f511db6c0c897f1582e6cc061490ebfbd54a226af26f7ecb0dcb33258248c5b5f2b92e15f3d031701f2b5bd95770fe4365cfaa089a09027154afae7b58df673ca4d861fda84e03e8e91a315735fa4f0518d9fd8e63ea943b1f8efc7ef00eb07ddcf98d869ff2a6056262bf6a6847db9583893c01162e96291522930fe28d4a11a007b4f3e3ca1816092bc68ea1c1e35c031b84dd9c9fcd4b4f71acc40b1dca7c69b76b72f031ddc1f99bd422f1afa9d77ed9778bafcd2e2283edc522d6f60ee3439a10188fc9871bbab9895516c38619cd1411a61a3d54e74d6e15eaa5149cceec98e3e4c0b68ceebed07e683aae6005d2c072aab80103377b3e2aab69e57144fe3182bade76872fcf4d948303210237a91ebc2b02c166fcbd8248698515a0e01048bc32d8e1160a0e64f56cfa49f95e4d503941f38c56bb9a268d513d4c87920238b9760c34ddfca0d778a0acb1c931b54cc6a855b91e33460ca5d61b1f366c21fd87912aa579f1562fa86fd6c4f9dfa74cae2006880d72f68321bbda46565","value":{"creation date":1790048392,"created by":"WebTorrent/0300","info":{"name":"utxo-knots-150307.dat","piece length":4194304,"pieces":["26b0fb2642b221755e95a52352cbad975cf40250","7c92bb512cd770355311ee66b9cdd7929de3235e","c4d9ce88d9b3336877a7c7bc504ddca4c0505a0b","0a0704521418e0a768a435db18098a23b38e32f2","f24543ae4e3f997e275bce5a8cb0d87e694678a5","8d1f0776758dd3212b6493e288f6c1324b54cad6","56c5c933a6b5e17dc79386dbcd8dbf2ae90f7d6e","8ef3dacdcf9947bc73f47d239047788d78e0bfd2","03c80665cd6fd061154cde95ba2f6285c73bc5a6","d7d8e16c887a75325e3e7b0eb9d5329e245d2b10","e09be3b9baa52aa9012b199c9e8b990f801be10c","04bdf9289e03072c95c5080fc2db6ea763ae2fd7","f11c1f1ad3e362bd6095d92c7c8ee471a9b87910","e6103850dbcda154469004e3aa2d6051bf5e5c23","7baf961e5b976c2048c41c9cff9f0d9e0b40ceb0","db7d925bd28e20293487a0f0b230c587ccef8680","2c688f050c1b13877c92998450452a790a5747c0","c86309f88992e072e8309f6f5ef03c8d5cc2a003","d3d6705ddc65fbfb1ae21fb83440f036bb68bd6c","569d31a241f2be031556251b384c49c7ea171780","982c88d10f79f7f295b00e9b727e11f7a422df34","cee4b275c3ac2c005eb323c30466fdc00b5be7f6","d04d44e9af3633634440ef8c0707367c2f5389cc","78d895d93984619cc417dfebf63bd7d71135da19","aa2a4dfaea734fec89d938282e3951ada5307b90","d2577a37500f36520883718987d1b73f43420669","c68d96552b1ab4a1a1d9f3707283ff52c31a67e4","6973bd1369cc7dd834dd0cdcf448c2b9373ca4a7","efde6fbd914c4a62d6debf857f655460f7ad60e6","ad9cb3032a647266a5b811ccb0246a6ead615f2a","c99ec970c5bb1e790ca2cea53aa608a1b94ef115","f0feae8dd62f2f66d665d3c37fa26465fdf7bee9","bb98c9ff4039bdeaea9dd841917407dfc97f01c2","f3f8d5d5963deaab9d35f42b10bd9aa9063180c5","43d47e281561ed6aba3172569f093817d051a61e","c5024776518510e6f6b7efecdabe51e732cc2c48","e5881ccd408c45b209410d24e427688ea19822c2","034a6e3c3cdaf249e427f8fb98d62aa11c7896a7","60ac813c6447283149bd1bd5e91dda20cee945b3","d2ad5a06a8c5088d0084168e356d6a7ee4ca1129","44511a6be8d340c28e94399a86a16b1c8dac6caf","c911898bf3c50234d0cc0712f58f3db70e4059de","29676482e5816c71573293dea746b8443eb7e562","4ff11f2348f42f18fe8c755d988366eada73ed7a","dcae00aa21f353340d88a1052f5aa0d961f875ec","94aaef0f5ef53aafc66659230bf46871cef797b4","ddaf7646beb38371bce45c012bc2b4c05a2c2024","077c7089bc1617af2a1d182f6981ad50acf518d7","71ccaa8d7cf5a7b109d0e30d19865c213bc4ed9b","fd615f46a6c4d3d7e2b6dc40980fff0defa62633","5377c122720c02742c1b054ab5e19a012afb23da","eb02615e66fb98a53557dae564b5bed43f3165c0","612f2a36b4e365b94eda481384ca55159373327e","7dc17353bb941ebeecf719907ec49acb8bc653c3","5e5ad0eafe03235fb0664c928a45ceb715b7fe2b","c1316def19ac30bc848fb7bafc3adc09fc04a388","93a8e70a1796c0102917634b1198dbbc436ee7a2","bed63b4cde2bb4aebb0263de9ea1ffbe6824de17","c2ac119fc49b6e4a1440e5764bd2c0a5fe8a2ab1","37cfb170c4b59e88de11f296a14fea6133725905","01657bb33e10ec0ef1d1ae2712ad9b76f6621f24","b2702c295c51c36f584a4ca2983b3a1ce0e4fd4e","2ff132931d37a431b0958eafaf06ea8ff001d102","dcf0281c2d93beb3d8bec39a19c069c5d574a554","7bcafe7509901c5776f78456a06cf49c012ca582","09269a395a9604f46c6faf13233bc08ae2135c83","fa2be0edc2feabeedfbc6b4770f1a006291e5c2d","48fba599ee5ec80dd357961ca8af0c4749cdbff6","e05e75f425ecf27f8b1ae703c513bff96237dd78","567399f357246c7aa4d167002186f6ff656bde35","8795629bf1c7dd4f7ccd87c6257cc5c907cca8fa","5ffdd5493ac8942205e980e3fa79b5ca59f7df45","367bb59bae6ca90b91008033ef1bcf048543fcd2","56ff95ca391722a8ad1a92d744e565faece24f32","264b7b9d4cbe67076770e9d1784cc29df19c58e0","8726d41fd528ab6b5acd378f014d61429236d0df","f9f5d6a27f8bfd1c8f08c43a75123a026200980d","2f607e1738ed66ca6f81dca61100fcd658de86c9","6bd72098f5d52f948a8031b0fd2c39ae8c75245f","26e2439eb62c7cc771ac0b12c488a174f6aaca31","2c8c56c0bf591d797779ca9d65508724b16e3f98","d4ecab9c53972b2555404a0cf6df1259f77db80d","ffedd1f55ba87e79a378b43ad0bdd07268857923","31aa7828171a9b9d5bc9a1ecc0d30711185d7cc4","8a688a184c0b0595391bdab7bb022e1af1f2900d","617b194cc5b33924e565acd748ab9f189262600c","669a5362499c882488350cabe0ff0a8def9db81f","99bcca3ae772d4edc2b6dfe239d96862b30d9f1e","7ca08aa6195bff3de3f1cd8ae1eb44341e374db5","733e73834b1a4a8b7f4d4e81d486ff03baa62b8b","d3958c0064129647dd91592baea44aa416e54792","25ef6f03e9532b19f0c98701a75d573592a740fd","9c37acb1fac774478f67da9a69e5cebd5202d44a","ecc2b7a237ce67f25885d879297a2180c22a0ecb","c1104a62955c201de592e23d4c59d0e36f9f7785","44be3a5de231214f03eb85a717df3df0ba3e9fcf","71e7ff57b3c9e54e5735878bac9c153f5b75e2d9","ad52e6d137f4f9ae35f1bd9e9cfe61a18920bd56","4d44907bafb2d8686a2d80dfb669f88ce388bf09","010f535067f4a47b61e8057c5fb272ab0ac56734","37aa255221cf4c27eb95addb76adfbcbb2e13617","18f382aabb49d0a3d5692fee9b323061ba090606","fa0beb83671e39133e7f6302dab446babbf3440f","75e03f25236fda1905cf3526f3ad617d4d8250ab","958b2140a88d7aad126afe4ac5d0df407b737b3b","0587bdfc9d28ef3a443c291ab32b39e4290d28f2","76d9b4c18cef98624a085b73e0bffc5c59fd3e99","1b5895eb42a2a307547915211e7e5e7fa9210ffe","7e4b778003cda2b4a6ba624b21a3470c0eab4b97","c853ba19ac20ca335d7c56fb5cfffaa34b054212","4545f55263b6d8045de6d9c9476934d75ea5caa8","93f0ffed852f0a9a7b0c9bae6982b98078a54514","307c8f58675f8ccafe319e1dbc8bffb8b44e14b6","9c4492033ddd7dc7e835723152158e62b0465288","c00e0ce58519249723f1cd2227203d4ce5694d43","5ba1f24d432ab0ca4fb64d400f4634ff9d5e91e0","2d58a386d3e2482cc7534b08214d3bc42ed1df96","1cabd05ab9ba71f474aef618e4ee3df58a225f0c","17ccf39dd536b716e36da580549ec46f839e9cb3","e2b7df8b027718d2fba80f017e76781b745dcd5d","1e0f3fcd38ffa0a85066b3d94b58a12545b5d7e7","4005ccee4d3ab53c91131aea2e28f4098fa4c714","342d55f30ac441d3c517c7208d3535fb5161be84","e4b1705cd596c89c25f11cdfe8660740e5291eb3","1821b915e8f5ddb1adbba5e800adfbf5a9a54a59","76aeeaddaf05b4de82e4b71b16ad0ef33e24b66a","190e03270f74d47652eecc456bc1792b719eff9a","59b26d62b344de5ee3781dbcd439af82aefb67e3","e5c74047ec058b0701dd8de4f49bac7f82317c9a","571f48007eab90dd00ef61521dbba815f1c0bb1c","f402ba506b0d6618618a71cd83d37aef3a87f1bf","be2666ead2e8181b2538c740dc7675593757a95d","83d393890d21c61d3c0fb97f7df8b12b7b7ffdc1","1e2e0eab569ff46c99af4c2fb6c77956cd607cfd","5b48bd23dc115900b8f37336b5101253c29d017a","7e41aed60b965db03773d24ad2a74c9d37ba2056","102237fae82e23f7d8afd82af8faba4314d9b95b","a9a5adeb58ffa15d81879d272e27d6f040feec1b","3264874dc30a3acd07a49e97d693f4b55359cb8b","30e72bd303cba91b61665854add927f23107d341","5d4376f06b179f32557fa2a23eacdda90ce96dcd","8346a88df9b9eb0c29fec98fc0cbb53f66170cff","9f45179778796d933c1412daf6b3fceebe964001","c3125930c5583c929c738001e4b4217115e9d559","9aa0f6aeae69a65b3faf74d6029bafaadbd31f65","918470a61da78e438682892d877fc54b565628d8","7ed95d9bad15201ecc1be7cca00cd88086b8613d","6d8eaf23e226c31a4e3f5179c93abd9d0ae9ef58","66a982dd50b9e8f3433888b0dc80614a756f1dab","67423e653ca4a5c45b27738824510ac53bf13523","21b5c98e77f85953537ea385fabf81b73287a58a","53619a36a277d04f4e4145d1f390f14730d48d53","27c030380fb31f38812d1d276a027d7826e3ff67","a18231b6f9354f5e1e8913c238a853003d6a7163","755ba7a43b6956d98a33be7e5bf699ca86eedfde","d170a3559eadecc604ff7097a9c3a4b5ffe79c1d","e5830f04b8e64dd5cec348a97dc7c7ae2c4cb968","720d267758da813a7e1bc5c822da59100b190c2e","4b302ee4c672ef1504281544ec35bce190aff914","3da303d1637ebba6c27f2c0968f4134e8bcbb8ec","a3f6b7e4a5f280eac637f7cdd888338329a76065","c40ef39ef423a9e42c4de6cf960aa6ce3de54f10","188af2636a8153ca587297b1e5f9ba736ca36a8c","24b65224cd9b93e5818326f4d80a95d1bdff5602","20d5bf62546dfd3cc40e4bf502332ce079b5353c","ce950e1b2e9caa976074db4ca9876a7e1e164a5c","86bce9bf562546c33514e96500111c94f02eca29","e7e8586a673b45310cdb72fc4aacb90a5a4c2160","4870ff5f39ac8a63d6f49af41703b728677da9b8","3fa2f72c969e60b498ad5ddade282411dfdbb312","0931e0dbc2397961c6c7ad302b8bc1a70a30f910","542ebbaefb19fd20f3ca9bd486fcc2699a478e70","ff814773f88c513d798cd1d7200433ac34ebe95f","52667b7322cfa419ad26d0d5811379f280bd4d6a","29b97d72a7986494f6a99522f9180a3c79d046fd","41445123f0563d82fac0d2093b0e1606578c4081","bd2d49202b0f18b69a89ef7c78b5516d3c62565c","617398fd135352d1095b82ea35e45dbe0e58920d","22653250e5be23bfd5d67542f556f04157be21aa","217ef4cfcd262fc5144c790c0d82c8771dac0925","82b1069eed08b4c6999ef1e6bce0c3a3311c1b7a","4c60e31264082a7e5c6db206e4169a0f27359c20","7b2a88a56010458fbded1e13e7f7d2e618f8e8f7","0849065016ad710bd3212115a18ddbf46a9f1a6b","3f062c89217dac7a7a4cdc380a5d50dacb07c7a9","286fb8860a2dfeaa5fa19aebf927149a132d368f","bf368ff06812bf4fc53e91e3a0702d9fc1b26aea","60e06390bcb5ba0ff4865c4e078649aa8473a333","5b9ca1e6c378eefa79efb6888e39bd320e760f51","1db6c0c897f1582e6cc061490ebfbd54a226af26","f7ecb0dcb33258248c5b5f2b92e15f3d031701f2","b5bd95770fe4365cfaa089a09027154afae7b58d","f673ca4d861fda84e03e8e91a315735fa4f0518d","9fd8e63ea943b1f8efc7ef00eb07ddcf98d869ff","2a6056262bf6a6847db9583893c01162e9629152","2930fe28d4a11a007b4f3e3ca1816092bc68ea1c","1e35c031b84dd9c9fcd4b4f71acc40b1dca7c69b","76b72f031ddc1f99bd422f1afa9d77ed9778bafc","d2e2283edc522d6f60ee3439a10188fc9871bbab","9895516c38619cd1411a61a3d54e74d6e15eaa51","49cceec98e3e4c0b68ceebed07e683aae6005d2c","072aab80103377b3e2aab69e57144fe3182bade7","6872fcf4d948303210237a91ebc2b02c166fcbd8","248698515a0e01048bc32d8e1160a0e64f56cfa4","9f95e4d503941f38c56bb9a268d513d4c8792023","8b9760c34ddfca0d778a0acb1c931b54cc6a855b","91e33460ca5d61b1f366c21fd87912aa579f1562","fa86fd6c4f9dfa74cae2006880d72f68321bbda4"],"length":869836053}},"computed":{"infohash":"242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0","magnet":"magnet:?xt=urn:btih:242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&dn=utxo-knots-150307.dat"},"result":null}]}</script>
+<footer><p>Generated from <a href="schema/metainfo.jsonld">schema/metainfo.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

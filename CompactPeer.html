@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CompactPeer — Struct of the tracker module — Torrent Schema</title>
+<meta name="description" content="Six bytes: an IPv4 address and a port, both big-endian.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="CompactPeer — Struct, tracker module">
+<meta property="og:description" content="Six bytes: an IPv4 address and a port, both big-endian.">
+<meta property="og:url" content="https://torrent-schema.github.io/CompactPeer">
+<meta property="og:image" content="https://torrent-schema.github.io/og/CompactPeer.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CompactPeer: Struct of the tracker module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CompactPeer — Torrent Schema">
+<meta name="twitter:description" content="Six bytes: an IPv4 address and a port, both big-endian.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/CompactPeer.png">
+<link rel="canonical" href="https://torrent-schema.github.io/CompactPeer">
+<link rel="alternate" type="application/ld+json" href="schema/tracker.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>CompactPeer</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="tracker">module: tracker</a><a href="schema/tracker.jsonld">schema/tracker.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="tracker">tracker</a> · encoding <a href="binary">binary</a> · <b>6 bytes</b> on the wire · 2 fields · BEP 23 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/CompactPeer</code></p>
+  <p class="comment">Six bytes: an IPv4 address and a port, both big-endian. Lists of these are the usual peer list over HTTP and the only one over UDP.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="ip4"><td class="name">ip</td><td class="type">ip4</td><td class="type"></td><td class="desc"></td><td class="val" data-f="ip"><code class="pre">86.49.17.222</code></td></tr><tr id="port16"><td class="name">port</td><td class="type">u16be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="port"><code class="pre">6881</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the first peer of that answer's 'peers' string: four bytes of address, two of port. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/tracker/httpAnnounceCompact.bin">test/vectors/tracker/httpAnnounceCompact.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">6 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="ip" title="ip">56 31 11 de </span><span class="f" data-f="port" title="port">1a e1 </span></pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:CompactPeer&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:tracker&quot;,
+   &quot;label&quot;: &quot;CompactPeer&quot;,
+   &quot;encoding&quot;: &quot;bt:binary&quot;,
+   &quot;bep&quot;: 23,
+   &quot;wireSize&quot;: 6,
+   &quot;comment&quot;: &quot;Six bytes: an IPv4 address and a port, both big-endian. Lists of these are the usual peer list over HTTP and the only one over UDP.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:ip4&quot;,
+     &quot;label&quot;: &quot;ip&quot;,
+     &quot;wireType&quot;: &quot;ip4&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:port16&quot;,
+     &quot;label&quot;: &quot;port&quot;,
+     &quot;wireType&quot;: &quot;u16be&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;CompactPeer#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:CompactPeer&quot;,
+   &quot;source&quot;: &quot;test/vectors/tracker/httpAnnounceCompact.bin&quot;,
+   &quot;captured&quot;: &quot;the first peer of that answer's 'peers' string: four bytes of address, two of port&quot;,
+   &quot;bytes&quot;: &quot;563111de1ae1&quot;,
+   &quot;value&quot;: {
+    &quot;ip&quot;: &quot;86.49.17.222&quot;,
+    &quot;port&quot;: 6881
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;ip&quot;,
+     0,
+     4
+    ],
+    [
+     &quot;port&quot;,
+     4,
+     6
+    ]
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:CompactPeer","@type":"Struct","module":"bt:tracker","label":"CompactPeer","encoding":"bt:binary","bep":23,"wireSize":6,"comment":"Six bytes: an IPv4 address and a port, both big-endian. Lists of these are the usual peer list over HTTP and the only one over UDP.","fields":[{"property":"bt:ip4","label":"ip","wireType":"ip4"},{"property":"bt:port16","label":"port","wireType":"u16be"}]},{"@id":"CompactPeer#instance","@type":"Instance","of":"bt:CompactPeer","source":"test/vectors/tracker/httpAnnounceCompact.bin","captured":"the first peer of that answer's 'peers' string: four bytes of address, two of port","bytes":"563111de1ae1","value":{"ip":"86.49.17.222","port":6881},"spans":[["ip",0,4],["port",4,6]]}]}</script>
+<footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>metainfo validity — RuleSet of the metainfo module — Torrent Schema</title>
+<meta name="description" content="What a decoded MetaInfo must satisfy to describe a torrent at all.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="metainfo validity — RuleSet, metainfo module">
+<meta property="og:description" content="What a decoded MetaInfo must satisfy to describe a torrent at all.">
+<meta property="og:url" content="https://torrent-schema.github.io/metainfoRules">
+<meta property="og:image" content="https://torrent-schema.github.io/og/metainfoRules.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="metainfo validity: RuleSet of the metainfo module of Torrent Schema">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="metainfo validity — Torrent Schema">
+<meta name="twitter:description" content="What a decoded MetaInfo must satisfy to describe a torrent at all.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/metainfoRules.png">
+<link rel="canonical" href="https://torrent-schema.github.io/metainfoRules">
+<link rel="alternate" type="application/ld+json" href="schema/metainfo.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>metainfo validity</span> <small>RuleSet · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="metainfo">module: metainfo</a><a href="schema/metainfo.jsonld">schema/metainfo.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">RuleSet · module <a href="metainfo">metainfo</a> · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/metainfoRules</code></p>
+  <p class="comment">What a decoded MetaInfo must satisfy to describe a torrent at all. A file that fails these has no infohash worth computing.</p>
+</header>
+<div class="card"><h2>5 rules · scope <b>metainfo</b></h2><table><tr><th>#</th><th>rule</th><th>error code</th><th>check</th></tr><tr id="rule-info-present"><td class="name">1</td><td class="desc">'info' is present and a dictionary</td><td class="type">metainfo-no-info</td><td class="desc"><code>info != null</code></td></tr><tr id="rule-pieces-length"><td class="name">2</td><td class="desc">'pieces' is a whole number of 20-byte hashes, at least one</td><td class="type">metainfo-bad-pieces</td><td class="desc"><code>byteLength(pieces) &gt; 0 and byteLength(pieces) % 20 == 0</code></td></tr><tr id="rule-one-of-length-files"><td class="name">3</td><td class="desc">exactly one of 'length' and 'files' is present</td><td class="type">metainfo-length-xor-files</td><td class="desc"><code>(length != null) != (files != null)</code></td></tr><tr id="rule-piece-count-matches"><td class="name">4</td><td class="desc">the number of pieces equals ceil(totalLength / pieceLength)</td><td class="type">metainfo-piece-count</td><td class="desc"><code>pieceCount == ceil(totalLength / pieceLength)</code></td></tr><tr id="rule-piece-length-positive"><td class="name">5</td><td class="desc">'piece length' is a positive integer</td><td class="type">metainfo-bad-piece-length</td><td class="desc"><code>pieceLength &gt; 0</code></td></tr></table></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:metainfoRules&quot;,
+   &quot;@type&quot;: &quot;RuleSet&quot;,
+   &quot;module&quot;: &quot;bt:metainfo&quot;,
+   &quot;label&quot;: &quot;metainfo validity&quot;,
+   &quot;scope&quot;: &quot;metainfo&quot;,
+   &quot;comment&quot;: &quot;What a decoded MetaInfo must satisfy to describe a torrent at all. A file that fails these has no infohash worth computing.&quot;,
+   &quot;rules&quot;: [
+    {
+     &quot;@id&quot;: &quot;bt:rule-info-present&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;'info' is present and a dictionary&quot;,
+     &quot;errorCode&quot;: &quot;metainfo-no-info&quot;,
+     &quot;check&quot;: &quot;info != null&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-pieces-length&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;'pieces' is a whole number of 20-byte hashes, at least one&quot;,
+     &quot;errorCode&quot;: &quot;metainfo-bad-pieces&quot;,
+     &quot;check&quot;: &quot;byteLength(pieces) &gt; 0 and byteLength(pieces) % 20 == 0&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-one-of-length-files&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;exactly one of 'length' and 'files' is present&quot;,
+     &quot;errorCode&quot;: &quot;metainfo-length-xor-files&quot;,
+     &quot;check&quot;: &quot;(length != null) != (files != null)&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-piece-count-matches&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;the number of pieces equals ceil(totalLength / pieceLength)&quot;,
+     &quot;errorCode&quot;: &quot;metainfo-piece-count&quot;,
+     &quot;check&quot;: &quot;pieceCount == ceil(totalLength / pieceLength)&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-piece-length-positive&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;'piece length' is a positive integer&quot;,
+     &quot;errorCode&quot;: &quot;metainfo-bad-piece-length&quot;,
+     &quot;check&quot;: &quot;pieceLength &gt; 0&quot;
+    }
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:metainfoRules","@type":"RuleSet","module":"bt:metainfo","label":"metainfo validity","scope":"metainfo","comment":"What a decoded MetaInfo must satisfy to describe a torrent at all. A file that fails these has no infohash worth computing.","rules":[{"@id":"bt:rule-info-present","@type":"ValidationRule","label":"'info' is present and a dictionary","errorCode":"metainfo-no-info","check":"info != null"},{"@id":"bt:rule-pieces-length","@type":"ValidationRule","label":"'pieces' is a whole number of 20-byte hashes, at least one","errorCode":"metainfo-bad-pieces","check":"byteLength(pieces) > 0 and byteLength(pieces) % 20 == 0"},{"@id":"bt:rule-one-of-length-files","@type":"ValidationRule","label":"exactly one of 'length' and 'files' is present","errorCode":"metainfo-length-xor-files","check":"(length != null) != (files != null)"},{"@id":"bt:rule-piece-count-matches","@type":"ValidationRule","label":"the number of pieces equals ceil(totalLength / pieceLength)","errorCode":"metainfo-piece-count","check":"pieceCount == ceil(totalLength / pieceLength)"},{"@id":"bt:rule-piece-length-positive","@type":"ValidationRule","label":"'piece length' is a positive integer","errorCode":"metainfo-bad-piece-length","check":"pieceLength > 0"}]}]}</script>
+<footer><p>Generated from <a href="schema/metainfo.jsonld">schema/metainfo.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

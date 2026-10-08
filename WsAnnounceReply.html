@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WsAnnounceReply — Struct of the webtorrent module — Torrent Schema</title>
+<meta name="description" content="The tracker's own reply to an announce: the counts and the interval.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="WsAnnounceReply — Struct, webtorrent module">
+<meta property="og:description" content="The tracker's own reply to an announce: the counts and the interval.">
+<meta property="og:url" content="https://torrent-schema.github.io/WsAnnounceReply">
+<meta property="og:image" content="https://torrent-schema.github.io/og/WsAnnounceReply.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="WsAnnounceReply: Struct of the webtorrent module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WsAnnounceReply — Torrent Schema">
+<meta name="twitter:description" content="The tracker's own reply to an announce: the counts and the interval.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/WsAnnounceReply.png">
+<link rel="canonical" href="https://torrent-schema.github.io/WsAnnounceReply">
+<link rel="alternate" type="application/ld+json" href="schema/webtorrent.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>WsAnnounceReply</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="webtorrent">module: webtorrent</a><a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="webtorrent">webtorrent</a> · encoding <a href="json">json</a> · 7 fields · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/WsAnnounceReply</code></p>
+  <p class="comment">The tracker's own reply to an announce: the counts and the interval. No peer list — peers arrive as offers and answers, separately.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>JSON key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="wsAction"><td class="name">action</td><td class="type">action</td><td class="type">utf8</td><td class="desc"></td><td class="val" data-f="action"><code class="pre">announce</code></td></tr><tr id="infoHash"><td class="name">info_hash</td><td class="type">info_hash</td><td class="type">bytes?</td><td class="desc"></td><td class="val" data-f="info_hash"><code class="pre">242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0</code></td></tr><tr id="interval"><td class="name">interval</td><td class="type">interval</td><td class="type">int</td><td class="desc">Seconds; 120 on the public trackers.</td><td class="val" data-f="interval"><code class="pre">120</code></td></tr><tr id="complete"><td class="name">complete</td><td class="type">complete</td><td class="type">int?</td><td class="desc">Seeders.</td><td class="val" data-f="complete"><code class="pre">3</code></td></tr><tr id="incomplete"><td class="name">incomplete</td><td class="type">incomplete</td><td class="type">int?</td><td class="desc">Leechers, the announcing peer included.</td><td class="val" data-f="incomplete"><code class="pre">1</code></td></tr><tr id="failureReason"><td class="name">failure reason</td><td class="type">failure reason</td><td class="type">utf8?</td><td class="desc"></td><td class="val" data-f="failure reason"><span class="mut">—</span></td></tr><tr id="warningMessage"><td class="name">warning message</td><td class="type">warning message</td><td class="type">utf8?</td><td class="desc"></td><td class="val" data-f="warning message"><span class="mut">—</span></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the tracker's reply: counts and an interval, no peer list. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/webtorrent/announce-session.json">test/vectors/webtorrent/announce-session.json</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="rule-result">rules: <span class="ok">all pass</span></p><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:WsAnnounceReply&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:webtorrent&quot;,
+   &quot;label&quot;: &quot;WsAnnounceReply&quot;,
+   &quot;encoding&quot;: &quot;bt:json&quot;,
+   &quot;comment&quot;: &quot;The tracker's own reply to an announce: the counts and the interval. No peer list — peers arrive as offers and answers, separately.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:wsAction&quot;,
+     &quot;label&quot;: &quot;action&quot;,
+     &quot;key&quot;: &quot;action&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: true,
+     &quot;constValue&quot;: &quot;announce&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:infoHash&quot;,
+     &quot;label&quot;: &quot;info_hash&quot;,
+     &quot;key&quot;: &quot;info_hash&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;size&quot;: 20,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:interval&quot;,
+     &quot;label&quot;: &quot;interval&quot;,
+     &quot;key&quot;: &quot;interval&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Seconds; 120 on the public trackers.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:complete&quot;,
+     &quot;label&quot;: &quot;complete&quot;,
+     &quot;key&quot;: &quot;complete&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Seeders.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:incomplete&quot;,
+     &quot;label&quot;: &quot;incomplete&quot;,
+     &quot;key&quot;: &quot;incomplete&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Leechers, the announcing peer included.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:failureReason&quot;,
+     &quot;label&quot;: &quot;failure reason&quot;,
+     &quot;key&quot;: &quot;failure reason&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:warningMessage&quot;,
+     &quot;label&quot;: &quot;warning message&quot;,
+     &quot;key&quot;: &quot;warning message&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;WsAnnounceReply#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:WsAnnounceReply&quot;,
+   &quot;source&quot;: &quot;test/vectors/webtorrent/announce-session.json&quot;,
+   &quot;captured&quot;: &quot;the tracker's reply: counts and an interval, no peer list&quot;,
+   &quot;value&quot;: {
+    &quot;action&quot;: &quot;announce&quot;,
+    &quot;interval&quot;: 120,
+    &quot;info_hash&quot;: &quot;242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&quot;,
+    &quot;complete&quot;: 3,
+    &quot;incomplete&quot;: 1
+   },
+   &quot;result&quot;: null
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:WsAnnounceReply","@type":"Struct","module":"bt:webtorrent","label":"WsAnnounceReply","encoding":"bt:json","comment":"The tracker's own reply to an announce: the counts and the interval. No peer list — peers arrive as offers and answers, separately.","fields":[{"property":"bt:wsAction","label":"action","key":"action","valueType":"utf8","required":true,"constValue":"announce"},{"property":"bt:infoHash","label":"info_hash","key":"info_hash","valueType":"bytes","size":20,"required":false},{"property":"bt:interval","label":"interval","key":"interval","valueType":"int","required":true,"comment":"Seconds; 120 on the public trackers."},{"property":"bt:complete","label":"complete","key":"complete","valueType":"int","required":false,"comment":"Seeders."},{"property":"bt:incomplete","label":"incomplete","key":"incomplete","valueType":"int","required":false,"comment":"Leechers, the announcing peer included."},{"property":"bt:failureReason","label":"failure reason","key":"failure reason","valueType":"utf8","required":false},{"property":"bt:warningMessage","label":"warning message","key":"warning message","valueType":"utf8","required":false}]},{"@id":"WsAnnounceReply#instance","@type":"Instance","of":"bt:WsAnnounceReply","source":"test/vectors/webtorrent/announce-session.json","captured":"the tracker's reply: counts and an interval, no peer list","value":{"action":"announce","interval":120,"info_hash":"242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0","complete":3,"incomplete":1},"result":null}]}</script>
+<footer><p>Generated from <a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

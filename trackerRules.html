@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tracker exchange — RuleSet of the tracker module — Torrent Schema</title>
+<meta name="description" content="What a client checks on what a tracker sends back.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="tracker exchange — RuleSet, tracker module">
+<meta property="og:description" content="What a client checks on what a tracker sends back.">
+<meta property="og:url" content="https://torrent-schema.github.io/trackerRules">
+<meta property="og:image" content="https://torrent-schema.github.io/og/trackerRules.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="tracker exchange: RuleSet of the tracker module of Torrent Schema">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="tracker exchange — Torrent Schema">
+<meta name="twitter:description" content="What a client checks on what a tracker sends back.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/trackerRules.png">
+<link rel="canonical" href="https://torrent-schema.github.io/trackerRules">
+<link rel="alternate" type="application/ld+json" href="schema/tracker.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>tracker exchange</span> <small>RuleSet · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="tracker">module: tracker</a><a href="schema/tracker.jsonld">schema/tracker.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">RuleSet · module <a href="tracker">tracker</a> · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/trackerRules</code></p>
+  <p class="comment">What a client checks on what a tracker sends back.</p>
+</header>
+<div class="card"><h2>8 rules · scope <b>tracker</b></h2><table><tr><th>#</th><th>rule</th><th>error code</th><th>check</th></tr><tr id="rule-http-bencode"><td class="name">1</td><td class="desc">an HTTP answer is a bencoded dictionary</td><td class="type">tracker-not-bencode</td><td class="desc"><code>decode(body) is a dictionary (opentrackr answers an HTML page to a non-compact announce: that is this error)</code></td></tr><tr id="rule-failure-reason"><td class="name">2</td><td class="desc">a 'failure reason' means the announce was refused</td><td class="type">tracker-refused</td><td class="desc"><code>'failure reason' absent</code></td></tr><tr id="rule-interval"><td class="name">3</td><td class="desc">an accepted announce carries an interval</td><td class="type">tracker-no-interval</td><td class="desc"><code>interval is a positive integer</code></td></tr><tr id="rule-compact-length"><td class="name">4</td><td class="desc">a compact peer list is a whole number of 6-byte (or 18-byte) peers</td><td class="type">tracker-bad-peers</td><td class="desc"><code>byteLength(peers) % 6 == 0 and byteLength(peers6) % 18 == 0</code></td></tr><tr id="rule-udp-transaction"><td class="name">5</td><td class="desc">a UDP response echoes the request's transaction id</td><td class="type">tracker-udp-transaction</td><td class="desc"><code>response.transaction_id == request.transaction_id, else the datagram is not ours and is dropped</code></td></tr><tr id="rule-udp-action"><td class="name">6</td><td class="desc">a UDP response's action matches the request's, or is 3 (error)</td><td class="type">tracker-udp-action</td><td class="desc"><code>response.action == request.action or response.action == 3</code></td></tr><tr id="rule-udp-length"><td class="name">7</td><td class="desc">a UDP response is at least its header</td><td class="type">tracker-udp-short</td><td class="desc"><code>connect: 16 bytes; announce: 20; scrape: 8; error: 8</code></td></tr><tr id="rule-udp-connection-age"><td class="name">8</td><td class="desc">a connection id is used within 60 seconds of the connect response</td><td class="type">tracker-udp-connection-expired</td><td class="desc"><code>now - connectedAt &lt; 60 s, else connect again</code></td></tr></table></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:trackerRules&quot;,
+   &quot;@type&quot;: &quot;RuleSet&quot;,
+   &quot;module&quot;: &quot;bt:tracker&quot;,
+   &quot;label&quot;: &quot;tracker exchange&quot;,
+   &quot;scope&quot;: &quot;tracker&quot;,
+   &quot;comment&quot;: &quot;What a client checks on what a tracker sends back.&quot;,
+   &quot;rules&quot;: [
+    {
+     &quot;@id&quot;: &quot;bt:rule-http-bencode&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;an HTTP answer is a bencoded dictionary&quot;,
+     &quot;errorCode&quot;: &quot;tracker-not-bencode&quot;,
+     &quot;check&quot;: &quot;decode(body) is a dictionary (opentrackr answers an HTML page to a non-compact announce: that is this error)&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-failure-reason&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a 'failure reason' means the announce was refused&quot;,
+     &quot;errorCode&quot;: &quot;tracker-refused&quot;,
+     &quot;check&quot;: &quot;'failure reason' absent&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-interval&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;an accepted announce carries an interval&quot;,
+     &quot;errorCode&quot;: &quot;tracker-no-interval&quot;,
+     &quot;check&quot;: &quot;interval is a positive integer&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-compact-length&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a compact peer list is a whole number of 6-byte (or 18-byte) peers&quot;,
+     &quot;errorCode&quot;: &quot;tracker-bad-peers&quot;,
+     &quot;check&quot;: &quot;byteLength(peers) % 6 == 0 and byteLength(peers6) % 18 == 0&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-udp-transaction&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a UDP response echoes the request's transaction id&quot;,
+     &quot;errorCode&quot;: &quot;tracker-udp-transaction&quot;,
+     &quot;check&quot;: &quot;response.transaction_id == request.transaction_id, else the datagram is not ours and is dropped&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-udp-action&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a UDP response's action matches the request's, or is 3 (error)&quot;,
+     &quot;errorCode&quot;: &quot;tracker-udp-action&quot;,
+     &quot;check&quot;: &quot;response.action == request.action or response.action == 3&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-udp-length&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a UDP response is at least its header&quot;,
+     &quot;errorCode&quot;: &quot;tracker-udp-short&quot;,
+     &quot;check&quot;: &quot;connect: 16 bytes; announce: 20; scrape: 8; error: 8&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:rule-udp-connection-age&quot;,
+     &quot;@type&quot;: &quot;ValidationRule&quot;,
+     &quot;label&quot;: &quot;a connection id is used within 60 seconds of the connect response&quot;,
+     &quot;errorCode&quot;: &quot;tracker-udp-connection-expired&quot;,
+     &quot;check&quot;: &quot;now - connectedAt &lt; 60 s, else connect again&quot;
+    }
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:trackerRules","@type":"RuleSet","module":"bt:tracker","label":"tracker exchange","scope":"tracker","comment":"What a client checks on what a tracker sends back.","rules":[{"@id":"bt:rule-http-bencode","@type":"ValidationRule","label":"an HTTP answer is a bencoded dictionary","errorCode":"tracker-not-bencode","check":"decode(body) is a dictionary (opentrackr answers an HTML page to a non-compact announce: that is this error)"},{"@id":"bt:rule-failure-reason","@type":"ValidationRule","label":"a 'failure reason' means the announce was refused","errorCode":"tracker-refused","check":"'failure reason' absent"},{"@id":"bt:rule-interval","@type":"ValidationRule","label":"an accepted announce carries an interval","errorCode":"tracker-no-interval","check":"interval is a positive integer"},{"@id":"bt:rule-compact-length","@type":"ValidationRule","label":"a compact peer list is a whole number of 6-byte (or 18-byte) peers","errorCode":"tracker-bad-peers","check":"byteLength(peers) % 6 == 0 and byteLength(peers6) % 18 == 0"},{"@id":"bt:rule-udp-transaction","@type":"ValidationRule","label":"a UDP response echoes the request's transaction id","errorCode":"tracker-udp-transaction","check":"response.transaction_id == request.transaction_id, else the datagram is not ours and is dropped"},{"@id":"bt:rule-udp-action","@type":"ValidationRule","label":"a UDP response's action matches the request's, or is 3 (error)","errorCode":"tracker-udp-action","check":"response.action == request.action or response.action == 3"},{"@id":"bt:rule-udp-length","@type":"ValidationRule","label":"a UDP response is at least its header","errorCode":"tracker-udp-short","check":"connect: 16 bytes; announce: 20; scrape: 8; error: 8"},{"@id":"bt:rule-udp-connection-age","@type":"ValidationRule","label":"a connection id is used within 60 seconds of the connect response","errorCode":"tracker-udp-connection-expired","check":"now - connectedAt \u003c 60 s, else connect again"}]}]}</script>
+<footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

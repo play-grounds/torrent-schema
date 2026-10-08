@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ExtendedHandshake — Struct of the wire module — Torrent Schema</title>
+<meta name="description" content="Sent right after the handshake by both sides when both set the extension bit.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="ExtendedHandshake — Struct, wire module">
+<meta property="og:description" content="Sent right after the handshake by both sides when both set the extension bit.">
+<meta property="og:url" content="https://torrent-schema.github.io/ExtendedHandshake">
+<meta property="og:image" content="https://torrent-schema.github.io/og/ExtendedHandshake.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ExtendedHandshake: Struct of the wire module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ExtendedHandshake — Torrent Schema">
+<meta name="twitter:description" content="Sent right after the handshake by both sides when both set the extension bit.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/ExtendedHandshake.png">
+<link rel="canonical" href="https://torrent-schema.github.io/ExtendedHandshake">
+<link rel="alternate" type="application/ld+json" href="schema/wire.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>ExtendedHandshake</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="wire">module: wire</a><a href="schema/wire.jsonld">schema/wire.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="wire">wire</a> · encoding <a href="bencode">bencode</a> · 8 fields · BEP 10 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/ExtendedHandshake</code></p>
+  <p class="comment">Sent right after the handshake by both sides when both set the extension bit. 'm' is the sender's table of extension name → message id it will understand; everything else is advisory.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>bencode key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="extMap"><td class="name">m</td><td class="type">m</td><td class="type">dictInt</td><td class="desc">Extension name → the id this peer wants to receive it under; 0 disables an extension.</td><td class="val" data-f="m"><code class="pre">{
+ &quot;lt_donthave&quot;: 7,
+ &quot;share_mode&quot;: 8,
+ &quot;upload_only&quot;: 3,
+ &quot;ut_holepunch&quot;: 4,
+ &quot;ut_metadata&quot;: 2,
+ &quot;ut_pex&quot;: 1
+}</code></td></tr><tr id="clientVersion"><td class="name">v</td><td class="type">v</td><td class="type">utf8?</td><td class="desc">The client's name and version, e.g. 'qBittorrent/5.1.2'.</td><td class="val" data-f="v"><code class="pre">qBittorrent/5.3.0rc1</code></td></tr><tr id="listenPort"><td class="name">p</td><td class="type">p</td><td class="type">int?</td><td class="desc">The sender's listening port.</td><td class="val" data-f="p"><span class="mut">—</span></td></tr><tr id="reqq"><td class="name">reqq</td><td class="type">reqq</td><td class="type">int?</td><td class="desc">How many requests the sender will queue.</td><td class="val" data-f="reqq"><code class="pre">2000</code></td></tr><tr id="metadataSize"><td class="name">metadata_size</td><td class="type">metadata_size</td><td class="type">int?</td><td class="desc">Byte length of the info dictionary, so a magnet-link peer knows how many 16 KiB pieces of metadata to ask for. <span class="mut">(BEP 9)</span></td><td class="val" data-f="metadata_size"><code class="pre">4248</code></td></tr><tr id="yourip"><td class="name">yourip</td><td class="type">yourip</td><td class="type">bytes?</td><td class="desc">The receiver's address as the sender sees it, 4 or 16 bytes.</td><td class="val" data-f="yourip"><code class="pre">7f000001</code></td></tr><tr id="ipv6"><td class="name">ipv6</td><td class="type">ipv6</td><td class="type">bytes?</td><td class="desc"></td><td class="val" data-f="ipv6"><span class="mut">—</span></td></tr><tr id="ipv4"><td class="name">ipv4</td><td class="type">ipv4</td><td class="type">bytes?</td><td class="desc"></td><td class="val" data-f="ipv4"><span class="mut">—</span></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the dictionary inside it: libtorrent's extensions by name and id, the metadata size, the client version. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin">test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">212 bytes</p><pre class="hex" id="hex"><span class="f" data-f="" title="">31 32 3a 63 6f 6d 70 6c 65 74 65 5f 61 67 6f 69
+2d 31 65 31 3a 6d 64 31 31 3a 6c 74 5f 64 6f 6e
+74 68 61 76 65 69 37 65 31 30 3a 73 68 61 72 65
+5f 6d 6f 64 65 69 38 65 31 31 3a 75 70 6c 6f 61
+64 5f 6f 6e 6c 79 69 33 65 31 32 3a 75 74 5f 68
+6f 6c 65 70 75 6e 63 68 69 34 65 31 31 3a 75 74
+5f 6d 65 74 61 64 61 74 61 69 32 65 36 3a 75 74
+5f 70 65 78 69 31 65 65 31 33 3a 6d 65 74 61 64
+61 74 61 5f 73 69 7a 65 69 34 32 34 38 65 34 3a
+72 65 71 71 69 32 30 30 30 65 31 31 3a 75 70 6c
+6f 61 64 5f 6f 6e 6c 79 69 31 65 31 3a 76 32 30
+3a 71 42 69 74 74 6f 72 72 65 6e 74 2f 35 2e 33
+2e 30 72 63 31 36 3a 79 6f 75 72 69 70 34 3a 7f
+00 00 01 65 </span></pre><pre class="hex txt">12:complete_agoi-1e1:md11:lt_donthavei7e10:share_modei8e11:upload_onlyi3e12:ut_holepunchi4e11:ut_metadatai2e6:ut_pexi1ee13:metadata_sizei4248e4:reqqi2000e11:upload_onlyi1e1:v20:qBittorrent/5.3.0rc16:yourip4:····e</pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:ExtendedHandshake&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:wire&quot;,
+   &quot;label&quot;: &quot;ExtendedHandshake&quot;,
+   &quot;encoding&quot;: &quot;bt:bencode&quot;,
+   &quot;bep&quot;: 10,
+   &quot;comment&quot;: &quot;Sent right after the handshake by both sides when both set the extension bit. 'm' is the sender's table of extension name → message id it will understand; everything else is advisory.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:extMap&quot;,
+     &quot;label&quot;: &quot;m&quot;,
+     &quot;key&quot;: &quot;m&quot;,
+     &quot;valueType&quot;: &quot;dictInt&quot;,
+     &quot;required&quot;: true,
+     &quot;comment&quot;: &quot;Extension name → the id this peer wants to receive it under; 0 disables an extension.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:clientVersion&quot;,
+     &quot;label&quot;: &quot;v&quot;,
+     &quot;key&quot;: &quot;v&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;The client's name and version, e.g. 'qBittorrent/5.1.2'.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:listenPort&quot;,
+     &quot;label&quot;: &quot;p&quot;,
+     &quot;key&quot;: &quot;p&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;The sender's listening port.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:reqq&quot;,
+     &quot;label&quot;: &quot;reqq&quot;,
+     &quot;key&quot;: &quot;reqq&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;How many requests the sender will queue.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:metadataSize&quot;,
+     &quot;label&quot;: &quot;metadata_size&quot;,
+     &quot;key&quot;: &quot;metadata_size&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;bep&quot;: 9,
+     &quot;comment&quot;: &quot;Byte length of the info dictionary, so a magnet-link peer knows how many 16 KiB pieces of metadata to ask for.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:yourip&quot;,
+     &quot;label&quot;: &quot;yourip&quot;,
+     &quot;key&quot;: &quot;yourip&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;The receiver's address as the sender sees it, 4 or 16 bytes.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:ipv6&quot;,
+     &quot;label&quot;: &quot;ipv6&quot;,
+     &quot;key&quot;: &quot;ipv6&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:ipv4&quot;,
+     &quot;label&quot;: &quot;ipv4&quot;,
+     &quot;key&quot;: &quot;ipv4&quot;,
+     &quot;valueType&quot;: &quot;bytes&quot;,
+     &quot;required&quot;: false
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;ExtendedHandshake#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:ExtendedHandshake&quot;,
+   &quot;source&quot;: &quot;test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin&quot;,
+   &quot;captured&quot;: &quot;the dictionary inside it: libtorrent's extensions by name and id, the metadata size, the client version&quot;,
+   &quot;bytes&quot;: &quot;31323a636f6d706c6574655f61676f692d3165313a6d6431313a6c745f646f6e746861766569376531303a73686172655f6d6f646569386531313a75706c6f61645f6f6e6c7969336531323a75745f686f6c6570756e636869346531313a75745f6d65746164617461693265363a75745f7065786931656531333a6d657461646174615f73697a65693432343865343a7265717169323030306531313a75706c6f61645f6f6e6c79693165313a7632303a71426974746f7272656e742f352e332e30726331363a796f75726970343a7f00000165&quot;,
+   &quot;value&quot;: {
+    &quot;m&quot;: {
+     &quot;lt_donthave&quot;: 7,
+     &quot;share_mode&quot;: 8,
+     &quot;upload_only&quot;: 3,
+     &quot;ut_holepunch&quot;: 4,
+     &quot;ut_metadata&quot;: 2,
+     &quot;ut_pex&quot;: 1
+    },
+    &quot;v&quot;: &quot;qBittorrent/5.3.0rc1&quot;,
+    &quot;reqq&quot;: 2000,
+    &quot;metadata_size&quot;: 4248,
+    &quot;yourip&quot;: &quot;7f000001&quot;,
+    &quot;extra&quot;: {
+     &quot;complete_ago&quot;: -1,
+     &quot;upload_only&quot;: 1
+    }
+   }
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:ExtendedHandshake","@type":"Struct","module":"bt:wire","label":"ExtendedHandshake","encoding":"bt:bencode","bep":10,"comment":"Sent right after the handshake by both sides when both set the extension bit. 'm' is the sender's table of extension name → message id it will understand; everything else is advisory.","fields":[{"property":"bt:extMap","label":"m","key":"m","valueType":"dictInt","required":true,"comment":"Extension name → the id this peer wants to receive it under; 0 disables an extension."},{"property":"bt:clientVersion","label":"v","key":"v","valueType":"utf8","required":false,"comment":"The client's name and version, e.g. 'qBittorrent/5.1.2'."},{"property":"bt:listenPort","label":"p","key":"p","valueType":"int","required":false,"comment":"The sender's listening port."},{"property":"bt:reqq","label":"reqq","key":"reqq","valueType":"int","required":false,"comment":"How many requests the sender will queue."},{"property":"bt:metadataSize","label":"metadata_size","key":"metadata_size","valueType":"int","required":false,"bep":9,"comment":"Byte length of the info dictionary, so a magnet-link peer knows how many 16 KiB pieces of metadata to ask for."},{"property":"bt:yourip","label":"yourip","key":"yourip","valueType":"bytes","required":false,"comment":"The receiver's address as the sender sees it, 4 or 16 bytes."},{"property":"bt:ipv6","label":"ipv6","key":"ipv6","valueType":"bytes","required":false},{"property":"bt:ipv4","label":"ipv4","key":"ipv4","valueType":"bytes","required":false}]},{"@id":"ExtendedHandshake#instance","@type":"Instance","of":"bt:ExtendedHandshake","source":"test/vectors/wire-qbittorrent/extendedHandshakeReceived.bin","captured":"the dictionary inside it: libtorrent's extensions by name and id, the metadata size, the client version","bytes":"31323a636f6d706c6574655f61676f692d3165313a6d6431313a6c745f646f6e746861766569376531303a73686172655f6d6f646569386531313a75706c6f61645f6f6e6c7969336531323a75745f686f6c6570756e636869346531313a75745f6d65746164617461693265363a75745f7065786931656531333a6d657461646174615f73697a65693432343865343a7265717169323030306531313a75706c6f61645f6f6e6c79693165313a7632303a71426974746f7272656e742f352e332e30726331363a796f75726970343a7f00000165","value":{"m":{"lt_donthave":7,"share_mode":8,"upload_only":3,"ut_holepunch":4,"ut_metadata":2,"ut_pex":1},"v":"qBittorrent/5.3.0rc1","reqq":2000,"metadata_size":4248,"yourip":"7f000001","extra":{"complete_ago":-1,"upload_only":1}}}]}</script>
+<footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

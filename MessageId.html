@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MessageId — Enumeration of the wire module — Torrent Schema</title>
+<meta name="description" content="The byte after the length prefix.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="MessageId — Enumeration, wire module">
+<meta property="og:description" content="The byte after the length prefix.">
+<meta property="og:url" content="https://torrent-schema.github.io/MessageId">
+<meta property="og:image" content="https://torrent-schema.github.io/og/MessageId.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="MessageId: Enumeration of the wire module of Torrent Schema">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MessageId — Torrent Schema">
+<meta name="twitter:description" content="The byte after the length prefix.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/MessageId.png">
+<link rel="canonical" href="https://torrent-schema.github.io/MessageId">
+<link rel="alternate" type="application/ld+json" href="schema/wire.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>MessageId</span> <small>Enumeration · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="wire">module: wire</a><a href="schema/wire.jsonld">schema/wire.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Enumeration · module <a href="wire">wire</a> · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/MessageId</code></p>
+  <p class="comment">The byte after the length prefix. A frame of length 0 has no id: it is a keep-alive, sent every two minutes of silence.</p>
+</header>
+<div class="card"><h2>11 members</h2><table><tr><th>code</th><th>member</th><th>description</th></tr><tr id="msg-choke"><td class="type">0</td><td class="name">choke</td><td class="desc">I will not answer your requests (and have discarded the pending ones).</td></tr><tr id="msg-unchoke"><td class="type">1</td><td class="name">unchoke</td><td class="desc">You may request.</td></tr><tr id="msg-interested"><td class="type">2</td><td class="name">interested</td><td class="desc">You have pieces I want.</td></tr><tr id="msg-not-interested"><td class="type">3</td><td class="name">not interested</td><td class="desc"></td></tr><tr id="msg-have"><td class="type">4</td><td class="name">have</td><td class="desc">I now have piece &lt;index&gt;.</td></tr><tr id="msg-bitfield"><td class="type">5</td><td class="name">bitfield</td><td class="desc">Which pieces I have, one bit each, high bit first; only ever the first message after the handshake.</td></tr><tr id="msg-request"><td class="type">6</td><td class="name">request</td><td class="desc">Send me &lt;length&gt; bytes of piece &lt;index&gt; from offset &lt;begin&gt;; 16 KiB is the block size every client uses and the most most will serve.</td></tr><tr id="msg-piece"><td class="type">7</td><td class="name">piece</td><td class="desc">Here are the bytes.</td></tr><tr id="msg-cancel"><td class="type">8</td><td class="name">cancel</td><td class="desc">Never mind that request (endgame).</td></tr><tr id="msg-port"><td class="type">9</td><td class="name">port</td><td class="desc">My DHT node listens here (BEP 5).</td></tr><tr id="msg-extended"><td class="type">20</td><td class="name">extended</td><td class="desc">An extension-protocol message: one more id byte, then the extension's payload (BEP 10).</td></tr></table></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:MessageId&quot;,
+   &quot;@type&quot;: &quot;Enumeration&quot;,
+   &quot;module&quot;: &quot;bt:wire&quot;,
+   &quot;label&quot;: &quot;MessageId&quot;,
+   &quot;comment&quot;: &quot;The byte after the length prefix. A frame of length 0 has no id: it is a keep-alive, sent every two minutes of silence.&quot;,
+   &quot;members&quot;: [
+    {
+     &quot;@id&quot;: &quot;bt:msg-choke&quot;,
+     &quot;label&quot;: &quot;choke&quot;,
+     &quot;code&quot;: 0,
+     &quot;comment&quot;: &quot;I will not answer your requests (and have discarded the pending ones).&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-unchoke&quot;,
+     &quot;label&quot;: &quot;unchoke&quot;,
+     &quot;code&quot;: 1,
+     &quot;comment&quot;: &quot;You may request.&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-interested&quot;,
+     &quot;label&quot;: &quot;interested&quot;,
+     &quot;code&quot;: 2,
+     &quot;comment&quot;: &quot;You have pieces I want.&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-not-interested&quot;,
+     &quot;label&quot;: &quot;not interested&quot;,
+     &quot;code&quot;: 3
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-have&quot;,
+     &quot;label&quot;: &quot;have&quot;,
+     &quot;code&quot;: 4,
+     &quot;comment&quot;: &quot;I now have piece &lt;index&gt;.&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-bitfield&quot;,
+     &quot;label&quot;: &quot;bitfield&quot;,
+     &quot;code&quot;: 5,
+     &quot;comment&quot;: &quot;Which pieces I have, one bit each, high bit first; only ever the first message after the handshake.&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-request&quot;,
+     &quot;label&quot;: &quot;request&quot;,
+     &quot;code&quot;: 6,
+     &quot;comment&quot;: &quot;Send me &lt;length&gt; bytes of piece &lt;index&gt; from offset &lt;begin&gt;; 16 KiB is the block size every client uses and the most most will serve.&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-piece&quot;,
+     &quot;label&quot;: &quot;piece&quot;,
+     &quot;code&quot;: 7,
+     &quot;comment&quot;: &quot;Here are the bytes.&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-cancel&quot;,
+     &quot;label&quot;: &quot;cancel&quot;,
+     &quot;code&quot;: 8,
+     &quot;comment&quot;: &quot;Never mind that request (endgame).&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-port&quot;,
+     &quot;label&quot;: &quot;port&quot;,
+     &quot;code&quot;: 9,
+     &quot;comment&quot;: &quot;My DHT node listens here (BEP 5).&quot;
+    },
+    {
+     &quot;@id&quot;: &quot;bt:msg-extended&quot;,
+     &quot;label&quot;: &quot;extended&quot;,
+     &quot;code&quot;: 20,
+     &quot;comment&quot;: &quot;An extension-protocol message: one more id byte, then the extension's payload (BEP 10).&quot;
+    }
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:MessageId","@type":"Enumeration","module":"bt:wire","label":"MessageId","comment":"The byte after the length prefix. A frame of length 0 has no id: it is a keep-alive, sent every two minutes of silence.","members":[{"@id":"bt:msg-choke","label":"choke","code":0,"comment":"I will not answer your requests (and have discarded the pending ones)."},{"@id":"bt:msg-unchoke","label":"unchoke","code":1,"comment":"You may request."},{"@id":"bt:msg-interested","label":"interested","code":2,"comment":"You have pieces I want."},{"@id":"bt:msg-not-interested","label":"not interested","code":3},{"@id":"bt:msg-have","label":"have","code":4,"comment":"I now have piece \u003cindex>."},{"@id":"bt:msg-bitfield","label":"bitfield","code":5,"comment":"Which pieces I have, one bit each, high bit first; only ever the first message after the handshake."},{"@id":"bt:msg-request","label":"request","code":6,"comment":"Send me \u003clength> bytes of piece \u003cindex> from offset \u003cbegin>; 16 KiB is the block size every client uses and the most most will serve."},{"@id":"bt:msg-piece","label":"piece","code":7,"comment":"Here are the bytes."},{"@id":"bt:msg-cancel","label":"cancel","code":8,"comment":"Never mind that request (endgame)."},{"@id":"bt:msg-port","label":"port","code":9,"comment":"My DHT node listens here (BEP 5)."},{"@id":"bt:msg-extended","label":"extended","code":20,"comment":"An extension-protocol message: one more id byte, then the extension's payload (BEP 10)."}]}]}</script>
+<footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

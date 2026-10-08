@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AnnounceResponse — Struct of the tracker module — Torrent Schema</title>
+<meta name="description" content="An HTTP tracker's answer: how often to come back, how many peers it knows, and some of them.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="AnnounceResponse — Struct, tracker module">
+<meta property="og:description" content="An HTTP tracker's answer: how often to come back, how many peers it knows, and some of them.">
+<meta property="og:url" content="https://torrent-schema.github.io/AnnounceResponse">
+<meta property="og:image" content="https://torrent-schema.github.io/og/AnnounceResponse.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AnnounceResponse: Struct of the tracker module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AnnounceResponse — Torrent Schema">
+<meta name="twitter:description" content="An HTTP tracker's answer: how often to come back, how many peers it knows, and some of them.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/AnnounceResponse.png">
+<link rel="canonical" href="https://torrent-schema.github.io/AnnounceResponse">
+<link rel="alternate" type="application/ld+json" href="schema/tracker.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>AnnounceResponse</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="tracker">module: tracker</a><a href="schema/tracker.jsonld">schema/tracker.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="tracker">tracker</a> · encoding <a href="bencode">bencode</a> · 10 fields · BEP 3, 23, 7 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/AnnounceResponse</code></p>
+  <p class="comment">An HTTP tracker's answer: how often to come back, how many peers it knows, and some of them.</p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>bencode key</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="failureReason"><td class="name">failure reason</td><td class="type">failure reason</td><td class="type">utf8?</td><td class="desc">If present, nothing else is: the tracker refused the announce and says why.</td><td class="val" data-f="failure reason"><span class="mut">—</span></td></tr><tr id="warningMessage"><td class="name">warning message</td><td class="type">warning message</td><td class="type">utf8?</td><td class="desc"></td><td class="val" data-f="warning message"><span class="mut">—</span></td></tr><tr id="interval"><td class="name">interval</td><td class="type">interval</td><td class="type">int?</td><td class="desc">Seconds to wait before the next regular announce. Required in any accepted announce (the 'tracker-no-interval' rule); absent only beside a failure reason.</td><td class="val" data-f="interval"><code class="pre">3734</code></td></tr><tr id="minInterval"><td class="name">min interval</td><td class="type">min interval</td><td class="type">int?</td><td class="desc">The floor for any re-announce, including on events.</td><td class="val" data-f="min interval"><code class="pre">1867</code></td></tr><tr id="trackerIdOut"><td class="name">tracker id</td><td class="type">tracker id</td><td class="type">utf8?</td><td class="desc"></td><td class="val" data-f="tracker id"><span class="mut">—</span></td></tr><tr id="complete"><td class="name">complete</td><td class="type">complete</td><td class="type">int?</td><td class="desc">Seeders the tracker knows.</td><td class="val" data-f="complete"><code class="pre">2</code></td></tr><tr id="incomplete"><td class="name">incomplete</td><td class="type">incomplete</td><td class="type">int?</td><td class="desc">Leechers the tracker knows.</td><td class="val" data-f="incomplete"><code class="pre">1</code></td></tr><tr id="downloadedCount"><td class="name">downloaded</td><td class="type">downloaded</td><td class="type">int?</td><td class="desc">Completed downloads the tracker has counted (from 'completed' events).</td><td class="val" data-f="downloaded"><code class="pre">8</code></td></tr><tr id="peers"><td class="name">peers</td><td class="type">peers</td><td class="type">peers?</td><td class="desc">Either a byte string of 6-byte compact peers (BEP 23: IPv4 then port, big-endian) or a list of Peer dictionaries. The codec presents both as a list of {ip, port, peer id?}.</td><td class="val" data-f="peers"><code class="pre">[
+ {
+  &quot;ip&quot;: &quot;86.49.17.222&quot;,
+  &quot;port&quot;: 6881
+ },
+ {
+  &quot;ip&quot;: &quot;86.49.17.222&quot;,
+  &quot;port&quot;: 42267
+ },
+ {
+  &quot;ip&quot;: &quot;86.49.17.222&quot;,
+  &quot;port&quot;: 39849
+ }
+]</code></td></tr><tr id="peers6"><td class="name">peers6</td><td class="type">peers6</td><td class="type">peers6?</td><td class="desc">Compact IPv6 peers: 18 bytes each (16 of address, 2 of port). <span class="mut">(BEP 7)</span></td><td class="val" data-f="peers6"><span class="mut">—</span></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">opentrackr's bencoded answer to that announce: counts, an interval, compact peers. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/tracker/httpAnnounceCompact.bin">test/vectors/tracker/httpAnnounceCompact.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">112 bytes</p><pre class="hex" id="hex"><span class="f" data-f="" title="">64 38 3a 63 6f 6d 70 6c 65 74 65 69 32 65 31 30
+3a 64 6f 77 6e 6c 6f 61 64 65 64 69 38 65 31 30
+3a 69 6e 63 6f 6d 70 6c 65 74 65 69 31 65 38 3a
+69 6e 74 65 72 76 61 6c 69 33 37 33 34 65 31 32
+3a 6d 69 6e 20 69 6e 74 65 72 76 61 6c 69 31 38
+36 37 65 35 3a 70 65 65 72 73 31 38 3a 56 31 11
+de 1a e1 56 31 11 de a5 1b 56 31 11 de 9b a9 65
+</span></pre><pre class="hex txt">d8:completei2e10:downloadedi8e10:incompletei1e8:intervali3734e12:min intervali1867e5:peers18:V1····V1····V1····e</pre><p class="rule-result">rules: <span class="ok">all pass</span></p><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:AnnounceResponse&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:tracker&quot;,
+   &quot;label&quot;: &quot;AnnounceResponse&quot;,
+   &quot;encoding&quot;: &quot;bt:bencode&quot;,
+   &quot;bep&quot;: [
+    3,
+    23,
+    7
+   ],
+   &quot;comment&quot;: &quot;An HTTP tracker's answer: how often to come back, how many peers it knows, and some of them.&quot;,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:failureReason&quot;,
+     &quot;label&quot;: &quot;failure reason&quot;,
+     &quot;key&quot;: &quot;failure reason&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;If present, nothing else is: the tracker refused the announce and says why.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:warningMessage&quot;,
+     &quot;label&quot;: &quot;warning message&quot;,
+     &quot;key&quot;: &quot;warning message&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:interval&quot;,
+     &quot;label&quot;: &quot;interval&quot;,
+     &quot;key&quot;: &quot;interval&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Seconds to wait before the next regular announce. Required in any accepted announce (the 'tracker-no-interval' rule); absent only beside a failure reason.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:minInterval&quot;,
+     &quot;label&quot;: &quot;min interval&quot;,
+     &quot;key&quot;: &quot;min interval&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;The floor for any re-announce, including on events.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:trackerIdOut&quot;,
+     &quot;label&quot;: &quot;tracker id&quot;,
+     &quot;key&quot;: &quot;tracker id&quot;,
+     &quot;valueType&quot;: &quot;utf8&quot;,
+     &quot;required&quot;: false
+    },
+    {
+     &quot;property&quot;: &quot;bt:complete&quot;,
+     &quot;label&quot;: &quot;complete&quot;,
+     &quot;key&quot;: &quot;complete&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Seeders the tracker knows.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:incomplete&quot;,
+     &quot;label&quot;: &quot;incomplete&quot;,
+     &quot;key&quot;: &quot;incomplete&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Leechers the tracker knows.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:downloadedCount&quot;,
+     &quot;label&quot;: &quot;downloaded&quot;,
+     &quot;key&quot;: &quot;downloaded&quot;,
+     &quot;valueType&quot;: &quot;int&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Completed downloads the tracker has counted (from 'completed' events).&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:peers&quot;,
+     &quot;label&quot;: &quot;peers&quot;,
+     &quot;key&quot;: &quot;peers&quot;,
+     &quot;valueType&quot;: &quot;peers&quot;,
+     &quot;required&quot;: false,
+     &quot;comment&quot;: &quot;Either a byte string of 6-byte compact peers (BEP 23: IPv4 then port, big-endian) or a list of Peer dictionaries. The codec presents both as a list of {ip, port, peer id?}.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:peers6&quot;,
+     &quot;label&quot;: &quot;peers6&quot;,
+     &quot;key&quot;: &quot;peers6&quot;,
+     &quot;valueType&quot;: &quot;peers6&quot;,
+     &quot;required&quot;: false,
+     &quot;bep&quot;: 7,
+     &quot;comment&quot;: &quot;Compact IPv6 peers: 18 bytes each (16 of address, 2 of port).&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;AnnounceResponse#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:AnnounceResponse&quot;,
+   &quot;source&quot;: &quot;test/vectors/tracker/httpAnnounceCompact.bin&quot;,
+   &quot;captured&quot;: &quot;opentrackr's bencoded answer to that announce: counts, an interval, compact peers&quot;,
+   &quot;bytes&quot;: &quot;64383a636f6d706c65746569326531303a646f776e6c6f6164656469386531303a696e636f6d706c657465693165383a696e74657276616c69333733346531323a6d696e20696e74657276616c693138363765353a706565727331383a563111de1ae1563111dea51b563111de9ba965&quot;,
+   &quot;value&quot;: {
+    &quot;interval&quot;: 3734,
+    &quot;min interval&quot;: 1867,
+    &quot;complete&quot;: 2,
+    &quot;incomplete&quot;: 1,
+    &quot;downloaded&quot;: 8,
+    &quot;peers&quot;: [
+     {
+      &quot;ip&quot;: &quot;86.49.17.222&quot;,
+      &quot;port&quot;: 6881
+     },
+     {
+      &quot;ip&quot;: &quot;86.49.17.222&quot;,
+      &quot;port&quot;: 42267
+     },
+     {
+      &quot;ip&quot;: &quot;86.49.17.222&quot;,
+      &quot;port&quot;: 39849
+     }
+    ]
+   },
+   &quot;result&quot;: null
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:AnnounceResponse","@type":"Struct","module":"bt:tracker","label":"AnnounceResponse","encoding":"bt:bencode","bep":[3,23,7],"comment":"An HTTP tracker's answer: how often to come back, how many peers it knows, and some of them.","fields":[{"property":"bt:failureReason","label":"failure reason","key":"failure reason","valueType":"utf8","required":false,"comment":"If present, nothing else is: the tracker refused the announce and says why."},{"property":"bt:warningMessage","label":"warning message","key":"warning message","valueType":"utf8","required":false},{"property":"bt:interval","label":"interval","key":"interval","valueType":"int","required":false,"comment":"Seconds to wait before the next regular announce. Required in any accepted announce (the 'tracker-no-interval' rule); absent only beside a failure reason."},{"property":"bt:minInterval","label":"min interval","key":"min interval","valueType":"int","required":false,"comment":"The floor for any re-announce, including on events."},{"property":"bt:trackerIdOut","label":"tracker id","key":"tracker id","valueType":"utf8","required":false},{"property":"bt:complete","label":"complete","key":"complete","valueType":"int","required":false,"comment":"Seeders the tracker knows."},{"property":"bt:incomplete","label":"incomplete","key":"incomplete","valueType":"int","required":false,"comment":"Leechers the tracker knows."},{"property":"bt:downloadedCount","label":"downloaded","key":"downloaded","valueType":"int","required":false,"comment":"Completed downloads the tracker has counted (from 'completed' events)."},{"property":"bt:peers","label":"peers","key":"peers","valueType":"peers","required":false,"comment":"Either a byte string of 6-byte compact peers (BEP 23: IPv4 then port, big-endian) or a list of Peer dictionaries. The codec presents both as a list of {ip, port, peer id?}."},{"property":"bt:peers6","label":"peers6","key":"peers6","valueType":"peers6","required":false,"bep":7,"comment":"Compact IPv6 peers: 18 bytes each (16 of address, 2 of port)."}]},{"@id":"AnnounceResponse#instance","@type":"Instance","of":"bt:AnnounceResponse","source":"test/vectors/tracker/httpAnnounceCompact.bin","captured":"opentrackr's bencoded answer to that announce: counts, an interval, compact peers","bytes":"64383a636f6d706c65746569326531303a646f776e6c6f6164656469386531303a696e636f6d706c657465693165383a696e74657276616c69333733346531323a6d696e20696e74657276616c693138363765353a706565727331383a563111de1ae1563111dea51b563111de9ba965","value":{"interval":3734,"min interval":1867,"complete":2,"incomplete":1,"downloaded":8,"peers":[{"ip":"86.49.17.222","port":6881},{"ip":"86.49.17.222","port":42267},{"ip":"86.49.17.222","port":39849}]},"result":null}]}</script>
+<footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>webtorrent — Module of the webtorrent module — Torrent Schema</title>
+<meta name="description" content="BitTorrent in a browser.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="webtorrent — Module, webtorrent module">
+<meta property="og:description" content="BitTorrent in a browser.">
+<meta property="og:url" content="https://torrent-schema.github.io/webtorrent">
+<meta property="og:image" content="https://torrent-schema.github.io/og/webtorrent.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="webtorrent: Module of the webtorrent module of Torrent Schema">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="webtorrent — Torrent Schema">
+<meta name="twitter:description" content="BitTorrent in a browser.">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/webtorrent.png">
+<link rel="canonical" href="https://torrent-schema.github.io/webtorrent">
+<link rel="alternate" type="application/ld+json" href="schema/webtorrent.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>webtorrent</span> <small>Module · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="webtorrent">module: webtorrent</a><a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Module · module <a href="webtorrent">webtorrent</a> · layer overlay · v0.0.1 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/webtorrent</code></p>
+  <p class="comment">BitTorrent in a browser. A browser cannot open a TCP or UDP socket, so it cannot reach a tracker, the DHT, or a peer the usual way; WebTorrent changes exactly two things and nothing else: peers are found and introduced through a tracker spoken over WebSockets in JSON (this module), and the connection between two peers is a WebRTC data channel — over which the peer wire protocol of the wire module runs byte for byte unchanged. This protocol has no BEP; it is what the WebTorrent implementation does, written down here from a captured exchange with tracker.openwebtorrent.com.</p>
+</header>
+<div class="card"><h2>in this module</h2><table><tr><th>node</th><th>kind</th><th>description</th></tr><tr><td class="name"><a href="json">json</a></td><td class="type">Encoding</td><td class="desc">One JSON object per WebSocket text message.</td></tr><tr><td class="name"><a href="SessionDescription">SessionDescription</a></td><td class="type">Struct · json</td><td class="desc">A WebRTC session description as the browser's RTCPeerConnection gives it: an offer or an answer with its SDP text, which carries the ICE candidates (addresses) once gathering is complete.</td></tr><tr><td class="name"><a href="WsOffer">WsOffer</a></td><td class="type">Struct · json</td><td class="desc">One offer in an announce: a fresh WebRTC offer and a random 20-byte id for it, so the answer can be matched.</td></tr><tr><td class="name"><a href="WsAnnounce">WsAnnounce</a></td><td class="type">Struct · json</td><td class="desc">The announce a browser sends, with offers for the peers it hopes to meet.</td></tr><tr><td class="name"><a href="WsAnnounceReply">WsAnnounceReply</a></td><td class="type">Struct · json</td><td class="desc">The tracker's own reply to an announce: the counts and the interval.</td></tr><tr><td class="name"><a href="WsOfferForwarded">WsOfferForwarded</a></td><td class="type">Struct · json</td><td class="desc">What a peer receives when the tracker forwards another peer's offer to it: the offer, its id, and the offerer's peer id.</td></tr><tr><td class="name"><a href="WsAnswer">WsAnswer</a></td><td class="type">Struct · json</td><td class="desc">An answer to a forwarded offer.</td></tr><tr><td class="name"><a href="WsScrape">WsScrape</a></td><td class="type">Struct · json</td><td class="desc"></td></tr><tr><td class="name"><a href="webtorrentRules">webtorrentRules</a></td><td class="type">RuleSet</td><td class="desc"></td></tr></table><p class="comment tiny mut">The document itself: <a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a></p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:webtorrent&quot;,
+   &quot;@type&quot;: &quot;Module&quot;,
+   &quot;label&quot;: &quot;webtorrent&quot;,
+   &quot;version&quot;: &quot;0.0.1&quot;,
+   &quot;layer&quot;: &quot;overlay&quot;,
+   &quot;comment&quot;: &quot;BitTorrent in a browser. A browser cannot open a TCP or UDP socket, so it cannot reach a tracker, the DHT, or a peer the usual way; WebTorrent changes exactly two things and nothing else: peers are found and introduced through a tracker spoken over WebSockets in JSON (this module), and the connection between two peers is a WebRTC data channel — over which the peer wire protocol of the wire module runs byte for byte unchanged. This protocol has no BEP; it is what the WebTorrent implementation does, written down here from a captured exchange with tracker.openwebtorrent.com.&quot;
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:webtorrent","@type":"Module","label":"webtorrent","version":"0.0.1","layer":"overlay","comment":"BitTorrent in a browser. A browser cannot open a TCP or UDP socket, so it cannot reach a tracker, the DHT, or a peer the usual way; WebTorrent changes exactly two things and nothing else: peers are found and introduced through a tracker spoken over WebSockets in JSON (this module), and the connection between two peers is a WebRTC data channel — over which the peer wire protocol of the wire module runs byte for byte unchanged. This protocol has no BEP; it is what the WebTorrent implementation does, written down here from a captured exchange with tracker.openwebtorrent.com."}]}</script>
+<footer><p>Generated from <a href="schema/webtorrent.jsonld">schema/webtorrent.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

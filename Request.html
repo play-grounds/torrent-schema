@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Request — Struct of the wire module — Torrent Schema</title>
+<meta name="description" content="">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Torrent Schema">
+<meta property="og:title" content="Request — Struct, wire module">
+<meta property="og:description" content="">
+<meta property="og:url" content="https://torrent-schema.github.io/Request">
+<meta property="og:image" content="https://torrent-schema.github.io/og/Request.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Request: Struct of the wire module of Torrent Schema, with its fields">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Request — Torrent Schema">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://torrent-schema.github.io/og/Request.png">
+<link rel="canonical" href="https://torrent-schema.github.io/Request">
+<link rel="alternate" type="application/ld+json" href="schema/wire.jsonld">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; connect-src 'self' wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+<style>
+  :root { --bg: #fbfaf7; --fg: #1e1d1a; --mut: #6b675f; --line: #ddd8cc; --accent: #c2410c; --link: #1f5fa3; --card: #fff; --ok: #1c7a3c; --bad: #b3261e; --hl: #ffe9b3; --mono: ui-monospace, Menlo, Consolas, monospace; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #15161a; --fg: #ebe9e2; --mut: #a39f94; --line: #333640; --card: #1d1f25; --link: #7fb0ff; --accent: #f08c4b; --ok: #5fcf7f; --bad: #ff7a70; --hl: #4a3a10; } }
+  html { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; } body { margin: 0; padding: 0 16px 48px; max-width: 980px; margin-inline: auto; }
+  h1 { font-size: 1.7rem; margin: 1.2rem 0 .2rem; } h1 span { color: var(--accent); } h1 small { font-size: .55em; color: var(--mut); font-weight: 400; } a { color: var(--link); }
+  nav { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: .9rem; margin: .4rem 0 .8rem; } .meta { color: var(--mut); font-size: .88rem; margin: 0 0 .6rem; } .comment { margin: .3rem 0 .6rem; } .tiny { font-size: .85em; } .mut { color: var(--mut); } .accent { color: var(--accent); } .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; } .card h2 { margin: 0 0 .4rem; font-size: 1.1rem; }
+  table { border-collapse: collapse; width: 100%; font-size: .92rem; } th { text-align: left; color: var(--mut); font-weight: 600; padding: 4px 8px; border-bottom: 1px solid var(--line); } td { padding: 5px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.name { font-family: var(--mono); white-space: nowrap; } td.type { font-family: var(--mono); color: var(--accent); white-space: nowrap; } td.val { font-family: var(--mono); font-size: .85em; max-width: 44ch; min-width: 22ch; overflow-wrap: anywhere; } code { font-family: var(--mono); font-size: .92em; } code.pre { white-space: pre-wrap; }
+  tr:target { background: var(--hl); } tr.hl, span.f.hl { background: var(--hl); }
+  .derived-label { margin: .8rem 0 .2rem; font-size: .8rem; color: var(--link); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+  pre.hex { font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: .4rem 0; } pre.hex.txt { white-space: pre-wrap; overflow-wrap: anywhere; color: var(--mut); } span.f { border-bottom: 2px solid var(--line); }
+  details > summary { cursor: pointer; color: var(--mut); font-size: .9rem; } pre.island { font: 12px/1.45 var(--mono); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  footer { color: var(--mut); font-size: .9rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>Request</span> <small>Struct · <a href="./">Torrent Schema</a> v0.0.5</small></h1>
+  <nav><a href="./">all classes</a><a href="wire">module: wire</a><a href="schema/wire.jsonld">schema/wire.jsonld</a><a href="#island">the island</a></nav>
+  <p class="meta">Struct · module <a href="wire">wire</a> · encoding <a href="binary">binary</a> · <b>12 bytes</b> on the wire · 3 fields · BEP 3 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/Request</code></p>
+  <p class="comment"></p>
+</header>
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="pieceIndex"><td class="name">index</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="index"><code class="pre">0</code></td></tr><tr id="begin"><td class="name">begin</td><td class="type">u32be</td><td class="type"></td><td class="desc">Byte offset within the piece.</td><td class="val" data-f="begin"><code class="pre">0</code></td></tr><tr id="blockLength"><td class="name">length</td><td class="type">u32be</td><td class="type"></td><td class="desc">Normally 16384; a request above 128 KiB is refused by convention.</td><td class="val" data-f="length"><code class="pre">16384</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the payload of that frame: block 0 of piece 0, 16 KiB. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/wire/requestSent.bin">test/vectors/wire/requestSent.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">12 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="index" title="index">00 00 00 00 </span><span class="f" data-f="begin" title="begin">00 00 00 00 </span><span class="f" data-f="length" title="length">00 00 40 00 </span></pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
+ &quot;@context&quot;: &quot;context.jsonld&quot;,
+ &quot;@graph&quot;: [
+  {
+   &quot;@id&quot;: &quot;bt:Request&quot;,
+   &quot;@type&quot;: &quot;Struct&quot;,
+   &quot;module&quot;: &quot;bt:wire&quot;,
+   &quot;label&quot;: &quot;Request&quot;,
+   &quot;encoding&quot;: &quot;bt:binary&quot;,
+   &quot;bep&quot;: 3,
+   &quot;wireSize&quot;: 12,
+   &quot;fields&quot;: [
+    {
+     &quot;property&quot;: &quot;bt:pieceIndex&quot;,
+     &quot;label&quot;: &quot;index&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:begin&quot;,
+     &quot;label&quot;: &quot;begin&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;,
+     &quot;comment&quot;: &quot;Byte offset within the piece.&quot;
+    },
+    {
+     &quot;property&quot;: &quot;bt:blockLength&quot;,
+     &quot;label&quot;: &quot;length&quot;,
+     &quot;wireType&quot;: &quot;u32be&quot;,
+     &quot;comment&quot;: &quot;Normally 16384; a request above 128 KiB is refused by convention.&quot;
+    }
+   ]
+  },
+  {
+   &quot;@id&quot;: &quot;Request#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:Request&quot;,
+   &quot;source&quot;: &quot;test/vectors/wire/requestSent.bin&quot;,
+   &quot;captured&quot;: &quot;the payload of that frame: block 0 of piece 0, 16 KiB&quot;,
+   &quot;bytes&quot;: &quot;000000000000000000004000&quot;,
+   &quot;value&quot;: {
+    &quot;index&quot;: 0,
+    &quot;begin&quot;: 0,
+    &quot;length&quot;: 16384
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;index&quot;,
+     0,
+     4
+    ],
+    [
+     &quot;begin&quot;,
+     4,
+     8
+    ],
+    [
+     &quot;length&quot;,
+     8,
+     12
+    ]
+   ]
+  }
+ ]
+}</pre></details>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Request","@type":"Struct","module":"bt:wire","label":"Request","encoding":"bt:binary","bep":3,"wireSize":12,"fields":[{"property":"bt:pieceIndex","label":"index","wireType":"u32be"},{"property":"bt:begin","label":"begin","wireType":"u32be","comment":"Byte offset within the piece."},{"property":"bt:blockLength","label":"length","wireType":"u32be","comment":"Normally 16384; a request above 128 KiB is refused by convention."}]},{"@id":"Request#instance","@type":"Instance","of":"bt:Request","source":"test/vectors/wire/requestSent.bin","captured":"the payload of that frame: block 0 of piece 0, 16 KiB","bytes":"000000000000000000004000","value":{"index":0,"begin":0,"length":16384},"spans":[["index",0,4],["begin",4,8],["length",8,12]]}]}</script>
+<footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
+<script type="module" src="apps/class.js"></script>
+</body>
+</html>

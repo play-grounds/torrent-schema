@@ -1,0 +1,6 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Torrent Schema — term lookup</title>
+<meta name="robots" content="noindex"><style>html{font:15px/1.5 system-ui,sans-serif;background:#fbfaf7;color:#1e1d1a}body{max-width:720px;margin:3rem auto;padding:0 16px}a{color:#1f5fa3}</style></head>
+<body><h1>Torrent Schema</h1><p id="msg">Looking this term up…</p><p><a href="/">All classes</a></p>
+<script>(async()=>{const t=decodeURIComponent(location.pathname.replace(/^\//,'').replace(/\.html$/,''));try{const m=await (await fetch('/terms.json')).json();if(m[t]){location.replace('/'+m[t]);return}}catch{}document.getElementById('msg').textContent='No term named "'+t+'" in the schema.'})()</script>
+</body></html>
