@@ -1,0 +1,79 @@
+{
+ "infohash": "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0",
+ "ourPeerId": "2d5453303030312d6b7465723168396c6d337478",
+ "peer": "127.0.0.1:39849",
+ "started": "2026-10-08T11:34:35.208Z",
+ "events": [
+  [
+   1791459275218,
+   "connected, handshake sent"
+  ],
+  [
+   1791459275223,
+   "their handshake: {\"handshake\":{\"pstrlen\":19,\"pstr\":\"BitTorrent protocol\",\"reserved\":\"0000000000100005\",\"info_hash\":\"242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0\",\"peer_id\":\"2d5757303330302d44727a5a31452b4c694e3977\"},\"supp"
+  ],
+  [
+   1791459275225,
+   "extended handshake: {\"lt_donthave\":3,\"ut_metadata\":1,\"ut_pex\":2} v=undefined"
+  ],
+  [
+   1791459275228,
+   "bitfield 26 bytes"
+  ],
+  [
+   1791459275228,
+   "Port 39251"
+  ],
+  [
+   1791459275269,
+   "unchoked"
+  ],
+  [
+   1791459275274,
+   "ut_metadata msg_type 1 piece 0 total_size 4248 data 4248 bytes"
+  ],
+  [
+   1791459276534,
+   "piece 0 assembled, sha1 26b0fb2642b221755e95a52352cbad975cf40250 == pieces[0]"
+  ],
+  [
+   1791459276534,
+   "Have 0 sent (true: verified); Request 1/0 sent and cancelled"
+  ],
+  [
+   1791459330219,
+   "message keep-alive"
+  ],
+  [
+   1791459355219,
+   "session end"
+  ]
+ ],
+ "theirPeerId": "2d5757303330302d44727a5a31452b4c694e3977",
+ "theirSupports": {
+  "extensions": true,
+  "dht": true,
+  "fast": true
+ },
+ "theirExtended": {
+  "m": {
+   "lt_donthave": 3,
+   "ut_metadata": 1,
+   "ut_pex": 2
+  },
+  "metadata_size": 4248
+ },
+ "utMetadata": {
+  "msg_type": 1,
+  "piece": 0,
+  "total_size": 4248,
+  "dataBytes": 4248,
+  "dataSha1": "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0"
+ },
+ "piece0": {
+  "sha1": "26b0fb2642b221755e95a52352cbad975cf40250",
+  "expected": "26b0fb2642b221755e95a52352cbad975cf40250",
+  "ok": true
+ },
+ "ended": "2026-10-08T11:35:55.220Z"
+}

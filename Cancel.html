@@ -44,8 +44,12 @@
   <p class="meta">Struct · module <a href="wire">wire</a> · encoding <a href="binary">binary</a> · <b>12 bytes</b> on the wire · 3 fields · BEP 3 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/Cancel</code></p>
   <p class="comment"></p>
 </header>
-<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th></tr><tr id="pieceIndex"><td class="name">index</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td></tr><tr id="begin"><td class="name">begin</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td></tr><tr id="blockLength"><td class="name">length</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td></tr></table></div><div class="card"><h2>no captured instance yet</h2><p class="comment mut">No real Cancel has been captured into test/vectors/ so far; this page shows the definition only. The codec reads and writes it, and a capture is the next step.</p></div>
-<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="pieceIndex"><td class="name">index</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="index"><code class="pre">1</code></td></tr><tr id="begin"><td class="name">begin</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="begin"><code class="pre">0</code></td></tr><tr id="blockLength"><td class="name">length</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="length"><code class="pre">16384</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">a Request for block 0 of piece 1, sent and withdrawn in the same breath: the Cancel names exactly the block the Request named (test/vectors/wire-webtorrent/requestCancelledSent.bin). Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/wire-webtorrent/cancelSent.bin">test/vectors/wire-webtorrent/cancelSent.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">12 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="index" title="index">00 00 00 01 </span><span class="f" data-f="begin" title="begin">00 00 00 00 </span><span class="f" data-f="length" title="length">00 00 40 00 </span></pre><table><tr><th>computed</th><th>value</th></tr><tr><td class="name">the request it cancels</td><td class="val"><code class="pre">{
+ &quot;index&quot;: 1,
+ &quot;begin&quot;: 0,
+ &quot;length&quot;: 16384
+}</code></td></tr></table><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
  &quot;@context&quot;: &quot;context.jsonld&quot;,
  &quot;@graph&quot;: [
   {
@@ -73,10 +77,47 @@
      &quot;wireType&quot;: &quot;u32be&quot;
     }
    ]
+  },
+  {
+   &quot;@id&quot;: &quot;Cancel#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:Cancel&quot;,
+   &quot;source&quot;: &quot;test/vectors/wire-webtorrent/cancelSent.bin&quot;,
+   &quot;captured&quot;: &quot;a Request for block 0 of piece 1, sent and withdrawn in the same breath: the Cancel names exactly the block the Request named (test/vectors/wire-webtorrent/requestCancelledSent.bin)&quot;,
+   &quot;bytes&quot;: &quot;000000010000000000004000&quot;,
+   &quot;value&quot;: {
+    &quot;index&quot;: 1,
+    &quot;begin&quot;: 0,
+    &quot;length&quot;: 16384
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;index&quot;,
+     0,
+     4
+    ],
+    [
+     &quot;begin&quot;,
+     4,
+     8
+    ],
+    [
+     &quot;length&quot;,
+     8,
+     12
+    ]
+   ],
+   &quot;computed&quot;: {
+    &quot;the request it cancels&quot;: {
+     &quot;index&quot;: 1,
+     &quot;begin&quot;: 0,
+     &quot;length&quot;: 16384
+    }
+   }
   }
  ]
 }</pre></details>
-<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Cancel","@type":"Struct","module":"bt:wire","label":"Cancel","encoding":"bt:binary","bep":3,"wireSize":12,"fields":[{"property":"bt:pieceIndex","label":"index","wireType":"u32be"},{"property":"bt:begin","label":"begin","wireType":"u32be"},{"property":"bt:blockLength","label":"length","wireType":"u32be"}]}]}</script>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Cancel","@type":"Struct","module":"bt:wire","label":"Cancel","encoding":"bt:binary","bep":3,"wireSize":12,"fields":[{"property":"bt:pieceIndex","label":"index","wireType":"u32be"},{"property":"bt:begin","label":"begin","wireType":"u32be"},{"property":"bt:blockLength","label":"length","wireType":"u32be"}]},{"@id":"Cancel#instance","@type":"Instance","of":"bt:Cancel","source":"test/vectors/wire-webtorrent/cancelSent.bin","captured":"a Request for block 0 of piece 1, sent and withdrawn in the same breath: the Cancel names exactly the block the Request named (test/vectors/wire-webtorrent/requestCancelledSent.bin)","bytes":"000000010000000000004000","value":{"index":1,"begin":0,"length":16384},"spans":[["index",0,4],["begin",4,8],["length",8,12]],"computed":{"the request it cancels":{"index":1,"begin":0,"length":16384}}}]}</script>
 <footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
 <script type="module" src="apps/class.js"></script>
 </body>

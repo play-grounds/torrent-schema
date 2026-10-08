@@ -1,0 +1,24 @@
+{
+ "kind": 2004,
+ "pubkey": "cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c",
+ "created_at": 1791459107,
+ "content": "Checked against the .torrent by Torrent Schema on 2026-10-08: the x tag is its infohash and the file tag its name and size. Still seeded from the origin, with the web seed in the content.",
+ "tags": [
+  [
+   "e",
+   "86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64",
+   "wss://relay.damus.io",
+   "root"
+  ],
+  [
+   "p",
+   "cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c"
+  ],
+  [
+   "alt",
+   "Comment on a torrent listing"
+  ]
+ ],
+ "id": "40a64e14fd037f1bef570a40a3b8c810c3ef2cba8a805c1ee3901674a9de75c6",
+ "sig": "c3d5d55e44ae6ae00c38f5f3d51c0dd023f7c112cab097b48f3f594bf2f04dab8ab8aedf37a062212e28b94ec1563c2353085613ae2c61e4cc703f20ebd46495"
+}

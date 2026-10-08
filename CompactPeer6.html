@@ -44,8 +44,9 @@
   <p class="meta">Struct · module <a href="tracker">tracker</a> · encoding <a href="binary">binary</a> · <b>18 bytes</b> on the wire · 2 fields · BEP 7 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/CompactPeer6</code></p>
   <p class="comment"></p>
 </header>
-<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th></tr><tr id="ip6"><td class="name">ip</td><td class="type">ip6</td><td class="type"></td><td class="desc"></td></tr><tr id="port16"><td class="name">port</td><td class="type">u16be</td><td class="type"></td><td class="desc"></td></tr></table></div><div class="card"><h2>no captured instance yet</h2><p class="comment mut">No real CompactPeer6 has been captured into test/vectors/ so far; this page shows the definition only. The codec reads and writes it, and a capture is the next step.</p></div>
-<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="ip6"><td class="name">ip</td><td class="type">ip6</td><td class="type"></td><td class="desc"></td><td class="val" data-f="ip"><code class="pre">0:0:0:0:0:0:0:1</code></td></tr><tr id="port16"><td class="name">port</td><td class="type">u16be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="port"><code class="pre">51413</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the one entry of the 'peers6' string in bittorrent-tracker's compact answer to an announce from ::1: sixteen bytes of address, two of port. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/tracker-local/httpAnnounce6Local.bin">test/vectors/tracker-local/httpAnnounce6Local.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">18 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="ip" title="ip">00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
+</span><span class="f" data-f="port" title="port">c8 d5 </span></pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
  &quot;@context&quot;: &quot;context.jsonld&quot;,
  &quot;@graph&quot;: [
   {
@@ -68,10 +69,34 @@
      &quot;wireType&quot;: &quot;u16be&quot;
     }
    ]
+  },
+  {
+   &quot;@id&quot;: &quot;CompactPeer6#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:CompactPeer6&quot;,
+   &quot;source&quot;: &quot;test/vectors/tracker-local/httpAnnounce6Local.bin&quot;,
+   &quot;captured&quot;: &quot;the one entry of the 'peers6' string in bittorrent-tracker's compact answer to an announce from ::1: sixteen bytes of address, two of port&quot;,
+   &quot;bytes&quot;: &quot;00000000000000000000000000000001c8d5&quot;,
+   &quot;value&quot;: {
+    &quot;ip&quot;: &quot;0:0:0:0:0:0:0:1&quot;,
+    &quot;port&quot;: 51413
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;ip&quot;,
+     0,
+     16
+    ],
+    [
+     &quot;port&quot;,
+     16,
+     18
+    ]
+   ]
   }
  ]
 }</pre></details>
-<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:CompactPeer6","@type":"Struct","module":"bt:tracker","label":"CompactPeer6","encoding":"bt:binary","bep":7,"wireSize":18,"fields":[{"property":"bt:ip6","label":"ip","wireType":"ip6"},{"property":"bt:port16","label":"port","wireType":"u16be"}]}]}</script>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:CompactPeer6","@type":"Struct","module":"bt:tracker","label":"CompactPeer6","encoding":"bt:binary","bep":7,"wireSize":18,"fields":[{"property":"bt:ip6","label":"ip","wireType":"ip6"},{"property":"bt:port16","label":"port","wireType":"u16be"}]},{"@id":"CompactPeer6#instance","@type":"Instance","of":"bt:CompactPeer6","source":"test/vectors/tracker-local/httpAnnounce6Local.bin","captured":"the one entry of the 'peers6' string in bittorrent-tracker's compact answer to an announce from ::1: sixteen bytes of address, two of port","bytes":"00000000000000000000000000000001c8d5","value":{"ip":"0:0:0:0:0:0:0:1","port":51413},"spans":[["ip",0,16],["port",16,18]]}]}</script>
 <footer><p>Generated from <a href="schema/tracker.jsonld">schema/tracker.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
 <script type="module" src="apps/class.js"></script>
 </body>

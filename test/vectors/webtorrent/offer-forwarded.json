@@ -1,0 +1,37 @@
+{
+ "tracker": "wss://tracker.openwebtorrent.com",
+ "ourPeerId": "2d5453303030312d676132626f35313170707778",
+ "sent": {
+  "action": "announce",
+  "info_hash": "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À",
+  "peer_id": "-TS0001-ga2bo511ppwx",
+  "numwant": 0,
+  "uploaded": 0,
+  "downloaded": 0,
+  "left": 869836053,
+  "event": "started",
+  "offers": []
+ },
+ "received": [
+  {
+   "action": "announce",
+   "interval": 120,
+   "info_hash": "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À",
+   "complete": 2,
+   "incomplete": 1
+  },
+  {
+   "action": "announce",
+   "info_hash": "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À",
+   "offer_id": "ñs\u0014V\n3dEëjñ¤ø¯ö´",
+   "peer_id": "-WW0300-l9P5wHjesrpg",
+   "offer": {
+    "type": "offer",
+    "sdp": "v=0\r\no=rtc 1966658201 0 IN IP4 127.0.0.1\r\ns=-\r\nt=0 0\r\na=group:BUNDLE 0\r\na=msid-semantic:WMS *\r\na=ice-options:ice2,trickle\r\na=fingerprint:sha-256 05:3E:D2:C8:EC:30:6F:DD:0F:C9:A6:23:98:41:1A:D5:CA:90:5F:5E:AB:C6:76:7F:C9:9F:0C:1B:B2:14:AD:DF\r\nm=application 56615 UDP/DTLS/SCTP webrtc-datachannel\r\nc=IN IP4 192.0.2.1\r\na=mid:0\r\na=sendrecv\r\na=sctp-port:5000\r\na=max-message-size:262144\r\na=setup:actpass\r\na=ice-ufrag:GCXt\r\na=ice-pwd:vYHQDmA50ekY9se8bQ7oLk\r\na=candidate:3 1 UDP 2116025855 2a02:8308:1d:e500::daaf 56615 typ host\r\na=candidate:1 1 UDP 2114977791 192.0.2.1 56615 typ host\r\na=candidate:2 1 UDP 2114977535 192.0.2.2 56615 typ host\r\na=candidate:4 1 UDP 1678769407 192.0.2.3 56615 typ srflx raddr 0.0.0.0 rport 0\r\na=end-of-candidates\r\n"
+   }
+  }
+ ],
+ "from": "2d5757303330302d6c39503577486a6573727067",
+ "note": "addresses in the SDP replaced by documentation addresses (192.0.2.0/24); everything else as received",
+ "captured": "2026-10-08T11:36:48.234Z"
+}

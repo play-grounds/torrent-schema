@@ -173,6 +173,9 @@
    "layer": "discovery",
    "encoding": "bencode",
    "fields": 3,
+   "instance": {
+    "source": "test/vectors/tracker-local/httpAnnounceFullLocal.bin"
+   },
    "summary": "A peer in dictionary form, as a tracker lists them when not compact."
   },
   {
@@ -229,6 +232,10 @@
    "bep": 7,
    "wireSize": 18,
    "fields": 2,
+   "instance": {
+    "source": "test/vectors/tracker-local/httpAnnounce6Local.bin",
+    "bytes": 18
+   },
    "summary": ""
   },
   {
@@ -349,6 +356,10 @@
    "encoding": "binary",
    "bep": 15,
    "fields": 3,
+   "instance": {
+    "source": "test/vectors/tracker/udpErrorResponse.bin",
+    "bytes": 33
+   },
    "summary": ""
   },
   {
@@ -461,6 +472,10 @@
    "bep": 3,
    "wireSize": 4,
    "fields": 1,
+   "instance": {
+    "source": "test/vectors/wire-webtorrent/haveSent.bin",
+    "bytes": 4
+   },
    "summary": ""
   },
   {
@@ -519,6 +534,10 @@
    "bep": 3,
    "wireSize": 12,
    "fields": 3,
+   "instance": {
+    "source": "test/vectors/wire-webtorrent/cancelSent.bin",
+    "bytes": 12
+   },
    "summary": ""
   },
   {
@@ -531,6 +550,10 @@
    "bep": 5,
    "wireSize": 2,
    "fields": 1,
+   "instance": {
+    "source": "test/vectors/wire-webtorrent/portReceived.bin",
+    "bytes": 2
+   },
    "summary": ""
   },
   {
@@ -572,6 +595,10 @@
    "encoding": "bencode",
    "bep": 9,
    "fields": 3,
+   "instance": {
+    "source": "test/vectors/wire-webtorrent/utMetadataReceived.bin",
+    "bytes": 4291
+   },
    "summary": "Extension 'ut_metadata': the info dictionary fetched in 16 KiB pieces from a peer, so a magnet link suffices."
   },
   {
@@ -702,6 +729,9 @@
    "layer": "overlay",
    "encoding": "json",
    "fields": 5,
+   "instance": {
+    "source": "test/vectors/webtorrent/offer-forwarded.json"
+   },
    "summary": "What a peer receives when the tracker forwards another peer's offer to it: the offer, its id, and the offerer's peer id."
   },
   {
@@ -725,6 +755,9 @@
    "layer": "overlay",
    "encoding": "json",
    "fields": 2,
+   "instance": {
+    "source": "test/vectors/webtorrent/scrape.json"
+   },
    "summary": ""
   },
   {
@@ -827,6 +860,9 @@
    "encoding": "nostrTag",
    "kind": 2004,
    "fields": 2,
+   "instance": {
+    "source": "test/vectors/nostr/comment-unpublished.json"
+   },
    "summary": "A reply to a listing, kind 2004, threaded exactly as a kind 1 note is (NIP-10): an 'e' tag naming the listing, a 'p' tag naming its author."
   },
   {

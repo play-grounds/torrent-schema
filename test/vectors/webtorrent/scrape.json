@@ -1,0 +1,18 @@
+{
+ "tracker": "wss://tracker.webtorrent.dev",
+ "captured": "2026-10-08T11:33:00.038Z",
+ "sent": {
+  "action": "scrape",
+  "info_hash": "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À"
+ },
+ "received": {
+  "action": "scrape",
+  "files": {
+   "$.}Ë¡\\Àí\u001bÅðkhÚ\u0000À": {
+    "complete": 2,
+    "incomplete": 0,
+    "downloaded": 0
+   }
+  }
+ }
+}

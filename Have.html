@@ -44,8 +44,8 @@
   <p class="meta">Struct · module <a href="wire">wire</a> · encoding <a href="binary">binary</a> · <b>4 bytes</b> on the wire · 1 fields · BEP 3 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/Have</code></p>
   <p class="comment"></p>
 </header>
-<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th></tr><tr id="pieceIndex"><td class="name">index</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td></tr></table></div><div class="card"><h2>no captured instance yet</h2><p class="comment mut">No real Have has been captured into test/vectors/ so far; this page shows the definition only. The codec reads and writes it, and a capture is the next step.</p></div>
-<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="pieceIndex"><td class="name">index</td><td class="type">u32be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="index"><code class="pre">0</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">sent to the seeder the moment all 256 blocks of piece 0 had arrived and hashed to pieces[0] — the only honest moment to say Have; the session.json records the hash. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/wire-webtorrent/haveSent.bin">test/vectors/wire-webtorrent/haveSent.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">4 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="index" title="index">00 00 00 00 </span></pre><table><tr><th>computed</th><th>value</th></tr><tr><td class="name">piece 0 sha1</td><td class="val"><code class="pre">26b0fb2642b221755e95a52352cbad975cf40250</code></td></tr><tr><td class="name">pieces[0]</td><td class="val"><code class="pre">26b0fb2642b221755e95a52352cbad975cf40250</code></td></tr><tr><td class="name">verified</td><td class="val"><code class="pre">true</code></td></tr></table><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
  &quot;@context&quot;: &quot;context.jsonld&quot;,
  &quot;@graph&quot;: [
   {
@@ -63,10 +63,33 @@
      &quot;wireType&quot;: &quot;u32be&quot;
     }
    ]
+  },
+  {
+   &quot;@id&quot;: &quot;Have#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:Have&quot;,
+   &quot;source&quot;: &quot;test/vectors/wire-webtorrent/haveSent.bin&quot;,
+   &quot;captured&quot;: &quot;sent to the seeder the moment all 256 blocks of piece 0 had arrived and hashed to pieces[0] — the only honest moment to say Have; the session.json records the hash&quot;,
+   &quot;bytes&quot;: &quot;00000000&quot;,
+   &quot;value&quot;: {
+    &quot;index&quot;: 0
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;index&quot;,
+     0,
+     4
+    ]
+   ],
+   &quot;computed&quot;: {
+    &quot;piece 0 sha1&quot;: &quot;26b0fb2642b221755e95a52352cbad975cf40250&quot;,
+    &quot;pieces[0]&quot;: &quot;26b0fb2642b221755e95a52352cbad975cf40250&quot;,
+    &quot;verified&quot;: true
+   }
   }
  ]
 }</pre></details>
-<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Have","@type":"Struct","module":"bt:wire","label":"Have","encoding":"bt:binary","bep":3,"wireSize":4,"fields":[{"property":"bt:pieceIndex","label":"index","wireType":"u32be"}]}]}</script>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Have","@type":"Struct","module":"bt:wire","label":"Have","encoding":"bt:binary","bep":3,"wireSize":4,"fields":[{"property":"bt:pieceIndex","label":"index","wireType":"u32be"}]},{"@id":"Have#instance","@type":"Instance","of":"bt:Have","source":"test/vectors/wire-webtorrent/haveSent.bin","captured":"sent to the seeder the moment all 256 blocks of piece 0 had arrived and hashed to pieces[0] — the only honest moment to say Have; the session.json records the hash","bytes":"00000000","value":{"index":0},"spans":[["index",0,4]],"computed":{"piece 0 sha1":"26b0fb2642b221755e95a52352cbad975cf40250","pieces[0]":"26b0fb2642b221755e95a52352cbad975cf40250","verified":true}}]}</script>
 <footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
 <script type="module" src="apps/class.js"></script>
 </body>

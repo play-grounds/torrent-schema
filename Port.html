@@ -44,8 +44,8 @@
   <p class="meta">Struct · module <a href="wire">wire</a> · encoding <a href="binary">binary</a> · <b>2 bytes</b> on the wire · 1 fields · BEP 5 · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/Port</code></p>
   <p class="comment"></p>
 </header>
-<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th></tr><tr id="dhtPort"><td class="name">port</td><td class="type">u16be</td><td class="type"></td><td class="desc"></td></tr></table></div><div class="card"><h2>no captured instance yet</h2><p class="comment mut">No real Port has been captured into test/vectors/ so far; this page shows the definition only. The codec reads and writes it, and a capture is the next step.</p></div>
-<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>wire type</th><th>constant / struct</th><th>description</th><th>in the instance</th></tr><tr id="dhtPort"><td class="name">port</td><td class="type">u16be</td><td class="type"></td><td class="desc"></td><td class="val" data-f="port"><code class="pre">39251</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">the DHT port the webtorrent 3 seeder sent right after its handshake and bitfield (its reserved byte 7 has the DHT bit): the one message a seeder volunteers unasked. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/wire-webtorrent/portReceived.bin">test/vectors/wire-webtorrent/portReceived.bin</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><p class="tiny mut">2 bytes · hover a field row or a byte to see which is which</p><pre class="hex" id="hex"><span class="f" data-f="port" title="port">99 53 </span></pre><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
  &quot;@context&quot;: &quot;context.jsonld&quot;,
  &quot;@graph&quot;: [
   {
@@ -63,10 +63,28 @@
      &quot;wireType&quot;: &quot;u16be&quot;
     }
    ]
+  },
+  {
+   &quot;@id&quot;: &quot;Port#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:Port&quot;,
+   &quot;source&quot;: &quot;test/vectors/wire-webtorrent/portReceived.bin&quot;,
+   &quot;captured&quot;: &quot;the DHT port the webtorrent 3 seeder sent right after its handshake and bitfield (its reserved byte 7 has the DHT bit): the one message a seeder volunteers unasked&quot;,
+   &quot;bytes&quot;: &quot;9953&quot;,
+   &quot;value&quot;: {
+    &quot;port&quot;: 39251
+   },
+   &quot;spans&quot;: [
+    [
+     &quot;port&quot;,
+     0,
+     2
+    ]
+   ]
   }
  ]
 }</pre></details>
-<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Port","@type":"Struct","module":"bt:wire","label":"Port","encoding":"bt:binary","bep":5,"wireSize":2,"fields":[{"property":"bt:dhtPort","label":"port","wireType":"u16be"}]}]}</script>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:Port","@type":"Struct","module":"bt:wire","label":"Port","encoding":"bt:binary","bep":5,"wireSize":2,"fields":[{"property":"bt:dhtPort","label":"port","wireType":"u16be"}]},{"@id":"Port#instance","@type":"Instance","of":"bt:Port","source":"test/vectors/wire-webtorrent/portReceived.bin","captured":"the DHT port the webtorrent 3 seeder sent right after its handshake and bitfield (its reserved byte 7 has the DHT bit): the one message a seeder volunteers unasked","bytes":"9953","value":{"port":39251},"spans":[["port",0,2]]}]}</script>
 <footer><p>Generated from <a href="schema/wire.jsonld">schema/wire.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
 <script type="module" src="apps/class.js"></script>
 </body>

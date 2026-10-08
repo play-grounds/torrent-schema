@@ -414,7 +414,7 @@
           "@type": "ValidationRule",
           "label": "a description sent through the tracker does not say trickle",
           "errorCode": "ws-trickle",
-          "check": "the SDP has no a=ice-options:trickle line: the protocol carries one whole description each way and no candidates afterwards, so the line promises what cannot come; browsers put it in by default and WebTorrent clients strip it (found when no stranger answered offers that kept it)"
+          "check": "the SDP has no a=ice-options:trickle line: the protocol carries one whole description each way and no candidates afterwards, so the line promises what cannot come; browsers put it in by default and browser WebTorrent strips it (found when no stranger answered offers that kept it). Node webtorrent with wrtc leaves 'a=ice-options:ice2,trickle' in (an offer of its captured 8 Oct 2026, test/vectors/webtorrent/offer-forwarded.json) and still connects, so the rule is advice to the sender, not grounds to refuse an offer"
         }
       ]
     }

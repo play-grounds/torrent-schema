@@ -44,8 +44,8 @@
   <p class="meta">Struct · module <a href="nostr">nostr</a> · encoding <a href="nostrTag">nostrTag</a> · <b>kind 2004</b> · 2 fields · <span class="mut">IRI</span> <code>https://torrent-schema.github.io/TorrentComment</code></p>
   <p class="comment">A reply to a listing, kind 2004, threaded exactly as a kind 1 note is (NIP-10): an 'e' tag naming the listing, a 'p' tag naming its author. The content is the comment.</p>
 </header>
-<div class="card"><h2>fields</h2><table><tr><th>field</th><th>tag</th><th>type</th><th>description</th></tr><tr id="replyTo"><td class="name">e</td><td class="type">e</td><td class="type">list&lt;utf8&gt;</td><td class="desc">The id of the kind 2003 event (and, by NIP-10, any parent comment), hex.</td></tr><tr id="mentions"><td class="name">p</td><td class="type">p</td><td class="type">list&lt;utf8&gt;?</td><td class="desc">Pubkeys to notify: the listing's author, the parent comment's author.</td></tr></table></div><div class="card"><h2>no captured instance yet</h2><p class="comment mut">No real TorrentComment has been captured into test/vectors/ so far; this page shows the definition only. The codec reads and writes it, and a capture is the next step.</p></div>
-<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition</summary><pre class="island">{
+<div class="card"><h2>fields</h2><table><tr><th>field</th><th>tag</th><th>type</th><th>description</th><th>in the instance</th></tr><tr id="replyTo"><td class="name">e</td><td class="type">e</td><td class="type">list&lt;utf8&gt;</td><td class="desc">The id of the kind 2003 event (and, by NIP-10, any parent comment), hex.</td><td class="val" data-f="e"><code class="pre">86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64</code></td></tr><tr id="mentions"><td class="name">p</td><td class="type">p</td><td class="type">list&lt;utf8&gt;?</td><td class="desc">Pubkeys to notify: the listing's author, the parent comment's author.</td><td class="val" data-f="p"><code class="pre">cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c</code></td></tr></table></div><div class="card" id="instance"><h2>a real instance</h2><p class="comment">a comment on the snapshot's listing, signed by the listing's own key on 2026-10-08 and deliberately not published to any relay: the schema needed a real signed instance, the relays did not need the comment. Its 'e' tag names the kind 2003 event as root with a relay hint, its 'p' tag the author. Source: <a href="https://github.com/torrent-schema/torrent-schema.github.io/blob/gh-pages/test/vectors/nostr/comment-unpublished.json">test/vectors/nostr/comment-unpublished.json</a>. The values in the table above are read from it by the codec; the island at the foot of this page carries all of it.</p><table><tr><th>computed</th><th>value</th></tr><tr><td class="name">id</td><td class="val"><code class="pre">40a64e14fd037f1bef570a40a3b8c810c3ef2cba8a805c1ee3901674a9de75c6</code></td></tr><tr><td class="name">id matches</td><td class="val"><code class="pre">true</code></td></tr><tr><td class="name">replies to</td><td class="val"><code class="pre">86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64</code></td></tr></table><p id="verify" class="tiny mut">JavaScript off: the values above were computed when this page was built. With it on, your browser decodes the bytes again through the codec and reports here.</p></div>
+<details id="island-details"><summary>the JSON-LD island this page is rendered from — the definition and the instance</summary><pre class="island">{
  &quot;@context&quot;: &quot;context.jsonld&quot;,
  &quot;@graph&quot;: [
   {
@@ -76,10 +76,40 @@
      &quot;comment&quot;: &quot;Pubkeys to notify: the listing's author, the parent comment's author.&quot;
     }
    ]
+  },
+  {
+   &quot;@id&quot;: &quot;TorrentComment#instance&quot;,
+   &quot;@type&quot;: &quot;Instance&quot;,
+   &quot;of&quot;: &quot;bt:TorrentComment&quot;,
+   &quot;source&quot;: &quot;test/vectors/nostr/comment-unpublished.json&quot;,
+   &quot;captured&quot;: &quot;a comment on the snapshot's listing, signed by the listing's own key on 2026-10-08 and deliberately not published to any relay: the schema needed a real signed instance, the relays did not need the comment. Its 'e' tag names the kind 2003 event as root with a relay hint, its 'p' tag the author&quot;,
+   &quot;value&quot;: {
+    &quot;e&quot;: [
+     &quot;86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64&quot;
+    ],
+    &quot;p&quot;: [
+     &quot;cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c&quot;
+    ],
+    &quot;extra&quot;: [
+     [
+      &quot;alt&quot;,
+      &quot;Comment on a torrent listing&quot;
+     ]
+    ],
+    &quot;content&quot;: &quot;Checked against the .torrent by Torrent Schema on 2026-10-08: the x tag is its infohash and the file tag its name and size. Still seeded from the origin, with the web seed in the content.&quot;,
+    &quot;kind&quot;: 2004,
+    &quot;id&quot;: &quot;40a64e14fd037f1bef570a40a3b8c810c3ef2cba8a805c1ee3901674a9de75c6&quot;,
+    &quot;pubkey&quot;: &quot;cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c&quot;
+   },
+   &quot;computed&quot;: {
+    &quot;id&quot;: &quot;40a64e14fd037f1bef570a40a3b8c810c3ef2cba8a805c1ee3901674a9de75c6&quot;,
+    &quot;id matches&quot;: true,
+    &quot;replies to&quot;: &quot;86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64&quot;
+   }
   }
  ]
 }</pre></details>
-<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:TorrentComment","@type":"Struct","module":"bt:nostr","label":"TorrentComment","encoding":"bt:nostrTag","kind":2004,"comment":"A reply to a listing, kind 2004, threaded exactly as a kind 1 note is (NIP-10): an 'e' tag naming the listing, a 'p' tag naming its author. The content is the comment.","fields":[{"property":"bt:replyTo","label":"e","key":"e","valueType":"list","itemType":"utf8","required":true,"comment":"The id of the kind 2003 event (and, by NIP-10, any parent comment), hex."},{"property":"bt:mentions","label":"p","key":"p","valueType":"list","itemType":"utf8","required":false,"comment":"Pubkeys to notify: the listing's author, the parent comment's author."}]}]}</script>
+<script type="application/ld+json" id="island">{"@context":"context.jsonld","@graph":[{"@id":"bt:TorrentComment","@type":"Struct","module":"bt:nostr","label":"TorrentComment","encoding":"bt:nostrTag","kind":2004,"comment":"A reply to a listing, kind 2004, threaded exactly as a kind 1 note is (NIP-10): an 'e' tag naming the listing, a 'p' tag naming its author. The content is the comment.","fields":[{"property":"bt:replyTo","label":"e","key":"e","valueType":"list","itemType":"utf8","required":true,"comment":"The id of the kind 2003 event (and, by NIP-10, any parent comment), hex."},{"property":"bt:mentions","label":"p","key":"p","valueType":"list","itemType":"utf8","required":false,"comment":"Pubkeys to notify: the listing's author, the parent comment's author."}]},{"@id":"TorrentComment#instance","@type":"Instance","of":"bt:TorrentComment","source":"test/vectors/nostr/comment-unpublished.json","captured":"a comment on the snapshot's listing, signed by the listing's own key on 2026-10-08 and deliberately not published to any relay: the schema needed a real signed instance, the relays did not need the comment. Its 'e' tag names the kind 2003 event as root with a relay hint, its 'p' tag the author","value":{"e":["86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64"],"p":["cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c"],"extra":[["alt","Comment on a torrent listing"]],"content":"Checked against the .torrent by Torrent Schema on 2026-10-08: the x tag is its infohash and the file tag its name and size. Still seeded from the origin, with the web seed in the content.","kind":2004,"id":"40a64e14fd037f1bef570a40a3b8c810c3ef2cba8a805c1ee3901674a9de75c6","pubkey":"cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c"},"computed":{"id":"40a64e14fd037f1bef570a40a3b8c810c3ef2cba8a805c1ee3901674a9de75c6","id matches":true,"replies to":"86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64"}}]}</script>
 <footer><p>Generated from <a href="schema/nostr.jsonld">schema/nostr.jsonld</a> by tools/gen-class-pages.js; the island above is the source of this page and is checked against the schema by the tests. Independent community project; not affiliated with the BitTorrent or WebTorrent projects. AGPL-3.0-or-later.</p></footer>
 <script type="module" src="apps/class.js"></script>
 </body>
