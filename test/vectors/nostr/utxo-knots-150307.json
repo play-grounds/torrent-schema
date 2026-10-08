@@ -1,0 +1,104 @@
+{
+ "kind": 2003,
+ "pubkey": "cccccc0a8338a4aba51691f309f2f892c6c58f655a1ec3fc30522c894c166d9c",
+ "created_at": 1789373541,
+ "content": "UTXO set at height 150307, the last block shared with Bitcoin Core's testnet4 and the natural genesis state of the BLAKE2b (Bitcoin Knots) fork. Core dumptxoutset v2 format; loads with `loadtxoutset` on Knots 29.4.1 or feeds a bitcoin-kernel browser node.\n\nbase height: 150307\nbase hash: 000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc\ntxoutset_hash: 372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518\ncoins: 14230182\nbytes: 869836053\nsha256: 86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd\nproduced by: Bitcoin Knots v29.4.1.knots20260508, dumptxoutset rollback=150307, 2026-09-14\n\nmagnet: magnet:?xt=urn:btih:242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0&dn=utxo-knots-150307.dat&tr=wss%3A%2F%2Ftracker.openwebtorrent.com&tr=wss%3A%2F%2Ftracker.webtorrent.dev&tr=wss%3A%2F%2Ftracker.btorrent.xyz&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.tracker.cl%3A1337%2Fannounce&ws=https%3A%2F%2Fmelvin.me%2Fdatstr%2Fsnapshots%2Futxo-knots-150307.dat\nwebseed: https://melvin.me/datstr/snapshots/utxo-knots-150307.dat\nmanifest: https://melvin.me/datstr/snapshots/utxo-knots-150307.json\nchain: btc:testnet4-blake2b (fork at 150308) — https://datstr.com/",
+ "tags": [
+  [
+   "title",
+   "Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307"
+  ],
+  [
+   "x",
+   "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0"
+  ],
+  [
+   "file",
+   "utxo-knots-150307.dat",
+   "869836053"
+  ],
+  [
+   "tracker",
+   "wss://tracker.openwebtorrent.com"
+  ],
+  [
+   "tracker",
+   "wss://tracker.webtorrent.dev"
+  ],
+  [
+   "tracker",
+   "wss://tracker.btorrent.xyz"
+  ],
+  [
+   "tracker",
+   "udp://tracker.opentrackr.org:1337/announce"
+  ],
+  [
+   "tracker",
+   "udp://open.tracker.cl:1337/announce"
+  ],
+  [
+   "tracker",
+   "https://melvin.me/datstr/snapshots/utxo-knots-150307.dat"
+  ],
+  [
+   "alt",
+   "Torrent: Bitcoin BLAKE2b testnet4 (txbt4) assumeUTXO snapshot at block 150307"
+  ],
+  [
+   "i",
+   "tcat:other"
+  ],
+  [
+   "t",
+   "assumeutxo"
+  ],
+  [
+   "t",
+   "utxo"
+  ],
+  [
+   "t",
+   "bitcoin"
+  ],
+  [
+   "t",
+   "blake2b"
+  ],
+  [
+   "t",
+   "testnet4"
+  ],
+  [
+   "t",
+   "txbt4"
+  ],
+  [
+   "t",
+   "knots"
+  ],
+  [
+   "t",
+   "bitcoin-kernel"
+  ],
+  [
+   "sha256",
+   "86118db3a692b7c64bd4d9aef51a401f09722b9e92acb2826e7e76ac964529cd"
+  ],
+  [
+   "txoutset_hash",
+   "372bfcaeef1e93892acccda9e700b00bf90f45d73746d69959d33620a3df5518"
+  ],
+  [
+   "base",
+   "150307",
+   "000000000017ec2251d81c8d2ca401c713e98e85196c7f660a4088a7ca57b1cc"
+  ],
+  [
+   "n",
+   "tbtc4b2"
+  ]
+ ],
+ "id": "86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64",
+ "sig": "225ff59c976974d9d8fa4a8605f67a9f84de030f8b871b2dc48eefbf8f5c40f69d81dbc3dc35a0d8f95288ce1fdecb39f78760557b5e77e4ca94db06528e2fb2"
+}

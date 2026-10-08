@@ -1,10 +1,10 @@
 {
   "name": "torrent-schema",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "type": "module",
   "license": "AGPL-3.0-or-later",
-  "description": "A machine-readable model of BitTorrent in JSON-LD, with a codec that reads it: bencode and metainfo first",
+  "description": "A machine-readable model of BitTorrent in JSON-LD, with a codec that reads it: bencode, metainfo, trackers, the peer wire, web seeds, WebTorrent, NIP-35",
   "scripts": {
     "test": "node --test"
   }

@@ -72,6 +72,8 @@
       "@id": "bts:enumType",
       "@type": "@id"
     },
-    "code": "bts:code"
+    "code": "bts:code",
+    "position": "bts:position",
+    "kind": "bts:kind"
   }
 }

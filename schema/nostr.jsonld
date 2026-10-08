@@ -1,0 +1,386 @@
+{
+  "@context": "../context.jsonld",
+  "@graph": [
+    {
+      "@id": "bt:nostr",
+      "@type": "Module",
+      "label": "nostr",
+      "version": "0.0.1",
+      "layer": "discovery",
+      "seeAlso": "https://github.com/nostr-protocol/nips/blob/master/35.md",
+      "comment": "Finding a torrent in the first place. Everything below this layer starts from an infohash already in hand; this module is where it comes from. NIP-35 publishes a torrent as a signed Nostr event of kind 2003: enough to search for it and to build its magnet link, and no more — no .torrent file travels, the info dictionary is fetched from the swarm (BEP 9) and verified against the hash. It is the one decentralised index BitTorrent has: a tracker knows hashes, not names; the DHT knows hashes, not names; a kind 2003 event is a name, a hash, and a signature saying who said so. This module writes the event down as data: its tags as fields, the magnet it yields, the projection from a MetaInfo onto it and exactly what that projection drops. Written from a real event, the one that announces the txbt4 UTXO snapshot, checked against the .torrent it was made from."
+    },
+    {
+      "@id": "bt:nostrEvent",
+      "@type": "Encoding",
+      "module": "bt:nostr",
+      "label": "Nostr event",
+      "comment": "A NIP-01 event: one JSON object with 'id', 'pubkey', 'created_at', 'kind', 'tags', 'content' and 'sig'. The id is the SHA-256 of the canonical serialisation [0, pubkey, created_at, kind, tags, content] with no whitespace; the sig is a BIP-340 Schnorr signature over the id by the key named in 'pubkey'. Hex is lowercase. Tags are arrays of strings whose first element is the tag's name."
+    },
+    {
+      "@id": "bt:nostrTag",
+      "@type": "Encoding",
+      "module": "bt:nostr",
+      "label": "Nostr tags",
+      "comment": "A value held in an event's tags rather than in its JSON keys. A field with key k reads the tags named k: a scalar field takes the first such tag's second element, a list field takes every such tag, a struct field reads the tag's elements by 'position' (1 is the element after the name). Tags not named by any field are kept, not rejected: NIP-35 allows any and the wild adds many."
+    },
+    {
+      "@id": "bt:TorrentKind",
+      "@type": "Enumeration",
+      "module": "bt:nostr",
+      "label": "TorrentKind",
+      "comment": "The two event kinds NIP-35 defines. Kinds 1000–9999 are regular events: stored by relays, never replaced.",
+      "members": [
+        {
+          "@id": "bt:kind-torrent",
+          "label": "torrent",
+          "code": 2003,
+          "comment": "A torrent listing: a TorrentEvent."
+        },
+        {
+          "@id": "bt:kind-torrent-comment",
+          "label": "torrent comment",
+          "code": 2004,
+          "comment": "A reply to a torrent listing: a TorrentComment, threaded by NIP-10 like a kind 1 note."
+        }
+      ]
+    },
+    {
+      "@id": "bt:ReferencePrefix",
+      "@type": "Enumeration",
+      "module": "bt:nostr",
+      "label": "ReferencePrefix",
+      "comment": "The prefixes an 'i' tag may carry, each naming an external database the content is listed in: ['i', 'imdb:tt15239678']. Where a database holds several media types a second segment names the type: 'tmdb:movie:693134'. The URL mapping is a guide, not part of the NIP. Events in the wild carry prefixes beyond this list ('tpb', 'nyaa', from mirrors of those indexes); the codec reports them as unknown, not as errors.",
+      "members": [
+        {
+          "@id": "bt:ref-tcat",
+          "label": "tcat",
+          "comment": "A comma-separated category path: 'tcat:video,movie,4k'. Should match the newznab category where one exists."
+        },
+        {
+          "@id": "bt:ref-newznab",
+          "label": "newznab",
+          "comment": "A newznab category id, the numbering Usenet indexers share: 'newznab:2045'."
+        },
+        {
+          "@id": "bt:ref-tmdb",
+          "label": "tmdb",
+          "comment": "The Movie Database: 'tmdb:movie:693134' is themoviedb.org/movie/693134."
+        },
+        {
+          "@id": "bt:ref-ttvdb",
+          "label": "ttvdb",
+          "comment": "TheTVDB: 'ttvdb:movie:290272' is thetvdb.com/movies/… by slug, so the mapping is indirect."
+        },
+        {
+          "@id": "bt:ref-imdb",
+          "label": "imdb",
+          "comment": "IMDb: 'imdb:tt15239678' is imdb.com/title/tt15239678."
+        },
+        {
+          "@id": "bt:ref-mal",
+          "label": "mal",
+          "comment": "MyAnimeList: 'mal:anime:9253', 'mal:manga:17517'."
+        },
+        {
+          "@id": "bt:ref-anilist",
+          "label": "anilist",
+          "comment": "AniList: 'anilist:anime:…', 'anilist:manga:…'."
+        }
+      ]
+    },
+    {
+      "@id": "bt:NostrEvent",
+      "@type": "Struct",
+      "module": "bt:nostr",
+      "label": "NostrEvent",
+      "encoding": "bt:nostrEvent",
+      "comment": "The envelope every Nostr event shares (NIP-01). A TorrentEvent is one of these with kind 2003 and its tags read as fields.",
+      "fields": [
+        {
+          "property": "bt:eventId",
+          "label": "id",
+          "key": "id",
+          "valueType": "bytes",
+          "size": 32,
+          "required": true,
+          "comment": "SHA-256 of the serialisation, hex. Derived in principle; stored in practice, and a rule checks it."
+        },
+        {
+          "property": "bt:pubkey",
+          "label": "pubkey",
+          "key": "pubkey",
+          "valueType": "bytes",
+          "size": 32,
+          "required": true,
+          "comment": "The author's x-only public key, hex. The only identity a listing has: who says this hash is this title."
+        },
+        {
+          "property": "bt:createdAt",
+          "label": "created_at",
+          "key": "created_at",
+          "valueType": "int",
+          "required": true,
+          "comment": "Unix seconds, as the author claims; relays accept a window around their own clock."
+        },
+        {
+          "property": "bt:kind",
+          "label": "kind",
+          "key": "kind",
+          "valueType": "int",
+          "enumType": "bt:TorrentKind",
+          "required": true
+        },
+        {
+          "property": "bt:tags",
+          "label": "tags",
+          "key": "tags",
+          "valueType": "list",
+          "itemType": "list:utf8",
+          "required": true,
+          "comment": "Each tag an array of strings, the first its name. What the TorrentEvent reads."
+        },
+        {
+          "property": "bt:content",
+          "label": "content",
+          "key": "content",
+          "valueType": "utf8",
+          "required": true,
+          "comment": "For kind 2003 a long description, pre-formatted; conventionally repeats the magnet and any checksums so a reader with no NIP-35 client still has them."
+        },
+        {
+          "property": "bt:sig",
+          "label": "sig",
+          "key": "sig",
+          "valueType": "bytes",
+          "size": 64,
+          "required": true,
+          "comment": "BIP-340 Schnorr over 'id' by 'pubkey', hex."
+        }
+      ],
+      "derived": [
+        {
+          "property": "bt:eventIdDerived",
+          "label": "id",
+          "derivation": "hex(sha256(utf8(JSON.stringify([0, pubkey, created_at, kind, tags, content]))))",
+          "comment": "NIP-01. JSON.stringify with no whitespace and only the escapes JSON requires; the hex is lowercase."
+        }
+      ]
+    },
+    {
+      "@id": "bt:TorrentEvent",
+      "@type": "Struct",
+      "module": "bt:nostr",
+      "label": "TorrentEvent",
+      "encoding": "bt:nostrTag",
+      "kind": 2003,
+      "comment": "A torrent listing, kind 2003: the tags of a NostrEvent read as fields. Carries what a magnet link carries — the v1 infohash, a name, trackers — plus the file list with sizes, external references and topics for search. Carries nothing that would let the info dictionary be rebuilt: no piece length, no pieces, no v2 root; a client fetches those from the swarm by the hash. NIP-35 has no tag for a web seed (BEP 19), so an event that wants one must put the URL in a 'tracker' tag or in the content, and a reader cannot tell the two apart by schema — the real event this module was written from does exactly that.",
+      "fields": [
+        {
+          "property": "bt:title",
+          "label": "title",
+          "key": "title",
+          "valueType": "utf8",
+          "required": true,
+          "comment": "The display name, what 'dn' is in the magnet. Not necessarily the info 'name'."
+        },
+        {
+          "property": "bt:x",
+          "label": "x",
+          "key": "x",
+          "valueType": "bytes",
+          "size": 20,
+          "required": true,
+          "comment": "The v1 infohash, 40 lowercase hex: the 'btih' of the magnet. The one field that makes this a torrent. There is no field for a v2 (BEP 52) hash, so a v2-only torrent cannot be listed and a hybrid is listed by its v1 hash alone."
+        },
+        {
+          "property": "bt:fileTags",
+          "label": "file",
+          "key": "file",
+          "valueType": "list",
+          "itemType": "struct",
+          "structType": "bt:FileTag",
+          "required": false,
+          "comment": "One tag per file. The NIP shows the size but does not say it is required; in the wild it is usually present and the name is sometimes '.' meaning the whole torrent."
+        },
+        {
+          "property": "bt:trackerTags",
+          "label": "tracker",
+          "key": "tracker",
+          "valueType": "list",
+          "itemType": "utf8",
+          "required": false,
+          "comment": "Announce URLs, one per tag, each a 'tr' of the magnet. Any scheme a client knows: udp, http(s), wss for browsers. Optional: the DHT or a magnet's own trackers may do."
+        },
+        {
+          "property": "bt:references",
+          "label": "i",
+          "key": "i",
+          "valueType": "list",
+          "itemType": "utf8",
+          "enumType": "bt:ReferencePrefix",
+          "required": false,
+          "comment": "'prefix:id' references to external databases, for search and de-duplication."
+        },
+        {
+          "property": "bt:topics",
+          "label": "t",
+          "key": "t",
+          "valueType": "list",
+          "itemType": "utf8",
+          "required": false,
+          "comment": "Topics (NIP-24 hashtags): 'movie', 'tv', '4k', or anything. The NIP says a few SHOULD be given so listings can be browsed by category."
+        },
+        {
+          "property": "bt:alt",
+          "label": "alt",
+          "key": "alt",
+          "valueType": "utf8",
+          "required": false,
+          "comment": "NIP-31: a one-line description for clients that do not know kind 2003."
+        }
+      ],
+      "derived": [
+        {
+          "property": "bt:eventMagnet",
+          "label": "magnet",
+          "derivation": "'magnet:?xt=urn:btih:' + x + '&dn=' + enc(title) + ('&tr=' + enc(t) for t in tracker)",
+          "comment": "What the NIP exists to produce. No '&ws=': the event has nowhere to put a web seed."
+        },
+        {
+          "property": "bt:fromMetaInfo",
+          "label": "fromMetaInfo",
+          "derivation": "x = infohash(meta); file = [(join('/', name, path...), length) for each file, or (name, length) for one]; tracker = announce-list flattened, or announce; title = chosen by the author (default info.name)",
+          "comment": "The projection of a .torrent onto an event. Lossy, and this is the list of what goes: 'piece length' and 'pieces' (so the info dictionary cannot be rebuilt), 'url-list' (no web seed tag), 'creation date', 'created by', 'comment', 'private' (a private torrent listed here is a contradiction the schema cannot express), and any v2 hash."
+        }
+      ]
+    },
+    {
+      "@id": "bt:FileTag",
+      "@type": "Struct",
+      "module": "bt:nostr",
+      "label": "FileTag",
+      "encoding": "bt:nostrTag",
+      "comment": "['file', name, size]: one file of the torrent. The name is the full path inside the torrent with '/' between segments — a FileEntry's 'path' joined, under the info 'name'. Sizes are decimal strings, as every tag value is a string.",
+      "fields": [
+        {
+          "property": "bt:fileTagName",
+          "label": "name",
+          "position": 1,
+          "valueType": "utf8",
+          "required": true
+        },
+        {
+          "property": "bt:fileTagSize",
+          "label": "size",
+          "position": 2,
+          "valueType": "int",
+          "required": false,
+          "comment": "Bytes, as a decimal string. Optional in the NIP by omission; a listing without sizes cannot be checked against its torrent."
+        }
+      ]
+    },
+    {
+      "@id": "bt:TorrentComment",
+      "@type": "Struct",
+      "module": "bt:nostr",
+      "label": "TorrentComment",
+      "encoding": "bt:nostrTag",
+      "kind": 2004,
+      "comment": "A reply to a listing, kind 2004, threaded exactly as a kind 1 note is (NIP-10): an 'e' tag naming the listing, a 'p' tag naming its author. The content is the comment.",
+      "fields": [
+        {
+          "property": "bt:replyTo",
+          "label": "e",
+          "key": "e",
+          "valueType": "list",
+          "itemType": "utf8",
+          "required": true,
+          "comment": "The id of the kind 2003 event (and, by NIP-10, any parent comment), hex."
+        },
+        {
+          "property": "bt:mentions",
+          "label": "p",
+          "key": "p",
+          "valueType": "list",
+          "itemType": "utf8",
+          "required": false,
+          "comment": "Pubkeys to notify: the listing's author, the parent comment's author."
+        }
+      ]
+    },
+    {
+      "@id": "bt:nostrRules",
+      "@type": "RuleSet",
+      "module": "bt:nostr",
+      "label": "torrent event validity",
+      "scope": "nostr",
+      "comment": "What a kind 2003 event must satisfy to be a listing at all, and — when the .torrent is also at hand — to be a listing of that torrent. Each rule's error code is what the codec reports.",
+      "rules": [
+        {
+          "@id": "bt:rule-nostr-kind",
+          "@type": "ValidationRule",
+          "label": "the kind is 2003",
+          "errorCode": "nostr-bad-kind",
+          "check": "kind == 2003"
+        },
+        {
+          "@id": "bt:rule-nostr-x",
+          "@type": "ValidationRule",
+          "label": "exactly one 'x' tag, 40 lowercase hex",
+          "errorCode": "nostr-bad-x",
+          "check": "count(tags named 'x') == 1 and matches /^[0-9a-f]{40}$/ — uppercase is a different string to a relay search even if the same hash"
+        },
+        {
+          "@id": "bt:rule-nostr-title",
+          "@type": "ValidationRule",
+          "label": "a 'title' tag with a non-empty value",
+          "errorCode": "nostr-no-title",
+          "check": "title present and not blank"
+        },
+        {
+          "@id": "bt:rule-nostr-file",
+          "@type": "ValidationRule",
+          "label": "every 'file' tag has a name, and its size if given is a decimal integer",
+          "errorCode": "nostr-bad-file",
+          "check": "tag.length >= 2 and (tag[2] absent or matches /^[0-9]+$/)"
+        },
+        {
+          "@id": "bt:rule-nostr-tracker",
+          "@type": "ValidationRule",
+          "label": "every 'tracker' tag is an announce URL",
+          "errorCode": "nostr-bad-tracker",
+          "check": "parses as a URL with scheme udp, http, https, ws or wss. A web seed in a 'tracker' tag passes this rule: the schema cannot tell them apart, which is the NIP's gap, not the event's"
+        },
+        {
+          "@id": "bt:rule-nostr-reference",
+          "@type": "ValidationRule",
+          "label": "every 'i' tag is 'prefix:id'",
+          "errorCode": "nostr-bad-reference",
+          "check": "contains ':' with a non-empty prefix; a prefix outside ReferencePrefix is reported as 'unknown', not an error"
+        },
+        {
+          "@id": "bt:rule-nostr-id",
+          "@type": "ValidationRule",
+          "label": "the id is the hash of the event",
+          "errorCode": "nostr-bad-id",
+          "check": "id == hex(sha256(serialisation)) — NIP-01; an event failing this was altered after signing or never signed at all"
+        },
+        {
+          "@id": "bt:rule-nostr-sig",
+          "@type": "ValidationRule",
+          "label": "the signature verifies",
+          "errorCode": "nostr-bad-sig",
+          "check": "BIP-340 verify(sig, id, pubkey). Not computed by the reference codec, which carries no secp256k1; a client must"
+        },
+        {
+          "@id": "bt:rule-nostr-matches-torrent",
+          "@type": "ValidationRule",
+          "label": "with the .torrent at hand: the hash and the files are its",
+          "errorCode": "nostr-torrent-mismatch",
+          "check": "x == infohash(meta) and every file tag names a file of the torrent with its length (a '.' name matches the whole torrent's totalLength)"
+        }
+      ]
+    }
+  ]
+}

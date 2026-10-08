@@ -22,3 +22,4 @@ What the schema models, by BEP. "modelled" means a document exists and the codec
 | 27 | Private torrents | field modelled |
 | 52 | v2 (SHA-256, merkle trees, hybrid) | planned |
 | — | WebTorrent: WebSocket tracker protocol, wire protocol over RTCDataChannel | modelled, tested (a real exchange with tracker.openwebtorrent.com; the connection reached 'connected') |
+| — | NIP-35: a torrent as a Nostr event (kind 2003), comments (kind 2004) | modelled, tested (the real event announcing the txbt4 snapshot, checked against its .torrent; id recomputed; signature not checked, no secp256k1 here) |

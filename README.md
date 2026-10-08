@@ -20,8 +20,9 @@ Done so far, bottom up:
 | [`schema/wire.jsonld`](schema/wire.jsonld) | peer to peer: the 68-byte handshake and its reserved bits, frames and every message by id, the extension protocol (extended handshake, `ut_metadata` with its trailing bytes, `ut_pex`), the rules a peer enforces | 3, 10, 9, 11, 6, 5 |
 | [`schema/webseed.jsonld`](schema/webseed.jsonld) | an HTTP server as a peer: a block as a Range request, what the answer must look like, CORS from a browser | 19 |
 | [`schema/webtorrent.jsonld`](schema/webtorrent.jsonld) | **the overlay**: the WebSocket tracker protocol in JSON — announces carrying WebRTC offers, the tracker's reply, forwarded offers, answers routed by peer id — and the statement that the wire protocol runs over the data channel unchanged. No BEP: written down from a captured exchange | — |
+| [`schema/nostr.jsonld`](schema/nostr.jsonld) | **discovery**: a torrent published as a NIP-35 Nostr event (kind 2003) — the tags as fields, the magnet it yields, the projection of a MetaInfo onto it and what that projection drops (piece length, pieces, web seeds, any v2 hash); the comment kind 2004; validity rules with error codes, the id recomputed per NIP-01. Written from a real event (the txbt4 snapshot's) checked against the .torrent it was made from | — (NIP-35) |
 
-Next, in order: the peer wire protocol (BEP 3, 10, 9, 11), web seeds as a peer (BEP 19), the DHT (BEP 5), v2 (BEP 52); then **WebTorrent as an overlay**: the WebSocket tracker protocol (announce with offers, answers by peer id) and the wire protocol over an RTCDataChannel — a de facto standard from one implementation, worth writing down for exactly that reason. See [SPEC_COVERAGE.md](SPEC_COVERAGE.md).
+Next, in order: the DHT (BEP 5), v2 and hybrid torrents (BEP 52), the Fast extension messages (BEP 6); and the gaps the nostr module makes visible in NIP-35 — no web seed tag, no v2 hash, file sizes optional — taken to the NIP as proposals. See [SPEC_COVERAGE.md](SPEC_COVERAGE.md).
 
 ## Data model
 

@@ -16,7 +16,8 @@
       "about": "the txbt4 UTXO snapshot at block 150,307 (869,836,053 bytes)",
       "source": "play-grounds/utxo-swarm",
       "kind": "data",
-      "file": "torrents/utxo-knots-150307.torrent"
+      "file": "torrents/utxo-knots-150307.torrent",
+   "nostrEvent": "86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64"
     },
     {
       "@type": "bt:KnownTorrent",
