@@ -38,8 +38,15 @@ for (const [file, x] of VECTORS) {
     assert.equal(again.length, bytes.length); assert.deepEqual(again, bytes);
   });
 }
+test('two real files, one torrent: the bare .torrent of 14 Sep and the shipped one of 3 Oct (five trackers, a web seed) differ in bytes and share the infohash', async () => {
+  const bare = await codec.parse(await vector('utxo-knots-150307-bare.torrent')), shipped = await codec.parse(await vector('utxo-knots-150307.torrent'));
+  assert.equal(bare.infohash, shipped.infohash); assert.notEqual(bare.meta['creation date'], shipped.meta['creation date']);
+  assert.equal(bare.meta['announce-list'], undefined); assert.equal(bare.meta['url-list'], undefined);
+  assert.equal(shipped.meta['announce-list'].flat().length, 5); assert.deepEqual(shipped.meta['url-list'], ['https://melvin.me/public/txbt4/utxo-knots-150307.dat']);
+  assert.equal(shipped.magnet.split('&tr=').length - 1, 5); assert.match(shipped.magnet, /&ws=https%3A%2F%2Fmelvin\.me/); assert.doesNotMatch(bare.magnet, /&tr=|&ws=/);
+});
 test('the infohash is over the info dictionary alone: trackers, web seeds and comments can change without changing it', async () => {
-  const bytes = await vector('utxo-knots-150307.torrent'); const meta = codec.decode('MetaInfo', bytes);
+  const bytes = await vector('utxo-knots-150307-bare.torrent'); const meta = codec.decode('MetaInfo', bytes);
   meta.announce = 'wss://tracker.example'; meta['url-list'] = ['https://example.org/utxo-knots-150307.dat']; meta.comment = 'changed';
   const again = codec.decode('MetaInfo', codec.encode('MetaInfo', meta));
   assert.equal(await codec.infohash(again), '242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0');

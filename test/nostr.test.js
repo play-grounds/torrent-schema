@@ -25,10 +25,11 @@ test('the event is read by the schema: tags become fields, by key and by positio
 test('the id is the SHA-256 of the NIP-01 serialisation, and the rules pass', async () => {
   assert.equal(await N.id(E), E.id); assert.equal(await N.check(E), null); assert.equal(await N.check(E, { torrent }), null);
 });
-test('the projection from the .torrent: hash and file agree with the real event; the torrent names no trackers, the seeder added them', () => {
+test("the projection from the shipped .torrent: hash, file and the five trackers agree with the real event; the event's sixth 'tracker' is a web seed the NIP has no tag for, and not even the same URL as the torrent's url-list", () => {
   const p = N.fromMetaInfo(torrent); const e = N.read(E);
-  assert.equal(p.x, e.x); assert.deepEqual(p.file, e.file); assert.equal(p.tracker, undefined); assert.equal(p.title, 'utxo-knots-150307.dat');
-  assert.equal(torrent.meta['url-list'], undefined); assert.equal(torrent.meta['announce-list'], undefined);
+  assert.equal(p.x, e.x); assert.deepEqual(p.file, e.file); assert.equal(p.title, 'utxo-knots-150307.dat');
+  assert.deepEqual(p.tracker, e.tracker.slice(0, 5), 'announce-list flattened is the first five tracker tags, in order');
+  assert.equal(e.tracker.length, 6); assert.match(e.tracker[5], /^https:\/\/melvin\.me\//); assert.notEqual(e.tracker[5], torrent.meta['url-list'][0], 'the event names a second mirror of the same file');
 });
 test('the derived magnet against the one the author wrote into the content: same hash and trackers; the dn is the title, not the file name; no web seed, the event cannot carry one', () => {
   const e = N.read(E); const m = N.magnet(e); const written = E.content.match(/^magnet: (\S+)$/m)[1];

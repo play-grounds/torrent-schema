@@ -1,6 +1,6 @@
 {
  "version": "0.0.5",
- "generated": "2026-10-08",
+ "generated": "2026-10-10",
  "classes": [
   {
    "id": "bencode",
@@ -48,7 +48,7 @@
    "fields": 8,
    "instance": {
     "source": "test/vectors/utxo-knots-150307.torrent",
-    "bytes": 4315
+    "bytes": 4633
    },
    "summary": "The top-level dictionary of a .torrent file."
   },

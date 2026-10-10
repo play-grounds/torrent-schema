@@ -47,11 +47,11 @@ const bytesOf = (name, b) => ({ bytes: bytesToHex(b), value: plain(binary.decode
 // ---- the captured instances, one per struct where one exists
 async function instances() {
   const I = {}; const vec = (p) => bin('test/vectors/' + p);
-  const snapshotBytes = await vec('utxo-knots-150307.torrent'); const snapshot = await codec.parse(snapshotBytes);
+  const snapshotBytes = await vec('utxo-knots-150307.torrent'); const snapshot = await codec.parse(snapshotBytes); const bare = await codec.parse(await vec('utxo-knots-150307-bare.torrent'));
   const bbbBytes = await bin('data/torrents/big-buck-bunny.torrent'); const bbb = await codec.parse(bbbBytes);
   const metaValue = (t) => plain({ ...t.meta, info: { ...t.meta.info, pieces: t.meta.info.pieces } });
-  I.MetaInfo = { source: 'test/vectors/utxo-knots-150307.torrent', captured: 'the .torrent of the txbt4 UTXO snapshot, made by WebTorrent 3 on 2026-09-14; 208 pieces of 4 MiB', bytes: bytesToHex(snapshotBytes), value: metaValue(snapshot),
-    computed: { infohash: snapshot.infohash, magnet: snapshot.magnet }, result: snapshot.error };
+  I.MetaInfo = { source: 'test/vectors/utxo-knots-150307.torrent', captured: 'the .torrent of the txbt4 UTXO snapshot as the seeder ships it, made by WebTorrent 3 on 2026-10-03: five trackers, a web seed, 208 pieces of 4 MiB. A bare file of 14 Sep with no trackers and no web seed (test/vectors/utxo-knots-150307-bare.torrent) has the same info dictionary and so the same infohash: two files, one torrent', bytes: bytesToHex(snapshotBytes), value: metaValue(snapshot),
+    computed: { infohash: snapshot.infohash, magnet: snapshot.magnet, 'the bare file of 14 Sep': { bytes: (await vec('utxo-knots-150307-bare.torrent')).length, infohash: bare.infohash, 'same torrent': bare.infohash === snapshot.infohash } }, result: snapshot.error };
   I.Info = { source: 'test/vectors/utxo-knots-150307.torrent', captured: "the 'info' dictionary of the snapshot torrent, the bytes the infohash is the SHA-1 of", bytes: bytesToHex(snapshot.meta.info._raw), value: plain(snapshot.meta.info),
     computed: { pieceCount: snapshot.pieceCount, totalLength: snapshot.totalLength, lastPieceLength: snapshot.lastPieceLength, 'sha1 of these bytes': snapshot.infohash }, result: snapshot.error };
   I.FileEntry = { source: 'data/torrents/big-buck-bunny.torrent', captured: `the first of ${bbb.meta.info.files.length} files of Big Buck Bunny, the WebTorrent demo torrent (a multi-file torrent: 'files' instead of 'length')`, value: plain(bbb.meta.info.files[0]), computed: { 'all files': bbb.meta.info.files.map((f) => f.path.join('/') + ' (' + f.length + ')') } };
