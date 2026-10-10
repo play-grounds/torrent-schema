@@ -1,86 +1,96 @@
 {
-  "@context": "../context.jsonld",
-  "@graph": [
-    {
-      "@id": "bt:knownTorrents",
-      "@type": "Module",
-      "label": "known torrents",
-      "version": "0.0.1",
-      "layer": "data",
-      "comment": "Torrents whose infohash the author knows and can name, used to ask trackers what they know: a tracker never knows a name, only a hash, so the names here are the only way a count becomes a title."
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0",
-      "name": "utxo-knots-150307.dat",
-      "about": "the txbt4 UTXO snapshot at block 150,307 (869,836,053 bytes)",
-      "source": "play-grounds/utxo-swarm",
-      "kind": "data",
-      "file": "torrents/utxo-knots-150307.torrent",
+ "@context": "../context.jsonld",
+ "@graph": [
+  {
+   "@id": "bt:knownTorrents",
+   "@type": "Module",
+   "label": "known torrents",
+   "version": "0.0.1",
+   "layer": "data",
+   "comment": "Torrents whose infohash the author knows and can name, used to ask trackers what they know: a tracker never knows a name, only a hash, so the names here are the only way a count becomes a title."
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "242e9b7dcba15cc0ed8f1bc5f06b68da008f87c0",
+   "name": "utxo-knots-150307.dat",
+   "about": "the txbt4 UTXO snapshot at block 150,307 (869,836,053 bytes)",
+   "source": "play-grounds/utxo-swarm",
+   "kind": "data",
+   "file": "torrents/utxo-knots-150307.torrent",
    "nostrEvent": "86d79268db161d71abf13ceb1692b566a81c7a1bf3f9c1e1949729f0d53f9a64"
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "08ada5a7a6183aae1e09d831df6748d566095a10",
-      "name": "Sintel",
-      "about": "Blender Foundation film; the WebTorrent demo torrent",
-      "source": "webtorrent.io examples",
-      "kind": "film",
-      "file": "torrents/sintel.torrent"
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c",
-      "name": "Big Buck Bunny",
-      "about": "Blender Foundation film; a WebTorrent demo torrent",
-      "source": "webtorrent.io examples",
-      "kind": "film",
-      "file": "torrents/big-buck-bunny.torrent"
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "c9e15763f722f23e98a29decdfae341b98d53056",
-      "name": "Cosmos Laundromat",
-      "about": "Blender Foundation film; a WebTorrent demo torrent",
-      "source": "webtorrent.io examples",
-      "kind": "film",
-      "file": "torrents/cosmos-laundromat.torrent"
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "209c8226b299b308beaf2b9cd3fb49212dbd13ec",
-      "name": "Tears of Steel",
-      "about": "Blender Foundation film; a WebTorrent demo torrent",
-      "source": "webtorrent.io examples",
-      "kind": "film",
-      "file": "torrents/tears-of-steel.torrent"
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "a88fda5954e89178c372716a6a78b8180ed4dad3",
-      "name": "The WIRED CD",
-      "about": "Creative Commons music; a WebTorrent demo torrent",
-      "source": "webtorrent.io examples",
-      "kind": "music",
-      "file": "torrents/wired-cd.torrent"
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "a1dfefec1a9dd7fa8a041ebeeea271db55126d2f",
-      "name": "ubuntu-24.04.3-live-server-amd64.iso",
-      "about": "Ubuntu Server 24.04.3; a desktop-client swarm, expected absent from WebSocket trackers",
-      "source": "releases.ubuntu.com (test/vectors)",
-      "kind": "iso",
-      "file": "torrents/ubuntu-24.04.3-live-server-amd64.iso.torrent"
-    },
-    {
-      "@type": "bt:KnownTorrent",
-      "infohash": "7acf8fb590b2060dd9c3146ef770169d593433b0",
-      "name": "debian-13.7.0-amd64-netinst.iso",
-      "about": "Debian 13.7 netinst; a desktop-client swarm, expected absent from WebSocket trackers",
-      "source": "cdimage.debian.org (test/vectors)",
-      "kind": "iso",
-      "file": "torrents/debian-13.7.0-amd64-netinst.iso.torrent"
-    }
-  ]
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "3cf7e4d15841f116856f6f19bf2ac15b1dbae2c3",
+   "name": "utxo-976000.dat",
+   "about": "the BLAKE2b (Bitcoin Knots) mainnet chain's UTXO snapshot at block 976,000 (9,517,597,408 bytes; a mirror of a node image found in the swarm, listed on Nostr by this author)",
+   "source": "the swarm; listed as NIP-35 kind 2003 on 2026-10-10",
+   "kind": "data",
+   "file": "torrents/utxo-976000.torrent",
+   "nostrEvent": "8f0f0b050df0e02cff31a530236b7dec42190d9b7275074a50503c70d6e77a8e"
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "08ada5a7a6183aae1e09d831df6748d566095a10",
+   "name": "Sintel",
+   "about": "Blender Foundation film; the WebTorrent demo torrent",
+   "source": "webtorrent.io examples",
+   "kind": "film",
+   "file": "torrents/sintel.torrent"
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "dd8255ecdc7ca55fb0bbf81323d87062db1f6d1c",
+   "name": "Big Buck Bunny",
+   "about": "Blender Foundation film; a WebTorrent demo torrent",
+   "source": "webtorrent.io examples",
+   "kind": "film",
+   "file": "torrents/big-buck-bunny.torrent"
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "c9e15763f722f23e98a29decdfae341b98d53056",
+   "name": "Cosmos Laundromat",
+   "about": "Blender Foundation film; a WebTorrent demo torrent",
+   "source": "webtorrent.io examples",
+   "kind": "film",
+   "file": "torrents/cosmos-laundromat.torrent"
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "209c8226b299b308beaf2b9cd3fb49212dbd13ec",
+   "name": "Tears of Steel",
+   "about": "Blender Foundation film; a WebTorrent demo torrent",
+   "source": "webtorrent.io examples",
+   "kind": "film",
+   "file": "torrents/tears-of-steel.torrent"
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "a88fda5954e89178c372716a6a78b8180ed4dad3",
+   "name": "The WIRED CD",
+   "about": "Creative Commons music; a WebTorrent demo torrent",
+   "source": "webtorrent.io examples",
+   "kind": "music",
+   "file": "torrents/wired-cd.torrent"
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "a1dfefec1a9dd7fa8a041ebeeea271db55126d2f",
+   "name": "ubuntu-24.04.3-live-server-amd64.iso",
+   "about": "Ubuntu Server 24.04.3; a desktop-client swarm, expected absent from WebSocket trackers",
+   "source": "releases.ubuntu.com (test/vectors)",
+   "kind": "iso",
+   "file": "torrents/ubuntu-24.04.3-live-server-amd64.iso.torrent"
+  },
+  {
+   "@type": "bt:KnownTorrent",
+   "infohash": "7acf8fb590b2060dd9c3146ef770169d593433b0",
+   "name": "debian-13.7.0-amd64-netinst.iso",
+   "about": "Debian 13.7 netinst; a desktop-client swarm, expected absent from WebSocket trackers",
+   "source": "cdimage.debian.org (test/vectors)",
+   "kind": "iso",
+   "file": "torrents/debian-13.7.0-amd64-netinst.iso.torrent"
+  }
+ ]
 }
